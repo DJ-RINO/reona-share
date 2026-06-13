@@ -1,21 +1,352 @@
 /* ============================================================
    Reona site v2 — main.js 「ひと呼吸」
-   1. LINE URL の一括設定（定数1箇所管理）
-   2. 追従CTAバーの表示制御（IntersectionObserver）
-   3. にじみ出現（is-loaded）
-   4. 単発 reveal / ほどける見出し（IntersectionObserver）
-   5. 受け方カードのフォーカス（横スワイプ連動）
-   6. GSAP scrub: 呼吸の線・円窓・悩みフォーカス・クロージング転調
-      ※ GSAP が読めない環境でもサイトは完成形で表示される
+   1. Intro: ノックアウトマスク + GSAP + tune GUI
+   2. LINE URL の一括設定
+   3. 追従CTAバーの表示制御
+   4. にじみ出現
+   5. 単発 reveal / ほどける見出し
+   6. 受け方カードのフォーカス
+   7. GSAP scrub: 呼吸の線・円窓・悩みフォーカス・クロージング転調
    ============================================================ */
 
 (function () {
   "use strict";
 
-  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var INTRO_STORAGE_KEY = "reona_intro_tune";
+  var INTRO_DEFAULTS = {
+    holeStart: 40,
+    holeEnd: 900,
+    holdDelay: 400,
+    duration: 1.6,
+    ease: "power3.inOut",
+    mx: 50,
+    my: 46,
+    veilFade: 0.4
+  };
+  var INTRO_EASES = [
+    "power2.out",
+    "power3.out",
+    "power4.out",
+    "power3.inOut",
+    "expo.out",
+    "sine.inOut",
+    "cubic(.16,1,.3,1)"
+  ];
 
-  /* ---- 1. LINE URL（確定したらここを1行変えるだけで全CTAに反映） ---- */
-  // TODO data-tbd="line-url": LINE公式アカウントの友だち追加URLに差し替える
+  var reduceMotionMedia = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var reduceMotion = reduceMotionMedia.matches;
+
+  function clamp(value, min, max) {
+    return Math.min(max, Math.max(min, value));
+  }
+
+  function cubicBezier(p1x, p1y, p2x, p2y) {
+    var cx = 3 * p1x;
+    var bx = 3 * (p2x - p1x) - cx;
+    var ax = 1 - cx - bx;
+    var cy = 3 * p1y;
+    var by = 3 * (p2y - p1y) - cy;
+    var ay = 1 - cy - by;
+
+    function sampleCurveX(t) { return ((ax * t + bx) * t + cx) * t; }
+    function sampleCurveY(t) { return ((ay * t + by) * t + cy) * t; }
+    function sampleCurveDerivativeX(t) { return (3 * ax * t + 2 * bx) * t + cx; }
+
+    function solveCurveX(x) {
+      var t2 = x;
+      var derivative;
+      var x2;
+      var i;
+
+      for (i = 0; i < 8; i++) {
+        x2 = sampleCurveX(t2) - x;
+        if (Math.abs(x2) < 1e-6) return t2;
+        derivative = sampleCurveDerivativeX(t2);
+        if (Math.abs(derivative) < 1e-6) break;
+        t2 -= x2 / derivative;
+      }
+
+      var t0 = 0;
+      var t1 = 1;
+      t2 = x;
+      while (t0 < t1) {
+        x2 = sampleCurveX(t2);
+        if (Math.abs(x2 - x) < 1e-6) return t2;
+        if (x > x2) t0 = t2;
+        else t1 = t2;
+        t2 = (t1 - t0) * 0.5 + t0;
+        if (Math.abs(t1 - t0) < 1e-6) break;
+      }
+
+      return t2;
+    }
+
+    return function (x) {
+      if (x <= 0) return 0;
+      if (x >= 1) return 1;
+      return sampleCurveY(solveCurveX(x));
+    };
+  }
+
+  function sanitizeIntroConfig(source) {
+    var raw = source || {};
+    var next = {
+      holeStart: Number(raw.holeStart),
+      holeEnd: Number(raw.holeEnd),
+      holdDelay: Number(raw.holdDelay),
+      duration: Number(raw.duration),
+      ease: typeof raw.ease === "string" ? raw.ease : INTRO_DEFAULTS.ease,
+      mx: Number(raw.mx),
+      my: Number(raw.my),
+      veilFade: Number(raw.veilFade)
+    };
+
+    if (!isFinite(next.holeStart)) next.holeStart = INTRO_DEFAULTS.holeStart;
+    if (!isFinite(next.holeEnd)) next.holeEnd = INTRO_DEFAULTS.holeEnd;
+    if (!isFinite(next.holdDelay)) next.holdDelay = INTRO_DEFAULTS.holdDelay;
+    if (!isFinite(next.duration)) next.duration = INTRO_DEFAULTS.duration;
+    if (!isFinite(next.mx)) next.mx = INTRO_DEFAULTS.mx;
+    if (!isFinite(next.my)) next.my = INTRO_DEFAULTS.my;
+    if (!isFinite(next.veilFade)) next.veilFade = INTRO_DEFAULTS.veilFade;
+    if (INTRO_EASES.indexOf(next.ease) === -1) next.ease = INTRO_DEFAULTS.ease;
+
+    next.holeStart = clamp(next.holeStart, 10, 100);
+    next.holeEnd = clamp(next.holeEnd, 200, 1500);
+    next.holdDelay = clamp(next.holdDelay, 0, 1500);
+    next.duration = clamp(next.duration, 0.4, 4);
+    next.mx = clamp(next.mx, 0, 100);
+    next.my = clamp(next.my, 0, 100);
+    next.veilFade = clamp(next.veilFade, 0, 1.5);
+    return next;
+  }
+
+  function loadStoredIntroConfig() {
+    try {
+      return sanitizeIntroConfig(JSON.parse(localStorage.getItem(INTRO_STORAGE_KEY) || "{}"));
+    } catch (error) {
+      return sanitizeIntroConfig(INTRO_DEFAULTS);
+    }
+  }
+
+  function saveIntroConfig(config) {
+    try {
+      localStorage.setItem(INTRO_STORAGE_KEY, JSON.stringify(config));
+    } catch (error) {
+      /* noop */
+    }
+  }
+
+  function isTuneMode() {
+    var url = new URL(window.location.href);
+    return url.searchParams.get("tune") === "1" || url.hash.indexOf("tune") !== -1;
+  }
+
+  function loadScript(src) {
+    return new Promise(function (resolve, reject) {
+      var script = document.createElement("script");
+      script.src = src;
+      script.async = true;
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+  }
+
+  function importModule(src) {
+    return import(src);
+  }
+
+  function loadStylesheet(href) {
+    return new Promise(function (resolve, reject) {
+      var existing = document.querySelector('link[href="' + href + '"]');
+      if (existing) { resolve(); return; }
+      var link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = href;
+      link.onload = resolve;
+      link.onerror = reject;
+      document.head.appendChild(link);
+    });
+  }
+
+  function buildCopyPayload(config) {
+    var json = JSON.stringify(config, null, 2);
+    var js = [
+      "var INTRO_DEFAULTS = " + json + ";",
+      "gsap.to(veil, {",
+      "  '--hole': '" + config.holeEnd + "%',",
+      "  duration: " + config.duration + ",",
+      "  delay: " + (config.holdDelay / 1000) + ",",
+      "  ease: '" + config.ease + "'",
+      "});"
+    ].join("\n");
+    return { json: json, js: js, text: json + "\n\n" + js };
+  }
+
+  var introState = {
+    config: loadStoredIntroConfig(),
+    tuneMode: isTuneMode(),
+    veil: null,
+    timeline: null,
+    paneHost: null
+  };
+
+  function applyIntroVars(config) {
+    if (!introState.veil) return;
+    introState.veil.style.setProperty("--hole", config.holeStart + "%");
+    introState.veil.style.setProperty("--mx", config.mx + "%");
+    introState.veil.style.setProperty("--my", config.my + "%");
+  }
+
+  function resolveEase(name) {
+    if (name === "cubic(.16,1,.3,1)") return cubicBezier(0.16, 1, 0.3, 1);
+    return name;
+  }
+
+  function doneIntro() {
+    if (!introState.veil) return;
+    introState.veil.style.display = "none";
+    introState.veil.style.opacity = "1";
+    introState.veil.style.pointerEvents = "none";
+    introState.veil.setAttribute("aria-hidden", "true");
+  }
+
+  function playIntro() {
+    if (!introState.veil) return;
+    if (reduceMotion) { doneIntro(); return; }
+    if (!window.gsap) { doneIntro(); return; }
+    if (introState.timeline) introState.timeline.kill();
+
+    var config = sanitizeIntroConfig(introState.config);
+    introState.config = config;
+    applyIntroVars(config);
+
+    introState.veil.style.display = "block";
+    introState.veil.style.opacity = "1";
+    introState.veil.style.pointerEvents = "auto";
+    introState.veil.setAttribute("aria-hidden", "false");
+
+    var gsap = window.gsap;
+    var timeline = gsap.timeline({
+      onComplete: doneIntro
+    });
+
+    timeline.to({}, {
+      duration: config.holdDelay / 1000
+    });
+
+    timeline.to(introState.veil, {
+      "--hole": config.holeEnd + "%",
+      "--mx": config.mx + "%",
+      "--my": config.my + "%",
+      duration: config.duration,
+      ease: resolveEase(config.ease)
+    });
+
+    if (config.veilFade > 0) {
+      timeline.to(introState.veil, {
+        opacity: 0,
+        duration: config.veilFade,
+        ease: "power1.out"
+      });
+    } else {
+      timeline.set(introState.veil, { opacity: 0 });
+    }
+
+    introState.timeline = timeline;
+  }
+
+  function setupIntro() {
+    introState.veil = document.getElementById("introVeil");
+    if (!introState.veil) return;
+
+    applyIntroVars(introState.config);
+
+    introState.veil.addEventListener("click", function () {
+      if (introState.timeline) introState.timeline.kill();
+      doneIntro();
+    });
+
+    if (reduceMotion) {
+      doneIntro();
+      return;
+    }
+
+    playIntro();
+  }
+
+  function setupIntroTuneGui() {
+    if (!introState.tuneMode) return;
+
+    loadStylesheet("https://cdn.jsdelivr.net/npm/tweakpane@4/dist/tweakpane.min.css").catch(function () {});
+
+    importModule("https://cdn.jsdelivr.net/npm/tweakpane@4/dist/tweakpane.min.js").then(function (tweakpaneModule) {
+      tweakpaneModule = tweakpaneModule || {};
+      var PaneCtor = tweakpaneModule.Pane || (window.Tweakpane && window.Tweakpane.Pane) || window.Pane;
+      if (!PaneCtor) return;
+
+      var params = Object.assign({}, introState.config);
+      var host = document.createElement("div");
+      host.className = "intro-tune-pane";
+      document.body.appendChild(host);
+      introState.paneHost = host;
+
+      var pane = new PaneCtor({
+        container: host,
+        title: "Intro Tune"
+      });
+
+      function syncConfig() {
+        introState.config = sanitizeIntroConfig(params);
+        Object.assign(params, introState.config);
+        saveIntroConfig(introState.config);
+      }
+
+      pane.addBinding(params, "holeStart", { min: 10, max: 100, step: 1, label: "holeStart" });
+      pane.addBinding(params, "holeEnd", { min: 200, max: 1500, step: 10, label: "holeEnd" });
+      pane.addBinding(params, "holdDelay", { min: 0, max: 1500, step: 10, label: "holdDelay" });
+      pane.addBinding(params, "duration", { min: 0.4, max: 4, step: 0.05, label: "duration" });
+      pane.addBinding(params, "ease", {
+        label: "ease",
+        options: {
+          "power2.out": "power2.out",
+          "power3.out": "power3.out",
+          "power4.out": "power4.out",
+          "power3.inOut": "power3.inOut",
+          "expo.out": "expo.out",
+          "sine.inOut": "sine.inOut",
+          "cubic(.16,1,.3,1)": "cubic(.16,1,.3,1)"
+        }
+      });
+      pane.addBinding(params, "mx", { min: 0, max: 100, step: 1, label: "mx" });
+      pane.addBinding(params, "my", { min: 0, max: 100, step: 1, label: "my" });
+      pane.addBinding(params, "veilFade", { min: 0, max: 1.5, step: 0.05, label: "veilFade" });
+
+      pane.on("change", function () {
+        syncConfig();
+        applyIntroVars(introState.config);
+      });
+
+      pane.addButton({ title: "▶ もう一度再生" }).on("click", function () {
+        syncConfig();
+        playIntro();
+      });
+
+      pane.addButton({ title: "⧉ 値をコピー/出力" }).on("click", function () {
+        syncConfig();
+        var payload = buildCopyPayload(introState.config);
+        console.log("REONA intro tune JSON\n" + payload.json);
+        console.log("REONA intro tune snippet\n" + payload.js);
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(payload.text).catch(function () {});
+        }
+      });
+    }).catch(function () {
+      /* GUI無しで本体だけ動かす */
+    });
+  }
+
+  /* ---- 2. LINE URL（確定したらここを1行変えるだけで全CTAに反映） ---- */
   var LINE_URL = "#";
 
   document.querySelectorAll("[data-line-cta]").forEach(function (el) {
@@ -26,7 +357,7 @@
     }
   });
 
-  /* ---- 2. 追従CTAバー: HeroのCTA表示中とクロージングCTA到達時は隠す ---- */
+  /* ---- 3. 追従CTAバー: HeroのCTA表示中とクロージングCTA到達時は隠す ---- */
   var bar = document.getElementById("cta-bar");
   var heroCta = document.querySelector("[data-hero-cta]");
   var closingCta = document.querySelector("[data-closing-cta]");
@@ -55,16 +386,20 @@
     updateBar();
   }
 
-  /* ---- 3. にじみ出現: 読み込み後に1度だけ「息が整う」 ---- */
+  /* ---- 4. にじみ出現 ---- */
   requestAnimationFrame(function () {
     requestAnimationFrame(function () {
       document.body.classList.add("is-loaded");
     });
   });
 
-  if (reduceMotion) return; // 以降は演出のみ。reduced-motion では何もしない
+  if (document.readyState === "complete") setupIntro();
+  else window.addEventListener("load", setupIntro, { once: true });
+  setupIntroTuneGui();
 
-  /* ---- 4. 単発 reveal / ほどける見出し ---- */
+  if (reduceMotion) return;
+
+  /* ---- 5. 単発 reveal / ほどける見出し ---- */
   if ("IntersectionObserver" in window) {
     document.body.classList.add("reveal-armed", "loosen-armed");
 
@@ -88,7 +423,7 @@
     });
   }
 
-  /* ---- 5. 受け方カード: 横スワイプ中の現在カードに緑を灯す（SPのみ） ---- */
+  /* ---- 6. 受け方カード ---- */
   var track = document.querySelector("[data-channel-track]");
   var channels = Array.prototype.slice.call(document.querySelectorAll("[data-channel]"));
   var progress = document.querySelector("[data-channel-progress]");
@@ -124,13 +459,12 @@
   armChannels();
   spMedia.addEventListener("change", armChannels);
 
-  /* ---- 6. GSAP scrub 演出（読み込み失敗時は静的なまま） ---- */
+  /* ---- 7. GSAP scrub 演出 ---- */
   window.addEventListener("load", function () {
     if (!window.gsap || !window.ScrollTrigger) return;
     var gsap = window.gsap;
     gsap.registerPlugin(window.ScrollTrigger);
 
-    /* 6a. 円窓: スクロールで楕円が開き、写真は逆方向にゆっくり寄る */
     document.querySelectorAll("[data-window]").forEach(function (win) {
       var img = win.querySelector("[data-window-img]");
 
@@ -155,7 +489,6 @@
       }
     });
 
-    /* 6b. 悩みのフォーカス送り: 読んでいる1行だけが浮かぶ */
     var worryList = document.querySelector("[data-worries]");
     if (worryList) {
       worryList.classList.add("worries-armed");
@@ -174,7 +507,6 @@
       });
     }
 
-    /* 6c. クロージング: 到達で背景が一度だけ green-tint へ転調（戻れば戻る） */
     var closing = document.querySelector("[data-closing]");
     if (closing) {
       window.ScrollTrigger.create({
@@ -185,7 +517,6 @@
       });
     }
 
-    /* 6d. 呼吸の線: 文書全体を縫う1本のパスをスクロールで描く */
     var spineHost = document.getElementById("spine");
     if (spineHost) {
       var spineTween = null;
@@ -198,7 +529,6 @@
         );
         if (!sections.length) return;
 
-        /* 各セクションの縦中央を、左右交互に緩やかに縫う */
         var margin = W < 900 ? 0.16 : 0.08;
         var points = [[W * 0.5, 0]];
         sections.forEach(function (sec, i) {
@@ -216,8 +546,6 @@
           d += " C " + p0[0] + " " + midY + ", " + p1[0] + " " + midY + ", " + p1[0] + " " + p1[1];
         }
 
-        spineHost.style.height = H + "px";
-
         var SVG_NS = "http://www.w3.org/2000/svg";
         var svg = document.createElementNS(SVG_NS, "svg");
         svg.setAttribute("viewBox", "0 0 " + W + " " + H);
@@ -228,10 +556,15 @@
         svg.appendChild(path);
         while (spineHost.firstChild) spineHost.removeChild(spineHost.firstChild);
         spineHost.appendChild(svg);
+        spineHost.style.height = H + "px";
+
         var len = path.getTotalLength();
         path.style.strokeDasharray = len + " " + len;
 
-        if (spineTween) spineTween.scrollTrigger.kill(), spineTween.kill();
+        if (spineTween) {
+          spineTween.scrollTrigger.kill();
+          spineTween.kill();
+        }
         spineTween = gsap.fromTo(path,
           { strokeDashoffset: len },
           {
@@ -253,7 +586,8 @@
           var w = document.documentElement.clientWidth;
           var h = document.documentElement.scrollHeight;
           if (w === lastW && h === lastH) return;
-          lastW = w; lastH = h;
+          lastW = w;
+          lastH = h;
           buildSpine();
           window.ScrollTrigger.refresh();
         }, 240);

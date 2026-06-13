@@ -1,21 +1,44 @@
-/* ===== オープニング・ヴェール（JS駆動: reduced-motionでも動く） ===== */
+@property --hole {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 40%;
+}
+
+@property --mx {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 50%;
+}
+
+@property --my {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 46%;
+}
+
+/* ===== オープニング・ヴェール（ノックアウトマスク + GSAP） ===== */
 .intro-veil {
-  position: fixed; inset: 0; z-index: 200;
-  background: #0b0c0b;
-  display: none; place-items: center;
+  position: fixed; inset: 0; z-index: 9999;
+  display: none;
+  opacity: 1;
   pointer-events: none;
+  background: #000;
+  --hole: 40%;
+  --mx: 50%;
+  --my: 46%;
+  -webkit-mask: linear-gradient(#000 0 0), url("../images/intro-figure.png") var(--mx) var(--my) / var(--hole) auto no-repeat;
+  mask: linear-gradient(#000 0 0), url("../images/intro-figure.png") var(--mx) var(--my) / var(--hole) auto no-repeat;
+  -webkit-mask-composite: source-out;
+  mask-composite: subtract;
+  will-change: --hole, opacity;
 }
-.intro-veil__figure {
-  height: min(46vh, 420px); width: auto;
-  display: grid; place-items: center;
-  transform: scale(.42); opacity: 0;
-  transform-origin: center center;
-  will-change: transform, opacity;
-}
-.intro-veil__figure img {
-  height: 100%; width: auto; display: block;
-  object-fit: contain;
-  filter: drop-shadow(0 18px 50px rgba(0,0,0,.55));
+
+.intro-tune-pane {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 10001;
+  width: min(300px, calc(100vw - 24px));
 }
 
 /* ===== 料金メニュー ===== */
