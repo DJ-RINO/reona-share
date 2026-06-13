@@ -1,0 +1,829 @@
+/* ============================================================
+   Reona site v2 — 「ひと呼吸 (One Breath)」
+   サイト全体を1回の深い呼吸として設計する。
+   吸う(Hero〜悩み) → 止める(受け方〜流れ) → 吐く(About〜CTA)。
+
+   規律:
+   - モバイルファースト。min-width で拡張
+   - アニメは transform / opacity / filter のみ（例外: 見出しの
+     letter-spacing 1回きりの「ほどけ」のみ。scrub では使わない）
+   - scrub 系の初期状態は JS が与える。CSS 単体でも完成形で表示される
+   - prefers-reduced-motion で全演出停止
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font: var(--text-body);
+  letter-spacing: var(--tracking-body);
+  padding-bottom: calc(76px + env(safe-area-inset-bottom)); /* 追従バー分 */
+  overflow-x: hidden;
+  /* 吐く: クロージング到達で一度だけ背景が転調する */
+  transition: background-color 2400ms var(--ease-release);
+}
+
+/* warm-ivory に green-tint を10%重ねた派生（ブランド2色の混色のみ） */
+body.is-exhale { background-color: #E9EADD; }
+
+main { display: block; position: relative; z-index: 2; }
+
+section { scroll-margin-top: 84px; }
+
+a { color: inherit; }
+
+:focus-visible {
+  outline: 2px solid var(--color-primary-deep);
+  outline-offset: 2px;
+}
+
+img { display: block; max-width: 100%; height: auto; }
+
+/* 低DPIでヘアラインが消える対策 */
+@media (max-resolution: 1.5dppx) {
+  :root { --border-hairline: 1px solid rgba(62, 68, 60, 0.16); }
+}
+
+/* ============ 紙のグレイン（最前面・GPU合成のみ） ============ */
+
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-grain);
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.24 0 0 0 0 0.27 0 0 0 0 0.24 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+/* ============ 呼吸の線（ページを縫う1本のSVG。JSが生成） ============ */
+
+.spine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  /* height は JS が文書高に合わせて設定する（body は非 positioned のため） */
+  height: 0;
+  overflow: visible;
+  z-index: var(--z-spine);
+  pointer-events: none;
+}
+
+.spine svg { display: block; width: 100%; height: 100%; }
+
+.spine path {
+  fill: none;
+  stroke: var(--color-forest-green);
+  stroke-width: 1.25;
+  stroke-linecap: round;
+  opacity: 0.38;
+}
+
+/* ============ 共通: タイポ ============ */
+
+h1 {
+  font: var(--text-display);
+  font-size: clamp(27px, 6.5vw, 42px);
+  letter-spacing: clamp(3px, 1vw, 5px);
+  line-height: 1.75;
+  margin: 0;
+}
+
+h2 {
+  font: var(--text-h2);
+  font-size: clamp(22px, 5vw, 28px);
+  letter-spacing: var(--tracking-heading);
+  line-height: 1.7;
+  margin: 0;
+}
+
+h3 {
+  font: var(--text-h3);
+  letter-spacing: var(--tracking-h3);
+  margin: 0 0 var(--space-3);
+}
+
+p { margin: 0; }
+
+.kicker {
+  font: var(--text-label-en);
+  font-size: 14px;
+  letter-spacing: var(--tracking-label-en);
+  color: var(--color-primary-deep);
+  margin: 0 0 var(--space-4);
+}
+
+.kicker--sm { font-size: 13px; letter-spacing: 2px; margin: var(--space-5) 0 var(--space-2); }
+
+.section-note {
+  max-width: 560px;
+  margin: var(--space-7) auto 0;
+  text-align: center;
+}
+
+.section-note--left { margin: var(--space-5) 0 0; text-align: left; }
+
+.sp-only { display: inline; }
+@media (min-width: 900px) { .sp-only { display: none; } }
+
+/* ============ 共通: セクション ============ */
+
+.section {
+  position: relative;
+  padding: var(--space-10) 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.section--bleed { padding-left: 0; padding-right: 0; max-width: none; }
+
+.section-head { text-align: center; margin-bottom: var(--space-8); }
+.section-head .kicker { margin-bottom: var(--space-3); }
+
+/* ============ 共通: ボタン ============ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0.5px solid transparent;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-weight: 500;
+  letter-spacing: var(--tracking-button);
+  line-height: 1;
+  padding: 13px 34px;
+  font-size: 12.5px;
+  min-height: 44px;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background var(--dur-base) var(--ease-calm),
+    color var(--dur-base) var(--ease-calm),
+    transform var(--dur-fast) var(--ease-calm);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 触覚フィードバック: 押した感触 */
+.btn:active { transform: scale(0.97); }
+
+.btn--primary {
+  background: var(--color-primary-deep); /* ivory 文字とのコントラスト 4.6:1 */
+  color: var(--color-text-on-primary);
+}
+.btn--primary:hover { background: var(--color-ink); }
+
+.btn--ghost {
+  background: transparent;
+  color: var(--color-text);
+  border: var(--border-hairline);
+}
+.btn--ghost:hover { background: var(--color-green-tint-soft); }
+
+.btn--lg { padding: 16px 40px; font-size: 13px; }
+.btn--sm { padding: 11px 22px; font-size: 12px; min-height: 40px; }
+
+/* ============ ヘッダー ============ */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 20px;
+  background: rgba(246, 241, 232, 0.82); /* warm-ivory 透過 */
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: var(--border-hairline);
+}
+
+.wordmark {
+  font: 600 15px/1 var(--font-heading);
+  letter-spacing: var(--tracking-wordmark);
+  text-decoration: none;
+  color: var(--color-ink);
+  white-space: nowrap;
+}
+
+.site-nav { display: none; }
+
+@media (min-width: 900px) {
+  .site-nav { display: flex; gap: var(--space-6); }
+  .site-nav a {
+    font: 400 13px/1 var(--font-body);
+    letter-spacing: 1.5px;
+    text-decoration: none;
+    color: var(--color-text);
+    transition: color var(--dur-base) var(--ease-calm);
+  }
+  .site-nav a:hover { color: var(--color-primary-deep); }
+}
+
+/* ============ 1. Hero: 呼吸する背景 + にじみ + 円窓 ============ */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-8) 20px var(--space-9);
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+}
+
+.hero__inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  gap: var(--space-8);
+}
+
+.hero__text { text-align: left; }
+
+.hero__lead {
+  max-width: 34em;
+  margin-top: var(--space-5);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-7);
+}
+
+/* --- 呼吸する背景: 多層のオーブが約9秒/14秒周期で膨らみ縮む --- */
+
+.breath-field {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.breath-orb {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform;
+  animation: breath var(--breath-cycle) var(--ease-breath) infinite alternate;
+}
+
+.breath-orb--a {
+  width: 130vw; height: 130vw;
+  max-width: 880px; max-height: 880px;
+  top: -34vw; right: -46vw;
+  background: radial-gradient(circle at 50% 50%, rgba(110, 133, 114, 0.20) 0%, rgba(110, 133, 114, 0.07) 46%, transparent 70%);
+}
+
+.breath-orb--b {
+  width: 110vw; height: 110vw;
+  max-width: 760px; max-height: 760px;
+  bottom: -28vw; left: -42vw;
+  background: radial-gradient(circle at 50% 50%, rgba(220, 206, 187, 0.50) 0%, rgba(220, 206, 187, 0.16) 48%, transparent 72%);
+  animation-duration: var(--breath-cycle-slow);
+  animation-delay: -4s;
+}
+
+.breath-orb--c {
+  width: 64vw; height: 64vw;
+  max-width: 440px; max-height: 440px;
+  top: 32%; left: 8%;
+  background: radial-gradient(circle at 50% 50%, rgba(143, 148, 145, 0.14) 0%, transparent 64%);
+  animation-delay: -7s;
+}
+
+@keyframes breath {
+  from { transform: scale(1); }
+  to   { transform: scale(1.16); }
+}
+
+/* --- にじみから現れる文字（初回ロードのみ。is-loaded で発火） --- */
+
+.mist-line, .reveal-mist {
+  opacity: 0;
+  filter: blur(10px);
+  transform: translateY(14px);
+  transition:
+    opacity var(--dur-reveal) var(--ease-release),
+    filter var(--dur-reveal) var(--ease-release),
+    transform var(--dur-reveal) var(--ease-release);
+}
+
+body.is-loaded .mist-line,
+body.is-loaded .reveal-mist {
+  opacity: 1;
+  filter: blur(0);
+  transform: none;
+}
+
+/* 息が整う順番: キッカー → 1行目 → 2行目 → リード → CTA → 円窓 */
+body.is-loaded .hero .kicker.reveal-mist { transition-delay: 100ms; }
+body.is-loaded .hero h1 .mist-line:nth-of-type(1) { transition-delay: 420ms; }
+body.is-loaded .hero h1 .mist-line:nth-of-type(2) { transition-delay: 900ms; }
+body.is-loaded .hero__lead { transition-delay: 1450ms; }
+body.is-loaded .hero__actions { transition-delay: 1850ms; }
+
+.mist-line { display: inline-block; }
+
+/* ============ 円窓（アーチの進化形。全写真共通） ============ */
+
+.moon-window {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-window);
+  /* scrub の開閉は JS（GSAP）が clip-path で行う。CSS 単体では常に全開 */
+}
+
+.moon-window img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: var(--img-filter);
+  will-change: transform;
+}
+
+.moon-window--hero {
+  width: min(78vw, 380px);
+  aspect-ratio: 7 / 10;
+  margin: 0 auto;
+  opacity: 0;
+  transition: opacity 1400ms var(--ease-release) 1200ms;
+}
+body.is-loaded .moon-window--hero { opacity: 1; }
+
+.moon-window--card { aspect-ratio: 7 / 9; }
+
+.moon-window--about {
+  width: min(82vw, 420px);
+  aspect-ratio: 868 / 970;
+  margin: 0 auto var(--space-7);
+}
+
+/* ============ 2. 悩み: フォーカス送り ============ */
+
+.worry-list {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 560px;
+}
+
+.worry {
+  position: relative;
+  padding: var(--space-5) 0 var(--space-5) var(--space-6);
+  font-size: 15px;
+  line-height: 1.9;
+  border-bottom: var(--border-hairline);
+}
+.worry:first-child { border-top: var(--border-hairline); }
+
+/* 引用符ではなく「呼吸の点」: 現在フォーカス行の前だけ灯る */
+.worry::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 50%;
+  width: 7px; height: 7px;
+  margin-top: -3.5px;
+  border-radius: 50%;
+  background: var(--color-forest-green);
+  opacity: 0.25;
+  transform: scale(0.6);
+  transition: opacity 600ms var(--ease-calm), transform 600ms var(--ease-calm);
+}
+
+/* JS 起動後: 読んでいる1行だけが浮かび、他は沈む */
+.worries-armed .worry {
+  opacity: 0.28;
+  transition: opacity 600ms var(--ease-calm);
+}
+.worries-armed .worry.is-focus { opacity: 1; }
+.worries-armed .worry.is-focus::before {
+  opacity: 1;
+  transform: scale(1);
+  animation: breath-dot 4s var(--ease-breath) infinite alternate;
+}
+
+@keyframes breath-dot {
+  from { transform: scale(1); }
+  to   { transform: scale(1.45); }
+}
+
+/* ============ 3. アプローチ: 大きなイニシャルの縦リズム ============ */
+
+.approach-stack {
+  display: grid;
+  gap: var(--space-7);
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.approach-item {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: var(--space-5);
+  align-items: start;
+}
+
+.approach-item__initial {
+  font: italic 500 84px/0.8 var(--font-accent);
+  color: var(--color-forest-green);
+  opacity: 0.32;
+  user-select: none;
+  padding-bottom: 8px; /* italic descender (y g) の切れ防止 */
+}
+
+/* ============ 4. 受け方: 横スワイプ（SP）/ 非対称3列（PC） ============ */
+
+.channel-track {
+  display: flex;
+  gap: var(--space-4);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 0 9vw var(--space-4);
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.channel-track::-webkit-scrollbar { display: none; }
+
+.channel {
+  flex: 0 0 82%;
+  max-width: 360px;
+  scroll-snap-align: center;
+  padding: var(--space-5);
+  border: var(--border-hairline);
+  border-radius: 24px;
+  background: rgba(246, 241, 232, 0.6);
+  transition: border-color 600ms var(--ease-calm), background 600ms var(--ease-calm);
+}
+
+/* Spotlight: 現在カードだけ緑が灯る */
+.channel.is-current {
+  border-color: rgba(110, 133, 114, 0.55);
+  background: var(--color-green-tint-soft);
+}
+
+.channel h3 { margin-bottom: var(--space-2); }
+.channel p { margin-bottom: var(--space-5); }
+.channel .btn { width: 100%; }
+
+.channel-progress {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: var(--space-4);
+}
+
+.channel-progress span {
+  width: 26px; height: 2px;
+  border-radius: 1px;
+  background: var(--color-hairline);
+  transition: background 400ms var(--ease-calm);
+}
+.channel-progress span.is-active { background: var(--color-forest-green); }
+
+@media (min-width: 900px) {
+  .channel-track {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr 1fr; /* 中央をわずかに大きく */
+    align-items: end;
+    gap: var(--space-6);
+    overflow: visible;
+    padding: 0 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .channel { max-width: none; }
+  .channel-progress { display: none; }
+}
+
+/* ============ 5. 料金 ============ */
+
+.pricing-grid { display: grid; gap: var(--space-7); }
+
+.card {
+  padding: var(--space-card);
+  border: var(--border-hairline);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.card__body { margin: var(--space-3) 0 var(--space-5); }
+.card .btn { width: 100%; margin-top: var(--space-5); }
+
+.def-list { margin: 0; }
+
+.def-row {
+  display: grid;
+  grid-template-columns: 7em 1fr;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  border-bottom: var(--border-hairline);
+}
+.def-row--first { border-top: var(--border-hairline); }
+.def-row dt { font-weight: 400; color: var(--color-text-muted); }
+.def-row dd { margin: 0; }
+
+.tag-row { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-5); }
+
+.tag {
+  display: inline-block;
+  border: var(--border-hairline);
+  border-radius: var(--radius-chip);
+  padding: 8px 17px;
+  font: 600 11.5px/1 var(--font-heading);
+  letter-spacing: 2px;
+}
+.tag--active {
+  background: var(--color-green-tint);
+  border-color: transparent;
+  color: var(--color-primary-deep);
+}
+
+@media (min-width: 900px) {
+  .pricing-grid { grid-template-columns: 1.2fr 1fr; align-items: start; }
+}
+
+/* ============ 6. 流れ ============ */
+
+.flow-list {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 640px;
+  display: grid;
+  gap: var(--space-7);
+}
+
+.flow-step {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: var(--space-5);
+  align-items: start;
+}
+
+.flow-step__num {
+  font: italic 500 40px/1 var(--font-accent);
+  color: var(--color-forest-green);
+  opacity: 0.55;
+  padding-top: 4px;
+}
+
+/* ============ 7. 声 ============ */
+
+.voices-grid { display: grid; gap: var(--space-5); max-width: 720px; margin: 0 auto; }
+
+.quote {
+  margin: var(--space-5) 0 0;
+  padding: var(--space-5) var(--space-6);
+  border-left: 1.5px solid var(--color-forest-green);
+  background: var(--color-green-tint-soft);
+  border-radius: 0 16px 16px 0;
+}
+
+.quote__main {
+  font: 600 16px/1.9 var(--font-heading);
+  letter-spacing: 1.5px;
+}
+
+.quote__sub { margin-top: var(--space-3); color: var(--color-text-muted); font-size: 12.5px; }
+
+/* ============ 8. About ============ */
+
+.section--sunken {
+  max-width: none;
+  background: var(--color-surface-sunken);
+}
+
+.section--sunken .about-grid { max-width: 1100px; margin: 0 auto; }
+
+.about__story { margin: var(--space-5) 0; max-width: 36em; }
+
+.def-list--about { margin-top: var(--space-6); }
+
+@media (min-width: 900px) {
+  .about-grid {
+    display: grid;
+    grid-template-columns: 5fr 7fr;
+    gap: var(--space-9);
+    align-items: center;
+  }
+  .moon-window--about { margin: 0; width: auto; }
+}
+
+/* ============ 9. 特典 ============ */
+
+.gift-panel {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-6);
+  border: var(--border-hairline);
+  border-radius: 32px;
+  background: var(--color-green-tint-soft);
+}
+
+.gift-panel p { max-width: 30em; margin: var(--space-4) auto var(--space-6); }
+
+/* ============ 10. FAQ ============ */
+
+.faq-list { max-width: 640px; margin: 0 auto; }
+
+.faq-list details { border-bottom: var(--border-hairline); }
+.faq-list details:first-child { border-top: var(--border-hairline); }
+
+.faq-list summary {
+  list-style: none;
+  cursor: pointer;
+  padding: var(--space-5) 36px var(--space-5) 0;
+  position: relative;
+  font-weight: 400;
+  -webkit-tap-highlight-color: transparent;
+}
+.faq-list summary::-webkit-details-marker { display: none; }
+
+/* +印が呼吸するように回って×へ */
+.faq-list summary::after {
+  content: "+";
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  margin-top: -0.7em;
+  font: 300 22px/1.4 var(--font-body);
+  color: var(--color-forest-green);
+  transition: transform 480ms var(--ease-release);
+}
+.faq-list details[open] summary::after { transform: rotate(45deg); }
+
+.faq-list details p { padding: 0 0 var(--space-5); color: var(--color-text-muted); max-width: 36em; }
+
+/* ============ 11. アクセス ============ */
+
+.def-list--access { max-width: 640px; margin: 0 auto; }
+
+/* ============ 12. クロージング ============ */
+
+.section--closing {
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  padding-top: var(--space-10);
+  padding-bottom: var(--space-10);
+  min-height: 72dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.breath-field--closing .breath-orb--a {
+  top: auto; right: auto;
+  bottom: -50vw; left: 50%;
+  margin-left: -65vw;
+}
+
+.closing-sign {
+  position: relative;
+  z-index: 2;
+  font: 600 clamp(21px, 5.4vw, 30px)/2.1 var(--font-heading);
+  letter-spacing: 3px;
+}
+
+.closing-sign__en {
+  position: relative;
+  z-index: 2;
+  font: var(--text-label-en);
+  letter-spacing: var(--tracking-label-en);
+  color: var(--color-primary-deep);
+  margin: var(--space-5) 0 var(--space-7);
+}
+
+/* ============ フッター ============ */
+
+.site-footer {
+  border-top: var(--border-hairline);
+  padding: var(--space-8) 20px var(--space-6);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.footer-grid { display: grid; gap: var(--space-6); }
+
+.wordmark--footer { font-size: 13px; }
+
+.footer-col__head {
+  font: 600 12px/1 var(--font-heading);
+  letter-spacing: 2px;
+  margin: 0 0 var(--space-3);
+  color: var(--color-text-muted);
+}
+
+.footer-col a {
+  display: block;
+  padding: 6px 0;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.footer-copy {
+  margin-top: var(--space-7);
+  font: var(--text-caption);
+  color: var(--color-text-muted);
+}
+
+@media (min-width: 900px) {
+  .footer-grid { grid-template-columns: 2fr 1fr 1fr 1fr; }
+}
+
+/* ============ 追従CTAバー ============ */
+
+.cta-bar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: var(--z-header);
+  padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
+  background: rgba(246, 241, 232, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: var(--border-hairline);
+  transform: translateY(0);
+  transition: transform var(--dur-slow) var(--ease-release);
+}
+
+.cta-bar .btn { width: 100%; }
+
+.cta-bar.is-hidden { transform: translateY(110%); }
+
+/* ============ ほどけるタイポ（JS が .loosen-armed を付与） ============ */
+
+.loosen-armed .loosen {
+  letter-spacing: var(--tracking-tight-start);
+  opacity: 0;
+  transition:
+    letter-spacing 1300ms var(--ease-release),
+    opacity 1100ms var(--ease-release);
+}
+
+.loosen-armed .loosen.is-loose {
+  letter-spacing: var(--tracking-heading);
+  opacity: 1;
+}
+
+/* ============ 単発 reveal（IntersectionObserver） ============ */
+
+.reveal-armed .reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 900ms var(--ease-release),
+    transform 900ms var(--ease-release);
+}
+
+.reveal-armed .reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ============ デスクトップ: Hero を非対称スプリットに ============ */
+
+@media (min-width: 900px) {
+  .hero { padding: var(--space-9) 40px; }
+  .hero__inner {
+    grid-template-columns: 7fr 5fr;
+    align-items: center;
+    gap: var(--space-9);
+  }
+  .moon-window--hero { width: 100%; max-width: 420px; margin-left: auto; }
+  .section { padding-left: 40px; padding-right: 40px; }
+}
+
+/* ============ Reduced motion: 全演出停止 ============ */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .breath-orb { animation: none; }
+  .mist-line, .reveal-mist, .moon-window--hero { opacity: 1; filter: none; transform: none; transition: none; }
+  .worries-armed .worry { opacity: 1; }
+  .loosen-armed .loosen { letter-spacing: var(--tracking-heading); opacity: 1; }
+  .reveal-armed .reveal { opacity: 1; transform: none; }
+  .spine { display: none; }
+}
