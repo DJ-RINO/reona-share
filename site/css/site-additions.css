@@ -29,6 +29,13 @@
 .menu .yen-note { font-size: .62em; color: var(--color-text-muted); margin-left: 2px; }
 .menu .btn { width: 100%; margin-top: var(--space-5); }
 .tag-row--center { justify-content: center; margin-top: var(--space-6); }
+.menu--trial .def-row--online-trial {
+  grid-template-columns: 7.8em 1fr;
+}
+.menu--trial .def-row--online-trial dt {
+  white-space: nowrap;
+  font-size: 0.94em;
+}
 
 .menu__badge {
   display: inline-block; font: 600 11px/1 var(--font-heading); letter-spacing: 2px;

@@ -196,7 +196,7 @@
           <p class="card__body">不安なことは事前に何でもご相談ください。動きやすい服装でどうぞ。</p>
           <dl class="def-list">
             <div class="def-row def-row--first"><dt>対面体験</dt><dd>¥1,500</dd></div>
-            <div class="def-row"><dt>オンライン体験</dt><dd>無料<span class="dt-note">夜20分の枠で</span></dd></div>
+            <div class="def-row def-row--online-trial"><dt>オンライン体験</dt><dd>無料<span class="dt-note">夜20分の枠で</span></dd></div>
           </dl>
           <a class="btn btn--primary" href="#" data-line-cta data-cta-position="pricing">LINEで体験について相談する</a>
         </article>
@@ -457,6 +457,7 @@
     if (!veil) return;
     var fig = veil.querySelector('.intro-veil__figure');
     function done(){ veil.style.display = 'none'; }
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { done(); return; }
     if (!fig || typeof fig.animate !== 'function') { done(); return; }
     veil.style.display = 'grid';
     var a = fig.animate([
@@ -466,6 +467,8 @@
       { transform: 'scale(.95)', opacity: 1,   offset: .72 },
       { transform: 'scale(1.5)', opacity: 0,   offset: 1 }
     ], { duration: 4400, easing: 'cubic-bezier(.33,0,.2,1)', fill: 'forwards' });
+    veil.style.pointerEvents = 'auto';
+    veil.addEventListener('click', function(){ try{a.cancel();}catch(e){} done(); });
     a.onfinish = done;
     setTimeout(done, 4900);
   })();
