@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>決済とドメインのやさしいガイド ｜ Reona</title>
+<style>
+  :root { --ink:#2b2b2b; --sub:#6b6b6b; --line:#e6e2da; --accent:#8a7a5c; --bg:#faf8f3; --hi:#fff6ec; --navy:#2b3a55; --ok:#2e6b3a; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif; color:var(--ink); background:var(--bg); line-height:1.8; }
+  header { padding:28px 20px; background:#fff; border-bottom:1px solid var(--line); }
+  header h1 { margin:0 0 6px; font-size:20px; }
+  header p { margin:2px 0; color:var(--sub); font-size:13px; }
+  nav.toc { position:sticky; top:0; z-index:10; background:rgba(255,255,255,.95); backdrop-filter:blur(6px); border-bottom:1px solid var(--line); padding:10px 20px; display:flex; gap:8px 14px; flex-wrap:wrap; font-size:13px; }
+  nav.toc a { color:var(--accent); text-decoration:none; }
+  .wrap { max-width:820px; margin:0 auto; padding:20px; }
+  section { margin:34px 0; scroll-margin-top:54px; }
+  h2 { font-size:18px; border-left:4px solid var(--accent); padding-left:11px; margin:0 0 6px; }
+  h3 { font-size:15px; margin:22px 0 6px; color:var(--navy); }
+  .lead { font-size:14px; margin:0 0 14px; color:var(--sub); }
+  p { font-size:14px; }
+  .box { background:#fff; border:1px solid var(--line); border-radius:12px; padding:16px 20px; margin:14px 0; }
+  .rec { background:var(--hi); border:1px solid #f0d9bd; border-radius:12px; padding:16px 20px; margin:14px 0; }
+  .rec b { color:#8a5a1a; }
+  table { width:100%; border-collapse:collapse; background:#fff; font-size:13px; border-radius:8px; overflow:hidden; }
+  th,td { border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top; }
+  thead th { background:#efe9df; }
+  .muted { color:var(--sub); font-size:12.5px; }
+  ol li, ul li { margin:6px 0; font-size:14px; }
+  .step { background:#fff; border:1px solid var(--line); border-left:4px solid var(--accent); border-radius:8px; padding:12px 16px; margin:10px 0; }
+  .step b { color:var(--navy); }
+  .tag { display:inline-block; font-size:11px; padding:1px 9px; border-radius:20px; background:#e8dcc4; color:#6b5a36; }
+  footer { padding:28px 20px; color:var(--sub); font-size:12px; text-align:center; }
+</style></head>
+<body>
+<header>
+  <h1>決済とドメインの やさしいガイド</h1>
+  <p>Reona 事業立ち上げ ／ 2026-06 ／ なるべく専門用語を使わずに説明します</p>
+</header>
+<nav class="toc">
+  <a href="#pay">① 決済（Square か Stripe か）</a>
+  <a href="#domain">② ドメイン（なぜ必要・探し方・作り方）</a>
+  <a href="index.html">← 資料トップ</a>
+</nav>
+<div class="wrap">
+
+<section id="pay">
+  <h2>① 決済 — Square と Stripe、どちらにするか</h2>
+  <p class="lead">お客様からお金を受け取る仕組み（カード決済・月額の自動引き落とし）です。2社の違いをまとめ、Reonaさんの事業に合う方を提案します。</p>
+
+  <table>
+    <thead><tr><th></th><th>Stripe（ストライプ）</th><th>Square（スクエア）</th></tr></thead>
+    <tbody>
+      <tr><td>手数料</td><td>一律 3.6%（初期・月額0円）</td><td>Visa/Mastercard 3.25% ／ JCB・Amex 3.95%</td></tr>
+      <tr><td>月額サブスク<br>（自動引き落とし）</td><td><b>得意</b>。複雑な料金（松竹梅・回数・初月割引など）も自由に組める</td><td>できる。ただし柔軟さはStripeより劣る</td></tr>
+      <tr><td>サイト・アプリ連携</td><td><b>強い</b>。自分のサイト/アプリに埋め込みやすく拡張も自由</td><td>標準的なオンライン決済には十分</td></tr>
+      <tr><td>対面（その場でカード）</td><td>専用端末あり（ややビジネス向け）</td><td><b>強い</b>。小さな端末で店頭決済が簡単</td></tr>
+      <tr><td>入金の速さ</td><td>標準的</td><td><b>速い</b>（三井住友・みずほなら翌営業日／他行は週1・振込手数料は無料）</td></tr>
+      <tr><td>導入の手間</td><td>設定に多少の開発知識が要る（＝Rinoが対応）</td><td>ノーコードで始めやすい</td></tr>
+    </tbody>
+  </table>
+  <p class="muted">※2026年6月時点。手数料・条件は各社で改定される場合あり。出典は本ページ末尾。</p>
+
+  <div class="rec">
+    <b>提案: まず Stripe を軸に。対面が増えてきたら Square を足す。</b><br>
+    Reonaさんの事業は「夜20分サブスク（毎月の自動引き落とし）」と「松竹梅プログラムの販売」、将来のアプリ連携が中心。これは<b>サブスクと拡張性に強いStripeが本命</b>です。設定に開発知識が要る点は、Rino側で実装するので心配いりません。<br>
+    対面レッスンが公民館などで増えて「その場でカード払い」のニーズが出てきたら、店頭決済が得意で入金も速い<b>Squareを追加</b>するのが良い組み合わせ。最初から両方は不要で、オンライン先行ならStripe1本で始められます。<br>
+    <span class="muted">確信度75%。対面の比率が想定より早く高くなるなら、Square単独スタートも合理的です。</span>
+  </div>
+</section>
+
+<section id="domain">
+  <h2>② ドメイン — なぜ必要か、どう探して、どう作るか</h2>
+  <p class="lead">ドメインとは、ネット上の「住所」であり「表札」です。例えば <span class="tag">reona-wellness.com</span> のような文字列のこと。サイトやLINE・名刺・Instagramのプロフィールに載せる、お店の顔になります。</p>
+
+  <h3>なぜ独自ドメインが大事なのか（5つの理由）</h3>
+  <div class="box">
+    <ol>
+      <li><b>信頼・本気度が伝わる</b><br>無料サービスの長いURL（例: 〇〇.wixsite.com/reona）より、<b>自分の名前のドメイン</b>の方が「ちゃんとした事業」に見えます。お客様が最初に受け取る印象が変わります。</li>
+      <li><b>ブランドそのものになる</b><br>覚えてもらえる短い名前は、それ自体が資産。名刺・チラシ・Instagramに堂々と書ける「顔」になります。</li>
+      <li><b>検索に強くなる（SEO）</b><br>独自ドメインは検索エンジンの評価を自分に積み上げられます。無料の借り物URLは、その信用が「借り物」のままで育ちにくい。</li>
+      <li><b>プロのメールアドレスが作れる</b><br>info@reona-wellness.com のような独自メールが持てます。gmailより一段と信頼されます。</li>
+      <li><b>引っ越しできる資産になる</b><br>サイトの置き場所（サーバー）を将来変えても、ドメインはそのまま持ち運べます。育てた信頼・検索順位・お客様の記憶が消えません。<b>一度しっかり選べば長く使える財産</b>です。</li>
+    </ol>
+  </div>
+
+  <h3>探し方（良いドメインの選び方）</h3>
+  <div class="box">
+    <ul>
+      <li><b>短く・読みやすく・打ちやすく。</b>口で言える長さが理想。</li>
+      <li><b>「yoga」は競合だらけなので避け、「wellness」「training」やご自身の名前を組み合わせる</b>（会議の方針どおり）。例: <span class="tag">reona-wellness.com</span> <span class="tag">reona-training.com</span></li>
+      <li><b>「.（ドット）」は増やしすぎない。</b>会議で出た「reona.yoga.wellness.com」のような形は、実は分かりにくくなります。<b>ハイフン1つでまとめた reona-wellness.com の形が基本</b>です。</li>
+      <li><b>末尾は .com が王道</b>（世界共通・いちばん信頼される）。日本企業らしさを出すなら .jp（やや高め）。</li>
+      <li><b>候補を3〜5個出して、空いているか確認</b>。既存のお店・商標と被っていないかも軽くチェック。</li>
+    </ul>
+  </div>
+
+  <h3>作り方（取得の流れ）</h3>
+  <div class="step"><b>STEP 1.</b> ドメイン取得サービスで、候補の文字列が空いているか検索する。</div>
+  <div class="step"><b>STEP 2.</b> 空いていたら取得（購入）。.com で年額おおむね1,000〜2,000円ほど。<b>「自動更新ON」</b>を必ず設定（更新を忘れると他人に取られます）。</div>
+  <div class="step"><b>STEP 3.</b> 取得したドメインを、サイトの公開先（サーバー）に繋ぐ設定をする。<b>この技術的な接続作業はRinoが対応</b>します。Reonaさんは候補を決めて取得するところまででOK。</div>
+
+  <h3>どこで取るか（取得サービス・2026年6月時点）</h3>
+  <table>
+    <thead><tr><th>サービス</th><th>特徴</th><th>向き</th></tr></thead>
+    <tbody>
+      <tr><td>ムームードメイン</td><td>初心者にやさしい・画面が分かりやすい</td><td><b>自分で操作したいReonaさん向け</b></td></tr>
+      <tr><td>お名前.com</td><td>国内最大手・安い。ただし更新時の費用や営業メールに注意（2026/6から維持調整費が上乗せ）</td><td>とにかく安く始めたい人</td></tr>
+      <tr><td>Cloudflare Registrar</td><td>原価販売で最安・透明。ただし .jp 非対応・英語より、設定はやや上級者向け</td><td>Rinoが一括管理する場合</td></tr>
+    </tbody>
+  </table>
+  <div class="rec"><b>提案:</b> .com を、操作の分かりやすい<b>ムームードメイン</b>か<b>お名前.com</b>で取得。コストを最優先しRinoが管理するなら<b>Cloudflare Registrar</b>。まずは候補（reona-wellness.com など3〜5個）を決めるのが先で、取得作業はRinoが伴走します。</div>
+
+  <p class="muted">出典: <a href="https://atsoho.com/blog/stripe-square-hikaku" target="_blank">StripeとSquare比較(@SOHO)</a> ／ <a href="https://squareup.com/jp/ja/townsquare/starting-subscription-business" target="_blank">Squareサブスク公式</a> ／ <a href="https://liskul.com/domain-registration-service-comparison-157115" target="_blank">ドメイン取得サービス比較(LISKUL)</a> ／ <a href="https://0115765.com/archives/9440" target="_blank">Cloudflare Registrar解説</a></p>
+</section>
+
+</div>
+<footer>Reona 決済・ドメインガイド ／ 不明点はRinoが伴走します</footer>
+</body></html>
