@@ -23,6 +23,7 @@
 
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/site.css">
+  <link rel="stylesheet" href="css/site-additions.css">
 
   <script type="application/ld+json">
   {
@@ -37,11 +38,7 @@
 </head>
 <body>
 
-  <!-- オープニング: 黒からヒーロー写真が奥→手前にせり出す（reduced-motionでは非表示） -->
-  <!-- ※人型の切り抜きにするには、背景透過した人物PNGを images/intro-figure.png として置き、下のimg srcを差し替える -->
-  <div class="intro-veil" id="introVeil" aria-hidden="true">
-    <div class="intro-veil__figure"><img src="images/hero.jpg" alt=""></div>
-  </div>
+  <div class="intro-veil" id="introVeil" aria-hidden="true"><div class="intro-veil__figure"><img src="images/intro-figure.png" alt=""></div></div>
 
   <!-- 紙のグレイン（最前面・操作不可・GPU合成のみ） -->
   <div class="grain" aria-hidden="true"></div>
@@ -453,5 +450,25 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
   <script src="js/main.js" defer></script>
+
+  <script>
+  (function(){
+    var veil = document.getElementById('introVeil');
+    if (!veil) return;
+    var fig = veil.querySelector('.intro-veil__figure');
+    function done(){ veil.style.display = 'none'; }
+    if (!fig || typeof fig.animate !== 'function') { done(); return; }
+    veil.style.display = 'grid';
+    var a = fig.animate([
+      { transform: 'scale(.42)', opacity: 0,   offset: 0 },
+      { transform: 'scale(.47)', opacity: .12, offset: .22 },
+      { transform: 'scale(.62)', opacity: .5,  offset: .48 },
+      { transform: 'scale(.95)', opacity: 1,   offset: .72 },
+      { transform: 'scale(1.5)', opacity: 0,   offset: 1 }
+    ], { duration: 4400, easing: 'cubic-bezier(.33,0,.2,1)', fill: 'forwards' });
+    a.onfinish = done;
+    setTimeout(done, 4900);
+  })();
+  </script>
 </body>
 </html>
