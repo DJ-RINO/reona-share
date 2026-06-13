@@ -22,15 +22,17 @@
   display: none;
   opacity: 1;
   pointer-events: none;
+  transform: scale(1);
+  transform-origin: var(--mx) var(--my);
   background: #000;
-  --hole: 40%;
+  --hole: 42%;
   --mx: 50%;
   --my: 46%;
   -webkit-mask: linear-gradient(#000 0 0), url("../images/intro-figure.png") var(--mx) var(--my) / var(--hole) auto no-repeat;
   mask: linear-gradient(#000 0 0), url("../images/intro-figure.png") var(--mx) var(--my) / var(--hole) auto no-repeat;
   -webkit-mask-composite: source-out;
   mask-composite: subtract;
-  will-change: --hole, opacity;
+  will-change: transform, opacity;
 }
 
 .intro-tune-pane {

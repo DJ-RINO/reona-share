@@ -14,14 +14,14 @@
 
   var INTRO_STORAGE_KEY = "reona_intro_tune";
   var INTRO_DEFAULTS = {
-    holeStart: 40,
-    holeEnd: 900,
+    windowSize: 42,
+    zoomTo: 14,
     holdDelay: 400,
-    duration: 1.6,
+    duration: 1.8,
     ease: "power3.inOut",
     mx: 50,
     my: 46,
-    veilFade: 0.4
+    veilFade: 0.5
   };
   var INTRO_EASES = [
     "power2.out",
@@ -91,8 +91,8 @@
   function sanitizeIntroConfig(source) {
     var raw = source || {};
     var next = {
-      holeStart: Number(raw.holeStart),
-      holeEnd: Number(raw.holeEnd),
+      windowSize: Number(raw.windowSize != null ? raw.windowSize : raw.holeStart),
+      zoomTo: Number(raw.zoomTo),
       holdDelay: Number(raw.holdDelay),
       duration: Number(raw.duration),
       ease: typeof raw.ease === "string" ? raw.ease : INTRO_DEFAULTS.ease,
@@ -101,8 +101,8 @@
       veilFade: Number(raw.veilFade)
     };
 
-    if (!isFinite(next.holeStart)) next.holeStart = INTRO_DEFAULTS.holeStart;
-    if (!isFinite(next.holeEnd)) next.holeEnd = INTRO_DEFAULTS.holeEnd;
+    if (!isFinite(next.windowSize)) next.windowSize = INTRO_DEFAULTS.windowSize;
+    if (!isFinite(next.zoomTo)) next.zoomTo = INTRO_DEFAULTS.zoomTo;
     if (!isFinite(next.holdDelay)) next.holdDelay = INTRO_DEFAULTS.holdDelay;
     if (!isFinite(next.duration)) next.duration = INTRO_DEFAULTS.duration;
     if (!isFinite(next.mx)) next.mx = INTRO_DEFAULTS.mx;
@@ -110,8 +110,8 @@
     if (!isFinite(next.veilFade)) next.veilFade = INTRO_DEFAULTS.veilFade;
     if (INTRO_EASES.indexOf(next.ease) === -1) next.ease = INTRO_DEFAULTS.ease;
 
-    next.holeStart = clamp(next.holeStart, 10, 100);
-    next.holeEnd = clamp(next.holeEnd, 200, 1500);
+    next.windowSize = clamp(next.windowSize, 10, 80);
+    next.zoomTo = clamp(next.zoomTo, 4, 30);
     next.holdDelay = clamp(next.holdDelay, 0, 1500);
     next.duration = clamp(next.duration, 0.4, 4);
     next.mx = clamp(next.mx, 0, 100);
@@ -173,12 +173,13 @@
     var json = JSON.stringify(config, null, 2);
     var js = [
       "var INTRO_DEFAULTS = " + json + ";",
-      "gsap.to(veil, {",
-      "  '--hole': '" + config.holeEnd + "%',",
-      "  duration: " + config.duration + ",",
-      "  delay: " + (config.holdDelay / 1000) + ",",
-      "  ease: '" + config.ease + "'",
-      "});"
+      "veil.style.setProperty('--hole', '" + config.windowSize + "%');",
+      "veil.style.setProperty('--mx', '" + config.mx + "%');",
+      "veil.style.setProperty('--my', '" + config.my + "%');",
+      "gsap.fromTo(veil,",
+      "  { scale: 1, opacity: 1 },",
+      "  { scale: " + config.zoomTo + ", duration: " + config.duration + ", delay: " + (config.holdDelay / 1000) + ", ease: '" + config.ease + "' }",
+      ");"
     ].join("\n");
     return { json: json, js: js, text: json + "\n\n" + js };
   }
@@ -193,9 +194,10 @@
 
   function applyIntroVars(config) {
     if (!introState.veil) return;
-    introState.veil.style.setProperty("--hole", config.holeStart + "%");
+    introState.veil.style.setProperty("--hole", config.windowSize + "%");
     introState.veil.style.setProperty("--mx", config.mx + "%");
     introState.veil.style.setProperty("--my", config.my + "%");
+    introState.veil.style.transformOrigin = config.mx + "% " + config.my + "%";
   }
 
   function resolveEase(name) {
@@ -207,6 +209,7 @@
     if (!introState.veil) return;
     introState.veil.style.display = "none";
     introState.veil.style.opacity = "1";
+    introState.veil.style.transform = "scale(1)";
     introState.veil.style.pointerEvents = "none";
     introState.veil.setAttribute("aria-hidden", "true");
   }
@@ -224,6 +227,7 @@
     introState.veil.style.display = "block";
     introState.veil.style.opacity = "1";
     introState.veil.style.pointerEvents = "auto";
+    introState.veil.style.transform = "scale(1)";
     introState.veil.setAttribute("aria-hidden", "false");
 
     var gsap = window.gsap;
@@ -236,11 +240,12 @@
     });
 
     timeline.to(introState.veil, {
-      "--hole": config.holeEnd + "%",
+      scale: config.zoomTo,
       "--mx": config.mx + "%",
       "--my": config.my + "%",
       duration: config.duration,
-      ease: resolveEase(config.ease)
+      ease: resolveEase(config.ease),
+      transformOrigin: config.mx + "% " + config.my + "%"
     });
 
     if (config.veilFade > 0) {
@@ -302,8 +307,8 @@
         saveIntroConfig(introState.config);
       }
 
-      pane.addBinding(params, "holeStart", { min: 10, max: 100, step: 1, label: "holeStart" });
-      pane.addBinding(params, "holeEnd", { min: 200, max: 1500, step: 10, label: "holeEnd" });
+      pane.addBinding(params, "windowSize", { min: 10, max: 80, step: 1, label: "windowSize" });
+      pane.addBinding(params, "zoomTo", { min: 4, max: 30, step: 0.5, label: "zoomTo" });
       pane.addBinding(params, "holdDelay", { min: 0, max: 1500, step: 10, label: "holdDelay" });
       pane.addBinding(params, "duration", { min: 0.4, max: 4, step: 0.05, label: "duration" });
       pane.addBinding(params, "ease", {
