@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>熊本ヨガ・ウェルネス価格 競合調査＆価格戦略</title>
+<style>
+  :root { --ink:#2b2b2b; --sub:#6b6b6b; --line:#e6e2da; --accent:#8a7a5c; --bg:#faf8f3; --hi:#fff6ec; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif; color:var(--ink); background:var(--bg); line-height:1.7; }
+  header { padding:30px 20px; background:#fff; border-bottom:1px solid var(--line); }
+  header h1 { margin:0 0 6px; font-size:21px; }
+  header p { margin:2px 0; color:var(--sub); font-size:13px; }
+  nav.toc { position:sticky; top:0; z-index:10; background:rgba(255,255,255,.95); backdrop-filter:blur(6px); border-bottom:1px solid var(--line); padding:10px 20px; display:flex; gap:6px 14px; flex-wrap:wrap; font-size:13px; }
+  nav.toc a { color:var(--accent); text-decoration:none; white-space:nowrap; }
+  nav.toc a:hover { text-decoration:underline; }
+  .wrap { max-width:1180px; margin:0 auto; padding:20px; }
+  section { margin:34px 0; scroll-margin-top:54px; }
+  h2 { font-size:18px; border-left:4px solid var(--accent); padding-left:11px; margin:0 0 14px; }
+  h3 { font-size:15px; margin:20px 0 8px; }
+  .lead { font-size:14px; margin:0 0 14px; }
+  .muted { color:var(--sub); font-size:12.5px; }
+  .note { background:#fff; border:1px solid var(--line); border-radius:10px; padding:13px 15px; margin:12px 0; font-size:13px; color:var(--sub); }
+  .note b { color:var(--ink); }
+  .callout { background:var(--hi); border:1px solid #f0d9bd; border-radius:10px; padding:14px 16px; margin:14px 0; font-size:14px; }
+  .callout-dark { background:#2b2b2b; color:#fff; border:none; }
+  .callout-dark b { color:#ffd9a8; }
+  .callout-dark .muted { color:#bdb6ab; }
+  .callout a { color:var(--accent); }
+  table { width:100%; border-collapse:collapse; background:#fff; font-size:13px; }
+  table.cmp, table.stat { border-radius:8px; overflow:hidden; }
+  .cmp th,.cmp td,.stat th,.stat td { border:1px solid var(--line); padding:9px 11px; text-align:right; }
+  .cmp th:first-child,.cmp td:first-child,.stat th:first-child,.stat td:first-child { text-align:left; }
+  .cmp thead th,.stat thead th { background:#efe9df; }
+  .stat tbody tr:nth-child(even),.cmp tbody tr:nth-child(even) { background:#faf8f3; }
+  .cmp .hlrow { background:var(--hi)!important; font-weight:700; }
+  .stat .hl { color:var(--accent); font-weight:700; }
+  .statnote { color:var(--sub); font-size:12px; margin:6px 0 14px; }
+  .twocol { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:14px 0; }
+  .win { border:1px solid var(--line); border-radius:12px; padding:16px; background:#fff; }
+  .win-hi { border-color:#cdab73; box-shadow:0 2px 12px rgba(138,122,92,.12); }
+  .win h3 { margin-top:0; }
+  table.mini { margin:8px 0; }
+  .mini td { border:none; border-bottom:1px solid var(--line); padding:8px 4px; vertical-align:middle; }
+  .mini td.big { text-align:right; font-weight:700; font-size:17px; color:var(--accent); white-space:nowrap; }
+  .mini td.big span { font-size:11px; color:var(--sub); font-weight:400; }
+  .diff { background:#f3efe8; border-radius:8px; padding:11px 14px; font-size:14px; margin:14px 0; }
+  ol.steps { padding-left:20px; } ol.steps li { margin:8px 0; font-size:13.5px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; margin:8px 0 4px; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:12px; overflow:hidden; display:flex; flex-direction:column; }
+  .cardhead { padding:12px 14px 10px; border-bottom:1px solid var(--line); }
+  .cname { font-weight:700; font-size:14px; }
+  .cprice { font-size:12px; color:var(--accent); margin-top:4px; }
+  .shot { display:block; max-height:360px; overflow-y:auto; background:#f0ede6; }
+  .shot img { width:100%; display:block; }
+  .blocked { padding:28px 16px; text-align:center; color:#a05a00; font-size:13px; background:var(--hi); }
+  .links { display:flex; gap:8px; padding:12px 14px; flex-wrap:wrap; margin-top:auto; }
+  .btn { flex:1; text-align:center; text-decoration:none; font-size:13px; padding:9px 10px; border-radius:8px; }
+  .btn-primary { background:var(--accent); color:#fff; display:flex; flex-direction:column; gap:1px; }
+  .btn-primary .host { font-size:10px; opacity:.8; }
+  .btn-sub { background:#efece5; color:var(--ink); flex:0 0 auto; }
+  ul { font-size:13.5px; } ul li { margin:5px 0; }
+  .preface { background:#fff; border:2px solid var(--accent); border-radius:12px; padding:18px 22px; }
+  .preface p { font-size:14px; margin:8px 0; }
+  .preface ul { margin:8px 0 8px; }
+  footer { padding:30px 20px; color:var(--sub); font-size:12px; text-align:center; }
+  @media (max-width:680px){ .twocol{grid-template-columns:1fr;} }
+</style></head>
+<body>
+<header>
+  <h1>熊本ヨガ・ウェルネス レッスン価格 ｜ 競合調査＆価格戦略</h1>
+  <p>Reona 事業立ち上げ用 ／ 調査日 2026-06-13 ／ 全国→九州→熊本3層・68事業者</p>
+  <p>収集 29件 ｜ スクショ取得 26件 ｜ 403ブロック 3件</p>
+</header>
+<nav class="toc">
+  <a href="#conclusion">0. 結論・推奨価格</a>
+  <a href="#winning">付加価値と勝ち筋</a>
+  <a href="#stats">料金比較（中央値）</a>
+  <a href="#overview">3層 早見表</a>
+  <a href="#evidence">価格エビデンス</a>
+  <a href="#limits">限界・出典</a>
+</nav>
+<div class="wrap">
+  
+<section id="preface"><div class="preface">
+<h2 style="border:none;padding:0;margin:0 0 10px">はじめに — この資料の位置づけ（必ず先にお読みください）</h2>
+<p>以下の価格は、<b>Rino が熊本の競合調査をもとに算出した"たたき台"</b>です。<b>これが最終価格ではありません。</b></p>
+<p>最終的な価格は、Reonaさんの<b>実際の月の稼働量</b>を踏まえて決める必要があります。具体的には次の3点です。</p>
+<ul>
+<li>1ヶ月に<b>パーソナルを何件</b>受けられるか</li>
+<li>グループレッスンを<b>月に何本</b>開催できるか</li>
+<li>オンライン含め<b>合計で何コマ</b>指導できるか（体力・移動・育児などの時間制約込み）</li>
+</ul>
+<p>これらの <b>「稼働可能量 × 単価 ＝ 月商」</b> を、<b>目標月商から逆算</b>して最終価格を確定します。<br>
+つまりこの資料は<b>「熊本の相場の地図」</b>であって、価格の最終決定ではありません。次のステップで稼働シミュレーションを行い、そこで価格を確定します。</p>
+</div></section>
+  
+<section id="conclusion"><h2>0. 結論 — Reona 推奨価格（たたき台）</h2>
+<p class="lead">熊本の女性向け個人事業ヨガ（対面グループ／オンライン／パーソナルの3形態）として、熊本実勢に収めた妥当帯。戦略の核は<b>「安売りでLAVA（月4回8,800円）に寄せず、でも熊本で1万円超にはしない」</b>。立ち上げ期はグループを下寄り（集客）、パーソナルを主力商品として相場上限寄りに置く二段構え。</p>
+<table class="cmp"><thead><tr><th>形態</th><th>体験</th><th>単発</th><th>継続（月額）</th><th>パーソナル1回</th></tr></thead><tbody>
+<tr><td>対面グループ</td><td>1,000〜1,500円</td><td>2,800〜3,000円</td><td>月4回 6,000〜8,000円</td><td>—</td></tr>
+<tr><td>オンライン</td><td>無料〜500円</td><td>1,500〜2,000円</td><td>受け放題 3,980〜4,980円</td><td>—</td></tr>
+<tr><td>パーソナル</td><td>3,000〜5,000円</td><td>—</td><td>4回券 24,000〜32,000円</td><td>6,500〜8,000円</td></tr>
+</tbody></table>
+<div class="callout"><b>ただし上表は「ヨガ単体」の値付け。</b> 強み（ヨガ×腸活×筋トレ＋ベストボディ権威＋シングルマザーの物語）を束ねた<b>複合伴走プログラムなら土俵が変わり、1人12〜25万円</b>まで取れる。これが本命の収益源 → <a href="#winning">下の「付加価値と勝ち筋」</a>。</div>
+</section>
+  
+<section id="winning"><h2>付加価値の有無による価格差と勝ち筋</h2>
+<p class="lead">Reonaの強み = <b>RYT200＋ベストボディジャパン3位の二刀流権威</b>／<b>摂食障害からの自力回復→二児シングルマザーの物語</b>／<b>ヨガ×筋トレ×腸活の複合</b>。これをどう値付けに変えるか。</p>
+<div class="note"><b>前提リスク:</b> 価格は「正当化できる単価」と「実際に売れる（集客できる）」が別物。Reonaのフォロワー数・LINE登録数が未共有（戦略文書の必須要件②）。以下は"いくらの値付けが妥当か"の話で、実現度は集客力次第。</div>
+
+<div class="twocol">
+  <div class="win win-hi">
+    <h3>① 複合カスタマイズの場合（本命）</h3>
+    <p>「ヨガレッスン」ではなく<b>体型・体質・メンタルの"結果"を売るコーチング</b>。比較対象はヨガ相場ではなくパーソナルジム／ダイエットコーチング。</p>
+    <table class="mini"><tbody>
+      <tr><td>2〜3ヶ月の伴走プログラム<br><span class="muted">ヨガ＋筋トレ＋腸活＋食事LINE伴走</span></td><td class="big">12〜25万円<span>/人</span></td></tr>
+      <tr><td>月額サブスク型（継続）</td><td class="big">月3〜5万円</td></tr>
+      <tr><td>単発パーソナル（複合プレミアム）</td><td class="big">8,000〜12,000円</td></tr>
+    </tbody></table>
+    <p class="muted">根拠: 熊本パーソナルジム LEAF 16回13.2万（1回8,250円）/ Body Lab 10回5.94万、熊本パーソナル中央値7,500円。🔶全国のオンライン伴走型コーチングは2〜3ヶ月10〜25万。<b>二軸の権威を1人で持つ個人は熊本にほぼいない</b>＝"結果"に値付けでき時間単価から抜けられる。</p>
+  </div>
+  <div class="win win-lo">
+    <h3>② ヨガ単体・無名新規の場合</h3>
+    <p>熊本のヨガ相場に丸ごと収まる。</p>
+    <table class="mini"><tbody>
+      <tr><td>グループ単発</td><td class="big">2,500〜3,000円</td></tr>
+      <tr><td>グループ月4回</td><td class="big">5,500〜7,000円</td></tr>
+      <tr><td>パーソナル1回</td><td class="big">6,000〜7,000円</td></tr>
+    </tbody></table>
+    <p class="muted">問題は金額でなく<b>構造</b>。時間の切り売りで、LAVA・カルド（月8,800円・通い放題）と同じ土俵。個人は設備でも価格でも勝てず月商は頭打ち。ベストボディの権威も"ヨガ"文脈では値段に乗らない（宝の持ち腐れ）。</p>
+  </div>
+</div>
+<p class="diff">差分: 同じ労力でも <b>複合は単価3〜5倍／年間LTVで5〜10倍</b>。これが付加価値の正体。</p>
+
+<h3>私が作る勝ち筋（4点）</h3>
+<ol class="steps">
+  <li><b>ヨガ教室として売らない</b> — 「30-40代の産後・更年期・シングルマザーが、体と心を立て直す伴走プログラム」として売る。コアメッセージ「体と心を整えると、人はやり直せる」がそのまま商品名になる。ヨガは手段の一つ。</li>
+  <li><b>フロント／バックエンドの二層化</b> — フロント（集客）＝安いグループヨガ・オンライン受け放題3,980円・ワンコイン体験で母集団づくり。バックエンド（収益）＝複合伴走プログラム12〜25万円でここで稼ぐ。値付けの本丸はバックエンド。</li>
+  <li><b>物語で集客し価格を守る</b> — ペルソナ「シングルマザーのみきさん」はReona本人と境遇が重なる。Instagram自己開示→共感→LINE→体験→プログラム。"この人なら分かってくれる"で選ばれ、値引き競争に入らない。</li>
+  <li><b>腸活を物販・LTVに伸ばす（cross-corp）</b> — 腸活をレッスンで終わらせず、サプリ・プロテイン・ファスティング物販に接続。La Flora（ウェルネス物販）の在庫・知見と連携でき、Reonaは「La Floraを語れる熊本のフェイス」にもなり得る。</li>
+</ol>
+<div class="callout callout-dark"><b>勝ち筋の一行:</b> ヨガの価格表で戦わない。<b>彼女にしか語れない物語と、ヨガ単体では出せない"結果"に値付けする。</b><br><span class="muted">確信度70%。下げる要因は集客力（未共有）。次の一手＝必須要件②のInstagramアナリティクスを取り寄せ、フォロワーの数と質でフロントの厚みを決めてから単価を最終確定する。</span></div>
+</section>
+  <section id="stats"><h2>料金比較 ｜ 件数・中央値・平均値（(a)全国 / (b)パーソナル出張 / (c)熊本）</h2><div class="note"><b>読み方:</b> 各料金項目を分解し、価格が確認できた事業者の<b>件数(n)・中央値・平均値・最小・最大</b>を算出。<b>中央値</b>は無料体験や高額ブティックの外れ値に強く、相場の中心＝値付け基準に向く。平均は高額/低額に引っ張られる。両方併記。</div><h3>(a) 全国 — グループレッスン市場</h3><table class="stat"><thead><tr><th>料金項目</th><th>件数</th><th>中央値</th><th>平均値</th><th>最小</th><th>最大</th></tr></thead><tbody><tr><td>体験料（1回換算）</td><td>13件</td><td class="hl">1,000円</td><td>1,190円</td><td>0円</td><td>2,750円</td></tr><tr><td>月額（月4回相当）</td><td>7件</td><td class="hl">10,037円</td><td>11,036円</td><td>8,800円</td><td>14,825円</td></tr><tr><td>単発ドロップイン</td><td>12件</td><td class="hl">3,300円</td><td>3,165円</td><td>600円</td><td>5,000円</td></tr></tbody></table><p class="statnote">大手ホットヨガ・ピラティスチェーン＋東京/大阪/名古屋の個人・中小スタジオ（対面グループ）。単発の最小600円は公民館ヨガ、最大5,000円はzen placeマシン。</p><h3>(b) パーソナル・出張・オンライン（1対1）</h3><table class="stat"><thead><tr><th>料金項目</th><th>件数</th><th>中央値</th><th>平均値</th><th>最小</th><th>最大</th></tr></thead><tbody><tr><td>対面スタジオ パーソナル1回</td><td>8件</td><td class="hl">8,580円</td><td>9,004円</td><td>7,130円</td><td>12,500円</td></tr><tr><td>出張パーソナル 1回（＋交通費）</td><td>4件</td><td class="hl">12,000円</td><td>11,250円</td><td>7,000円</td><td>14,000円</td></tr><tr><td>オンライン パーソナル1回</td><td>4件</td><td class="hl">2,903円</td><td>3,076円</td><td>1,500円</td><td>5,000円</td></tr></tbody></table><p class="statnote">1対1は提供形態で単価が3層に割れるため形態別に集計。出張は別途交通費が乗る。</p><h3>(c) 熊本 — 地元市場（Reonaの実戦圏）</h3><table class="stat"><thead><tr><th>料金項目</th><th>件数</th><th>中央値</th><th>平均値</th><th>最小</th><th>最大</th></tr></thead><tbody><tr><td>グループ 体験料（1回換算）</td><td>10件</td><td class="hl">995円</td><td>861円</td><td>0円</td><td>1,500円</td></tr><tr><td>グループ 月額（月4回相当）</td><td>12件</td><td class="hl">7,450円</td><td>6,379円</td><td>1,500円</td><td>10,500円</td></tr><tr><td>グループ 単発ドロップイン</td><td>6件</td><td class="hl">2,600円</td><td>2,380円</td><td>1,000円</td><td>3,580円</td></tr><tr><td>パーソナル1回（ピラ/トレ）</td><td>6件</td><td class="hl">7,500円</td><td>7,190円</td><td>5,700円</td><td>8,250円</td></tr></tbody></table><p class="statnote">熊本市内の実在スタジオ。グループ月額にホットヨガ(LAVA/カルド 8,800円)と地場常温(YOGA・YOKA 4,500円)が混在する点に注意。最小1,500円は個人隠れ家系。</p><div class="note" style="margin-top:14px"><b>月額に含まれない付帯費（熊本ホットヨガ）:</b> 管理費 LAVA 680円/月・CALDO 480円/月。入会金 CALDO 11,000円・FUREA 10,000円＋年会費2,000円・YOGA・YOKA 8,250円・ユニヴァ施設使用料2,750円。LAVA系は体験当日入会で入会金・登録金(計10,000円)無料。初年度実質負担は「月額×12＋入会金＋管理費×12」で比較する。<b>地場の個人ヨガは管理費なし＝総額は大手より明確に軽い。</b></div><p class="muted" style="margin-top:10px">読み取り: 熊本グループ月額の中央値7,450円はホット(8,800)と地場常温(4,500)の混在中心値。熊本パーソナル中央値7,500円は全国対面(8,580)より約1,000円安く「地方ディスカウント」が効く。§0推奨価格はいずれも熊本中央値レンジ内の妥当設定。</p></section>
+  
+<section id="overview"><h2>3層 早見表（全国 / 都市部 / 九州 / 熊本）</h2>
+<p class="lead">1レッスンあたりの相場レンジ。都市部の単発「3,000〜3,300円」が日本のヨガ1回の事実上の標準値。</p>
+<table class="cmp"><thead><tr><th>エリア</th><th>体験</th><th>単発1回</th><th>月額（実質1回）</th><th>パーソナル1回</th></tr></thead><tbody>
+<tr><td>全国平均</td><td>0〜1,000円</td><td>3,300〜5,000円</td><td>月4回8,470〜11,800円</td><td>7,000〜9,900円</td></tr>
+<tr><td>都市部（東京/大阪/名古屋）</td><td>1,000〜2,750円</td><td>3,000〜3,870円</td><td>回数券1回2,200〜2,750円</td><td>7,000円前後</td></tr>
+<tr><td>九州（福岡基準）</td><td>無料〜1,000円</td><td>2,850〜4,290円</td><td>月4回8,800〜13,400円</td><td>月4回28,800〜38,400円</td></tr>
+<tr class="hlrow"><td>熊本市</td><td>800〜1,500円</td><td>2,200〜3,580円</td><td>ホット月4回8,800／常温4,500〜8,000円</td><td>個人系5,700〜8,800円</td></tr>
+</tbody></table>
+<p class="muted">九州は東京よりやや低め〜同等。地方は福岡比でさらに1〜2割安い傾向（未検証）。熊本はこの「地方ディスカウント」が効くエリア。</p></section>
+  <section id="evidence"><h2>価格エビデンス（実スクショ＋公式URL）</h2>
+<div class="note"><b>使い方:</b> スクショをクリックで<b>原寸（文字が読める解像度）</b>。「公式ページを開く」で<b>現在のサイトを直接確認</b>できます（料金は改定され得るため一次情報の最終確認に）。価格サマリは調査時点（2026-06）の抽出値。<br>⚠️ 3件（CALDO 熊本店・熊本ストレッチ（Del Cuore ★4.42/101件）・ストアカ オンラインヨガ）はサイト側が403で自動取得を拒否。リンクから直接確認を。CALDO熊本の料金は「全国大手→CALDO」と「熊本ホットヨガ料金まとめ」で補完。</div><h3>熊本市 ヨガ・ホットヨガ【最重要】</h3><p class="lead">ホット大手（LAVA/カルド）は体験0〜990円で集客し月額8,800円〜。地場の常温ヨガ（YOGA・YOKA/FUREA）は月4回4,500〜8,000円とホットより明確に安い。ドロップインは常温で3,000〜3,580円。</p><div class="grid">
+    <div class="card">
+      <div class="cardhead"><div class="cname">LAVA 熊本上通り店</div><div class="cprice">体験0円 / 月8,800〜16,800円＋管理費680円</div></div>
+      <a class="shot" href="assets/evidence/thumbs/kumamoto-lava-kamitori.jpg" target="_blank" title="クリックで拡大"><img loading="lazy" src="assets/evidence/thumbs/kumamoto-lava-kamitori.jpg" alt="LAVA 熊本上通り店"></a>
+      <div class="links">
+        <a href="https://yoga-lava.com/shop/kumamoto/kumamotokamitori/" target="_blank" class="btn btn-primary">🔗 公式ページを開く<span class="host">yoga-lava.com</span></a>
+        
+      </div>
+    </div>
+    <div class="card">
+      <div class="cardhead"><div class="cname">LAVA イオンモール熊本店</div><div class="cprice">体験0円 / 月4回8,800・通い放題10,800・全店16,800円</div></div>
+      <a class="shot" href="assets/evidence/thumbs/kumamoto-lava-aeon.jpg" target="_blank" title="クリックで拡大"><img loading="lazy" src="assets/evidence/thumbs/kumamoto-lava-aeon.jpg" alt="LAVA イオンモール熊本店"></a>
+      <div class="links">
+        <a href="https://yoga-lava.com/kumamoto/aeon_kumamoto/price/" target="_blank" class="btn btn-primary">🔗 公式ページを開く<span class="host">yoga-lava.com</span></a>
+        
+      </div>
+    </div>
+    <div class="card">
+      <div class="cardhead"><div class="cname">CALDO 熊本店</div><div class="cprice">体験990円 / 月4回約8,800〜・プレミアム13,750円</div></div>
+      <div class="blocked">⚠️ このサイトは自動スクショ取得を拒否（403）。<br>下のリンクから直接ご確認ください。</div>
+      <div class="links">
+        <a href="https://www.hotyoga-caldo.com/kumamoto/price/" target="_blank" class="btn btn-primary">🔗 公式ページを開く<span class="host">www.hotyoga-caldo.com</span></a>
+        
+      </div>
+    </div>
+    <div class="card">
+      <div class="cardhead"><div class="cname">ゼネラルヨガ ユニヴァ熊本</div><div class="cprice">体験1,000円 / 月4回10,500・月8回15,400・フリー25,500円</div></div>
+      <a class="shot" href="assets/evidence/thumbs/kumamoto-univa.jpg" target="_blank" title="クリックで拡大"><img loading="lazy" src="assets/evidence/thumbs/kumamoto-univa.jpg" alt="ゼネラルヨガ ユニヴァ熊本"></a>
+      <div class="links">
+        <a href="https://www.yoga-univa.jp/kumamoto" target="_blank" class="btn btn-primary">🔗 公式ページを開く<span class="host">www.yoga-univa.jp</span></a>
+        
+      </div>
+    </div>
+    <div class="card">
+      <div class="cardhead"><div class="cname">YOGA・YOKA</div><div class="cprice">体験1,320円 / 月4回4,500・月8回8,250円・単発3,580円</div></div>
+      <a class="shot" href="assets/evidence/thumbs/kumamoto-yogayoka.jpg" target="_blank" title="クリックで拡大"><img loading="lazy" src="assets/evidence/thumbs/kumamoto-yogayoka.jpg" alt="YOGA・YOKA"></a>
+      <div class="links">
+        <a href="https://www.yogayoka.com/price/" target="_blank" class="btn btn-primary">🔗 公式ページを開く<span class="host">www.yogayoka.com</span></a>
+        
+      </div>
+    </div>
+    <div class="card">
+      <div class="cardhead"><div class="cname">温活ヨガ FUREA</div><div class="cprice">体験1,500円 / 対面月4回8,000・オンライン受け放題4,000円</div></div>
+      <a class="shot" href="assets/evidence/thumbs/kumamoto-furea.jpg" target="_blank" title="クリックで拡大"><img loading="lazy" src="assets/evidence/thumbs/kumamoto-furea.jpg" alt="温活ヨガ FUREA"></a>
+      <div class="links">
+        <a href="https://yasasiyoga.com/beginner/" target="_blank" class="btn btn-primary">🔗 公式ページを開く<span class="host">yasasiyoga.com</span></a>
+        
+      </div>
+    </div>
+    <div class="card">
+      <div class="cardhead"><div class="cname">YARD 熊本</div><div class="cprice">料金非掲載・要問合せ</div></div>
+      <a class="shot" href="assets/evidence/thumbs/kumamoto-yard.jpg" target="_blank" title="クリックで拡大"><img loading="lazy" src="assets/evidence/thumbs/kumamoto-yard.jpg" alt="YARD 熊本"></a>
+      <div class="links">
+        <a href="https://yard-yp.com/studio/kumamoto/" target="_blank" class="btn btn-primary">🔗 公式ページを開く<span class="host">yard-yp.com</span></a>
+        
+      </div>
+    </div>
+    <div class="card">
+      <div class="cardhead"><div class="cname">熊本ホットヨガ料金まとめ（LAVA/カルド/ユニヴァ比較）</div><div class="cprice">熊本各ホットヨガの月額・体験を横断比較した参照記事</div></div>
+      <a class="shot" href="assets/evidence/thumbs/kumamoto-hotyoga-summary.jpg" target="_blank" title="クリックで拡大"><img loading="lazy" src="assets/evidence/thumbs/kumamoto-hotyoga-summary.jpg" alt="熊本ホットヨガ料金まとめ（LAVA/カルド/ユニヴァ比較）"></a>
+      <div class="links">
+        <a href="https://hotyoga-best.com/kumamoto-hotyoga-price/" target="_blank" class="btn btn-primary">🔗 公式ページを開く<span class="host">hotyoga-best.com</span></a>
+        
+      </div>
+    </div></div><h3>熊本市 ピラティス・個人・パーソナル【直接競合】</h3><p class="lead">Reonaの直接競合層。個人ヨガ・小規模の体験500〜1,500円、パーソナル1回6,000〜8,800円。客層・価格ともナディーヨガ・ほのほの（個人ヨガ）と個人ピラのパーソナルがReonaに最も近い。大手パーソナルジム（1回12,000円超）は別レンジ。</p><div class="grid">
+    <div class="card">
+      <div class="cardhead"><div class="cname">熊本ピラティスまとめ（クララ/SENA/Kiraru）</div><div class="cprice">クララ パーソナル8,000 / SENA 1回5,700 / Kiraru 7,700〜8,800円</div></div>
+      <a class="shot" href="assets/evidence/thumbs/kumamoto-pilates-blog.jpg" target="_blank" title="クリックで拡大"><img loading="lazy" src="assets/evidence/thumbs/kumamoto-pilates-blog.jpg" alt="熊本ピラティスまとめ（クララ/SENA/Kiraru）"></a>
+      <div class="links">
+        <a href="https://pilatesroom.blog/pilates-kumamoto/" target="_blank" class="btn btn-primary">🔗 公式ページを開く<span class="host">pilatesroom.blog</span></a>
+        
+      </div>
+    </div>
+    <div class="card">
+      <div class="cardhead"><div class="cname">Two Threeほか熊本マシンピラ</div><div class="cprice">Two Three グループ月3回9,900・パーソナル1回7,000円</div></div>
+      <a class="shot" href="assets/evidence/thumbs/kumamoto-mukachi.jpg" target="_blank" title="クリックで拡大"><img loading="lazy" src="assets/evidence/thumbs/kumamoto-mukachi.jpg" alt="Two Threeほか熊本マシンピラ"></a>
+      <div class="links">
+        <a href="https://www.mukachi.com/pilates-machine-kumamoto/" target="_blank" class="btn btn-primary">🔗 公式ページを開く<span class="host">www.mukachi.com</span></a>
+        
+      </div>
+    </div>
+    <div class="card">
+      <div class="cardhead"><div class="cname">熊本ヨガおすすめ（ほのほの/ナディー）</div><div class="cprice">ほのほの体験500円 / ナディー体験800円・単発1,000円</div></div>
+      <a class="shot" href="assets/evidence/thumbs/kumamoto-outline.jpg" target="_blank" title="クリックで拡大"><img loading="lazy" src="assets/evidence/thumbs/kumamoto-outline.jpg" alt="熊本ヨガおすすめ（ほのほの/ナディー）"></a>
+      <div class="links">
+        <a href="https://www.outline-gym.com/media/yoga-kumamoto-osusume/" target="_blank" class="btn btn-primary">🔗 公式ページを開く<span class="host">www.outline-gym.com</span></a>
+        
+      </div>
+    </div>
+    <div class="card">
+      <div class="cardhead"><div class="cname">熊本ヨガ単発（Padma/sha cocoro）</div><div class="cprice">Padma 単発3,000 / sha cocoro 45分1,500円</div></div>
+      <a class="shot" href="assets/evidence/thumbs/kumamoto-behonest.jpg" target="_blank" title="クリックで拡大"><img loading="lazy" src="assets/evidence/thumbs/kumamoto-behonest.jpg" alt="熊本ヨガ単発（Padma/sha cocoro）"></a>
+      <div class="links">
+        <a href="https://behonest-bekind.com/kumamoto-yogastudio/" target="_blank" class="btn btn-primary">🔗 公式ページを開く<span class="host">behonest-bekind.com</span></a>
+        
+      </div>
+    </div>
+    <div class="card">
+      <div class="cardhead"><div class="cname">熊本ストレッチ（Del Cuore ★4.42/101件）</div><div class="cprice">Del Cuore 60分・要問合せ ★4.42(101件)</div></div>
+      <div class="blocked">⚠️ このサイトは自動スクショ取得を拒否（403）。<br>下のリンクから直接ご確認ください。</div>
+      <div class="links">
+        <a href="https://mitsuraku.jp/kumamoto/genre/stretch/" target="_blank" class="btn btn-primary">🔗 公式ページを開く<span class="host">mitsuraku.jp</span></a>
+        
+      </div>
+    </div>
+    <div class="card">
+      <div class="cardhead"><div class="cname">熊本パーソナルトレ（Body Lab./LEAF）</div><div class="cprice">Body Lab. 1回5,940 / LEAF 1回8,250円</div></div>
+      <a class="shot" href="assets/evidence/thumbs/kumamoto-personaltrain.jpg" target="_blank" title="クリックで拡大"><img loading="lazy" src="assets/evidence/thumbs/kumamoto-personaltrain.jpg" alt="熊本パーソナルトレ（Body Lab./LEAF）"></a>
+      <div class="links">
+        <a href="https://body-make.jp/kumamoto/" target="_blank" class="btn btn-primary">🔗 公式ページを開く<span class="host">body-make.jp</span></a>
+        
+      </div>
+    </div></div><h3>全国大手ヨガチェーン</h3><p class="lead">ホット大手3社（LAVA・カルド・loIve）は体験ほぼ無料＋月額制で囲い込み。通い放題16,800〜19,800円に集約。ピラティス専門zen placeは体験・月額とも別格に高単価（プライベート月4回3万円台）。</p><div class="grid">
+    <div class="card">
+      <div class="cardhead"><div class="cname">LAVA 全国料金</div><div class="cprice">体験0円 / 週1で6,800〜10,800・全店通い放題16,800円</div></div>
+      <a class="shot" href="assets/evidence/thumbs/nat-lava.jpg" target="_blank" title="クリックで拡大"><img loading="lazy" src="assets/evidence/thumbs/nat-lava.jpg" alt="LAVA 全国料金"></a>
+      <div class="links">
+        <a href="https://yoga-lava.com/price/" target="_blank" class="btn btn-primary">🔗 公式ページを開く<span class="host">yoga-lava.com</span></a>
+        
+      </div>
+    </div>
+    <div class="card">
+      <div class="cardhead"><div class="cname">CALDO 全国料金</div><div class="cprice">体験550円 / 月4回8,800〜・プラチナ19,800円</div></div>
+      <a class="shot" href="assets/evidence/thumbs/nat-caldo.jpg" target="_blank" title="クリックで拡大"><img loading="lazy" src="assets/evidence/thumbs/nat-caldo.jpg" alt="CALDO 全国料金"></a>
+      <div class="links">
+        <a href="https://www.hotyoga-caldo.com/price/" target="_blank" class="btn btn-primary">🔗 公式ページを開く<span class="host">www.hotyoga-caldo.com</span></a>
+        
+      </div>
+    </div>
+    <div class="card">
+      <div class="cardhead"><div class="cname">loIve 料金（女性専用）</div><div class="cprice">体験0円 / 月4回8,470〜・フルタイムプラス17,600円</div></div>
+      <a class="shot" href="assets/evidence/thumbs/nat-loive.jpg" target="_blank" title="クリックで拡大"><img loading="lazy" src="assets/evidence/thumbs/nat-loive.jpg" alt="loIve 料金（女性専用）"></a>
+      <div class="links">
+        <a href="https://www.hotyoga-loive.com/price/" target="_blank" class="btn btn-primary">🔗 公式ページを開く<span class="host">www.hotyoga-loive.com</span></a>
+        
+      </div>
+    </div>
+    <div class="card">
+      <div class="cardhead"><div class="cname">zen place 料金</div><div class="cprice">体験マット2,200〜3,300/マシン5,000/プライベート8,250〜9,900円</div></div>
+      <a class="shot" href="assets/evidence/thumbs/nat-zenplace.jpg" target="_blank" title="クリックで拡大"><img loading="lazy" src="assets/evidence/thumbs/nat-zenplace.jpg" alt="zen place 料金"></a>
+      <div class="links">
+        <a href="https://www.zenplace.co.jp/price" target="_blank" class="btn btn-primary">🔗 公式ページを開く<span class="host">www.zenplace.co.jp</span></a>
+        
+      </div>
+    </div>
+    <div class="card">
+      <div class="cardhead"><div class="cname">スタジオ・ヨギー 料金</div><div class="cprice">体験1,000円・都度3,300円 / 月4回11,800・受け放題15,400円</div></div>
+      <a class="shot" href="assets/evidence/thumbs/nat-yoggy.jpg" target="_blank" title="クリックで拡大"><img loading="lazy" src="assets/evidence/thumbs/nat-yoggy.jpg" alt="スタジオ・ヨギー 料金"></a>
+      <div class="links">
+        <a href="https://www.studio-yoggy.com/price/" target="_blank" class="btn btn-primary">🔗 公式ページを開く<span class="host">www.studio-yoggy.com</span></a>
+        
+      </div>
+    </div></div><h3>ウェルネス・柔軟系フィットネス</h3><p class="lead">安価な体験→月額/回数券で囲い込み。パーソナルストレッチの通常1回は60分7,800〜8,910円で、Reonaパーソナル価格の上限参照点。腸活ファスティングはオンライン4万円〜/宿泊1泊1.76万円〜と単価が割れる。</p><div class="grid">
+    <div class="card">
+      <div class="cardhead"><div class="cname">the SILK 料金（マシンピラ）</div><div class="cprice">パーソナル体験9,900 / グループ12,280〜・パーソナル月2〜6回22,000〜56,100円</div></div>
+      <a class="shot" href="assets/evidence/thumbs/well-silk.jpg" target="_blank" title="クリックで拡大"><img loading="lazy" src="assets/evidence/thumbs/well-silk.jpg" alt="the SILK 料金（マシンピラ）"></a>
+      <div class="links">
+        <a href="https://the-silk.co.jp/price/" target="_blank" class="btn btn-primary">🔗 公式ページを開く<span class="host">the-silk.co.jp</span></a>
+        
+      </div>
+    </div>
+    <div class="card">
+      <div class="cardhead"><div class="cname">Dr.stretch 料金</div><div class="cprice">体験60分3,300 / 非会員60分8,910・会員6,000〜7,000円</div></div>
+      <a class="shot" href="assets/evidence/thumbs/well-drstretch.jpg" target="_blank" title="クリックで拡大"><img loading="lazy" src="assets/evidence/thumbs/well-drstretch.jpg" alt="Dr.stretch 料金"></a>
+      <div class="links">
+        <a href="https://medy-make.com/dr-stretch/ryoukinhyou.html" target="_blank" class="btn btn-primary">🔗 公式ページを開く<span class="host">medy-make.com</span></a>
+        
+      </div>
+    </div>
+    <div class="card">
+      <div class="cardhead"><div class="cname">ストレチックス 料金</div><div class="cprice">半額体験 / 50分7,800・70分9,800円</div></div>
+      <a class="shot" href="assets/evidence/thumbs/well-stretchex.jpg" target="_blank" title="クリックで拡大"><img loading="lazy" src="assets/evidence/thumbs/well-stretchex.jpg" alt="ストレチックス 料金"></a>
+      <div class="links">
+        <a href="https://stretchex.jp/menu.html" target="_blank" class="btn btn-primary">🔗 公式ページを開く<span class="host">stretchex.jp</span></a>
+        
+      </div>
+    </div></div><h3>九州・福岡</h3><p class="lead">天神・博多に大手集中。ホット月4回9,000円前後・通い放題12,000〜16,000円。グループピラ月4回13,000円前後（Rintosull 8,800円が最安）。パーソナルは月4回3万円台後半と明確に高い。東京よりやや低め〜同等。</p><div class="grid">
+    <div class="card">
+      <div class="cardhead"><div class="cname">loIve 福岡 料金</div><div class="cprice">体験0円 / 月4回8,910・フルタイム12,320円・都度3,135円</div></div>
+      <a class="shot" href="assets/evidence/thumbs/kyushu-loive-fukuoka.jpg" target="_blank" title="クリックで拡大"><img loading="lazy" src="assets/evidence/thumbs/kyushu-loive-fukuoka.jpg" alt="loIve 福岡 料金"></a>
+      <div class="links">
+        <a href="https://www.hotyoga-loive.com/studio/fukuoka/price_fukuoka" target="_blank" class="btn btn-primary">🔗 公式ページを開く<span class="host">www.hotyoga-loive.com</span></a>
+        
+      </div>
+    </div>
+    <div class="card">
+      <div class="cardhead"><div class="cname">福岡ピラティス比較（CP/pilates K/Rintosull）</div><div class="cprice">CP月4回13,090・通い放題37,290 / Rintosull月4回8,800円</div></div>
+      <a class="shot" href="assets/evidence/thumbs/kyushu-pilates-fukuoka.jpg" target="_blank" title="クリックで拡大"><img loading="lazy" src="assets/evidence/thumbs/kyushu-pilates-fukuoka.jpg" alt="福岡ピラティス比較（CP/pilates K/Rintosull）"></a>
+      <div class="links">
+        <a href="https://cachie.jp/media/pilates/fukuoka/" target="_blank" class="btn btn-primary">🔗 公式ページを開く<span class="host">cachie.jp</span></a>
+        
+      </div>
+    </div>
+    <div class="card">
+      <div class="cardhead"><div class="cname">福岡ホットヨガ比較（LAVA/CALDO天神）</div><div class="cprice">LAVA月8,300〜16,300 / CALDO月7,000〜13,500円</div></div>
+      <a class="shot" href="assets/evidence/thumbs/kyushu-fitmap.jpg" target="_blank" title="クリックで拡大"><img loading="lazy" src="assets/evidence/thumbs/kyushu-fitmap.jpg" alt="福岡ホットヨガ比較（LAVA/CALDO天神）"></a>
+      <div class="links">
+        <a href="https://fitmap.jp/magazine/gym/yoga/9240/" target="_blank" class="btn btn-primary">🔗 公式ページを開く<span class="host">fitmap.jp</span></a>
+        
+      </div>
+    </div></div><h3>パーソナル・出張・オンライン相場</h3><p class="lead">同じ1対1でも提供形態で単価が3層に割れる。最安=オンライン/プラットフォーム（2,300〜3,400円）、中位=対面スタジオ（7,000円前後）、最高=自宅出張（13,000〜14,000円＋出張費）。回数を束ねるほど1回単価が逓減。</p><div class="grid">
+    <div class="card">
+      <div class="cardhead"><div class="cname">S&K 出張パーソナルヨガ</div><div class="cprice">出張60分14,000・75分17,500・90分21,000円＋交通費</div></div>
+      <a class="shot" href="assets/evidence/thumbs/pp-sandk.jpg" target="_blank" title="クリックで拡大"><img loading="lazy" src="assets/evidence/thumbs/pp-sandk.jpg" alt="S&K 出張パーソナルヨガ"></a>
+      <div class="links">
+        <a href="https://sandk-trainers.com/yogaup.html" target="_blank" class="btn btn-primary">🔗 公式ページを開く<span class="host">sandk-trainers.com</span></a>
+        
+      </div>
+    </div>
+    <div class="card">
+      <div class="cardhead"><div class="cname">オンラインパーソナルヨガ比較</div><div class="cprice">ZENNA 60分2,310〜3,300・月額6,600〜18,480円</div></div>
+      <a class="shot" href="assets/evidence/thumbs/pp-uchigym.jpg" target="_blank" title="クリックで拡大"><img loading="lazy" src="assets/evidence/thumbs/pp-uchigym.jpg" alt="オンラインパーソナルヨガ比較"></a>
+      <div class="links">
+        <a href="https://uchigym.net/online-personal-yoga/" target="_blank" class="btn btn-primary">🔗 公式ページを開く<span class="host">uchigym.net</span></a>
+        
+      </div>
+    </div>
+    <div class="card">
+      <div class="cardhead"><div class="cname">プライベートヨガ料金相場</div><div class="cprice">zen place 1回7,130・10回券1回6,700 / BASI 1回8,200円</div></div>
+      <a class="shot" href="assets/evidence/thumbs/pp-yogakatsu.jpg" target="_blank" title="クリックで拡大"><img loading="lazy" src="assets/evidence/thumbs/pp-yogakatsu.jpg" alt="プライベートヨガ料金相場"></a>
+      <div class="links">
+        <a href="https://yogakatsu.com/yoga-base/cost/privatelesson/" target="_blank" class="btn btn-primary">🔗 公式ページを開く<span class="host">yogakatsu.com</span></a>
+        
+      </div>
+    </div>
+    <div class="card">
+      <div class="cardhead"><div class="cname">ストアカ オンラインヨガ</div><div class="cprice">オンライン1回1,000〜2,000円帯（講師個人設定）</div></div>
+      <div class="blocked">⚠️ このサイトは自動スクショ取得を拒否（403）。<br>下のリンクから直接ご確認ください。</div>
+      <div class="links">
+        <a href="https://www.street-academy.com/online/yoga" target="_blank" class="btn btn-primary">🔗 公式ページを開く<span class="host">www.street-academy.com</span></a>
+        
+      </div>
+    </div></div></section>
+  
+<section id="limits"><h2>データの限界・出典</h2>
+<ul>
+<li><b>訂正:</b> オンラインパーソナルの主例だった「YOGATIVE」は2022年閉業。現役のZENNA・ストアカで相場を組み直した（レンジは不変）。</li>
+<li><b>403で3件スクショ取得不可:</b> CALDO熊本・mitsuraku(Del Cuore口コミ)・ストアカ。リンクは活きており、CALDO熊本料金は全国版＋熊本まとめで補完済。</li>
+<li><b>口コミの裏取りが弱い:</b> 個人事業ヨガの★・件数がほぼ未取得。価格の需要側検証が未完（Del Cuore ★4.42/101件など一部のみ）。</li>
+<li><b>熊本のヨガ専業パーソナル/オンライン1対1の現地実勢が薄い:</b> パーソナルはピラティス（5,700〜8,800円）で代替推定。</li>
+</ul>
+<p class="muted"><b>調査手法:</b> 8エージェント並列web調査（公式料金ページ＋予約サイト＋口コミ）＋Codex独立クロス検証。収集68事業者。価格は税込ベース。調査日2026-06-13。</p>
+<p class="muted"><b>主要出典:</b> 熊本= hotyoga-caldo.com/kumamoto・yoga-lava.com/shop/kumamoto・yoga-univa.jp・yogayoka.com・yasasiyoga.com(FUREA)・pilatesroom.blog・mukachi.com・outline-gym.com・behonest-bekind.com・mitsuraku.jp・body-make.jp ／ 全国= yoga-lava.com/price・hotyoga-caldo.com/price・hotyoga-loive.com・zenplace.co.jp・studio-yoggy.com ／ 柔軟系= the-silk.co.jp・medy-make.com/dr-stretch・stretchex.jp ／ 九州= cachie.jp・fitmap.jp ／ パーソナル= sandk-trainers.com・uchigym.net・yogakatsu.com・street-academy.com（各事業者の個別URLは上のエビデンス各カードのリンク）</p></section>
+</div>
+<footer>Reona 価格競合調査＆戦略 ／ この1枚に結論・統計・エビデンス・勝ち筋を集約</footer>
+</body></html>
