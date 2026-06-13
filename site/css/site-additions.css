@@ -27,9 +27,9 @@
   background: #000;
   --hole: 42%;
   --mx: 50%;
-  --my: 46%;
-  -webkit-mask: linear-gradient(#000 0 0), url("../images/intro-figure.png") var(--mx) var(--my) / var(--hole) auto no-repeat;
-  mask: linear-gradient(#000 0 0), url("../images/intro-figure.png") var(--mx) var(--my) / var(--hole) auto no-repeat;
+  --my: 50%;
+  -webkit-mask: linear-gradient(#000 0 0), url("../images/intro-mask.png") var(--mx) var(--my) / var(--hole) auto no-repeat;
+  mask: linear-gradient(#000 0 0), url("../images/intro-mask.png") var(--mx) var(--my) / var(--hole) auto no-repeat;
   -webkit-mask-composite: source-out;
   mask-composite: subtract;
   will-change: transform, opacity;
@@ -41,6 +41,129 @@
   right: 12px;
   z-index: 10001;
   width: min(300px, calc(100vw - 24px));
+}
+
+/* ===== サーキュラーギャラリー ===== */
+.cgal {
+  --cards: 12;
+  --radius: clamp(124px, 34vw, 232px);
+  --card-width: clamp(54px, 14vw, 84px);
+  --center-size: clamp(180px, 52vw, 280px);
+  margin-top: var(--space-6);
+}
+
+.cgal__stage {
+  position: relative;
+  width: min(100%, 430px);
+  aspect-ratio: 1;
+  margin: 0 auto;
+}
+
+.cgal__center {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: var(--center-size);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid rgba(110, 133, 114, 0.35);
+  box-shadow: 0 28px 60px rgba(11, 12, 11, 0.12);
+  background: rgba(246, 241, 232, 0.92);
+}
+
+.cgal__center::after {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(110, 133, 114, 0.24);
+  pointer-events: none;
+}
+
+.cgal__center img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cgal__label {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 7px 14px;
+  border-radius: var(--radius-pill);
+  background: rgba(11, 12, 11, 0.5);
+  color: var(--color-text-on-primary);
+  backdrop-filter: blur(6px);
+  font: 500 12px/1.2 var(--font-body);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.cgal__orbit {
+  position: absolute;
+  inset: 0;
+}
+
+.cgal__card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--card-width);
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  offset-path: circle(var(--radius) at 50% 50%);
+  offset-distance: calc((var(--i) / var(--cards)) * 100%);
+  offset-rotate: 0deg;
+  offset-anchor: center;
+}
+
+.cgal__card img {
+  width: 100%;
+  aspect-ratio: 4 / 6;
+  object-fit: cover;
+  display: block;
+  border-radius: 18px;
+  border: 1px solid rgba(110, 133, 114, 0.35);
+  box-shadow: 0 18px 30px rgba(11, 12, 11, 0.12);
+  transition: transform 300ms ease, border-color 300ms ease, box-shadow 300ms ease;
+}
+
+.cgal__card:hover img,
+.cgal__card:focus-visible img,
+.cgal__card.is-active img {
+  transform: scale(1.08);
+  border-color: rgba(92, 116, 98, 0.76);
+  box-shadow: 0 22px 36px rgba(11, 12, 11, 0.18);
+}
+
+.cgal__card:focus-visible {
+  outline: none;
+}
+
+.cgal--fallback .cgal__card {
+  offset-path: none;
+  offset-distance: 0%;
+}
+
+@media (min-width: 900px) {
+  .cgal__stage {
+    width: min(100%, 760px);
+  }
+
+  .cgal {
+    --radius: clamp(160px, 22vw, 260px);
+    --card-width: clamp(66px, 7vw, 96px);
+    --center-size: clamp(240px, 26vw, 340px);
+  }
 }
 
 /* ===== 料金メニュー ===== */

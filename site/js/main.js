@@ -13,6 +13,7 @@
   "use strict";
 
   var INTRO_STORAGE_KEY = "reona_intro_tune";
+  var INTRO_STORAGE_VERSION = 2;
   var INTRO_DEFAULTS = {
     windowSize: 42,
     zoomTo: 14,
@@ -20,7 +21,7 @@
     duration: 1.8,
     ease: "power3.inOut",
     mx: 50,
-    my: 46,
+    my: 50,
     veilFade: 0.5
   };
   var INTRO_EASES = [
@@ -90,6 +91,7 @@
 
   function sanitizeIntroConfig(source) {
     var raw = source || {};
+    var version = Number(raw.version || 0);
     var next = {
       windowSize: Number(raw.windowSize != null ? raw.windowSize : raw.holeStart),
       zoomTo: Number(raw.zoomTo),
@@ -109,6 +111,11 @@
     if (!isFinite(next.my)) next.my = INTRO_DEFAULTS.my;
     if (!isFinite(next.veilFade)) next.veilFade = INTRO_DEFAULTS.veilFade;
     if (INTRO_EASES.indexOf(next.ease) === -1) next.ease = INTRO_DEFAULTS.ease;
+
+    if (version < INTRO_STORAGE_VERSION && raw.mx === 50 && raw.my === 46) {
+      next.mx = 50;
+      next.my = 50;
+    }
 
     next.windowSize = clamp(next.windowSize, 10, 80);
     next.zoomTo = clamp(next.zoomTo, 4, 30);
@@ -130,7 +137,7 @@
 
   function saveIntroConfig(config) {
     try {
-      localStorage.setItem(INTRO_STORAGE_KEY, JSON.stringify(config));
+      localStorage.setItem(INTRO_STORAGE_KEY, JSON.stringify(Object.assign({ version: INTRO_STORAGE_VERSION }, config)));
     } catch (error) {
       /* noop */
     }
@@ -222,6 +229,7 @@
 
     var config = sanitizeIntroConfig(introState.config);
     introState.config = config;
+    saveIntroConfig(config);
     applyIntroVars(config);
 
     introState.veil.style.display = "block";
@@ -241,8 +249,6 @@
 
     timeline.to(introState.veil, {
       scale: config.zoomTo,
-      "--mx": config.mx + "%",
-      "--my": config.my + "%",
       duration: config.duration,
       ease: resolveEase(config.ease),
       transformOrigin: config.mx + "% " + config.my + "%"
@@ -401,6 +407,55 @@
   if (document.readyState === "complete") setupIntro();
   else window.addEventListener("load", setupIntro, { once: true });
   setupIntroTuneGui();
+
+  function setupCircularGallery() {
+    document.querySelectorAll("[data-cgal]").forEach(function (gallery) {
+      var cards = Array.prototype.slice.call(gallery.querySelectorAll("[data-cgal-card]"));
+      var center = gallery.querySelector("[data-cgal-center]");
+      var centerImg = gallery.querySelector("[data-cgal-center-img]");
+      var centerLabel = gallery.querySelector("[data-cgal-center-label]");
+      var orbit = gallery.querySelector("[data-cgal-orbit]");
+      if (!cards.length || !center || !centerImg || !centerLabel || !orbit) return;
+
+      var supportsOffsetPath = window.CSS && CSS.supports && CSS.supports("offset-path", "circle(100px at 50% 50%)");
+
+      function applyFallbackLayout() {
+        if (supportsOffsetPath) return;
+        gallery.classList.add("cgal--fallback");
+        var orbitRect = orbit.getBoundingClientRect();
+        var radius = Math.min(orbitRect.width, orbitRect.height) * 0.38;
+        cards.forEach(function (card, index) {
+          var angle = (-90 + (360 / cards.length) * index) * (Math.PI / 180);
+          var x = Math.cos(angle) * radius;
+          var y = Math.sin(angle) * radius;
+          card.style.transform = "translate(-50%, -50%) translate(" + x.toFixed(2) + "px, " + y.toFixed(2) + "px)";
+        });
+      }
+
+      function setActive(index) {
+        cards.forEach(function (card, i) {
+          var active = i === index;
+          card.classList.toggle("is-active", active);
+          card.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+        var activeCard = cards[index];
+        centerImg.src = activeCard.getAttribute("data-image");
+        centerLabel.textContent = activeCard.getAttribute("data-title") || "";
+      }
+
+      cards.forEach(function (card, index) {
+        card.addEventListener("click", function () { setActive(index); });
+        card.addEventListener("mouseenter", function () { setActive(index); });
+        card.addEventListener("focus", function () { setActive(index); });
+      });
+
+      setActive(0);
+      applyFallbackLayout();
+      window.addEventListener("resize", applyFallbackLayout);
+    });
+  }
+
+  setupCircularGallery();
 
   if (reduceMotion) return;
 
