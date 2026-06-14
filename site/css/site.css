@@ -465,20 +465,14 @@ body.is-loaded .moon-window--hero { opacity: 1; }
 .channel-panels__viewport {
   position: relative;
   padding-inline: 5vw;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-  touch-action: pan-x pinch-zoom;
-  overscroll-behavior-x: contain;
-  cursor: grab;
+  overflow: hidden;
 }
 
 .channel-panels__viewport::-webkit-scrollbar { display: none; }
 
 .channel-panels__viewport::before,
 .channel-panels__viewport::after {
-  content: "";
+  content: none;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -500,7 +494,7 @@ body.is-loaded .moon-window--hero { opacity: 1; }
 .channel-panels__track {
   display: flex;
   gap: 0;
-  width: max(100%, 680px);
+  width: 100%;
   min-height: clamp(420px, 74vh, 560px);
   border: var(--border-hairline);
   border-radius: 32px;
@@ -516,7 +510,7 @@ body.is-loaded .moon-window--hero { opacity: 1; }
 .channel-panel {
   position: relative;
   flex: 1 1 0;
-  min-width: clamp(112px, 24vw, 170px);
+  min-width: 0;
   min-height: inherit;
   overflow: hidden;
   color: var(--color-paper);
