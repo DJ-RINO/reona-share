@@ -110,15 +110,14 @@
 
 .cgal__card {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 0;
+  left: 0;
   width: var(--card-width);
   min-height: 44px;
   padding: 0;
   border: 0;
   background: transparent;
   cursor: pointer;
-  transform: translate(-50%, -50%);
   offset-path: circle(var(--radius) at 50% 50%);
   offset-distance: calc((var(--i) / var(--cards)) * 100%);
   offset-rotate: 0deg;
@@ -170,9 +169,10 @@
 /* ===== 料金メニュー ===== */
 .menu-flow-note { text-align: center; color: var(--color-text-muted); font-size: 13px; margin: var(--space-3) 0 0; }
 .menu-list { display: grid; gap: var(--space-5); margin-top: var(--space-5); }
-.menu { padding: var(--space-card); border: var(--border-hairline); border-radius: 24px; background: rgba(255,255,255,0.45); }
+.menu { display: flex; flex-direction: column; height: 100%; padding: var(--space-card); border: var(--border-hairline); border-radius: 24px; background: rgba(255,255,255,0.45); }
 .menu h3 { margin-bottom: var(--space-2); }
-.menu .card__body { color: var(--color-text-muted); margin-bottom: var(--space-4); font-size: 14px; }
+.menu .card__body { color: var(--color-text-muted); margin-bottom: var(--space-4); font-size: 14px; min-height: 3.4em; }
+.menu .def-list { margin-top: auto; }
 .menu .def-row dd { font: 600 17px/1.3 var(--font-heading); color: var(--color-text); text-align: right; }
 .menu .dt-note { display: block; font-weight: 400; font-size: 11px; color: var(--color-text-muted); letter-spacing: .04em; margin-top: 2px; }
 .menu .yen-note { font-size: .62em; color: var(--color-text-muted); margin-left: 2px; }
@@ -205,6 +205,6 @@
 }
 
 @media (min-width: 760px) {
-  .menu-list { grid-template-columns: 1fr 1fr; align-items: start; }
+  .menu-list { grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; align-items: stretch; }
   .menu--flagship { grid-column: 1 / -1; }
 }
