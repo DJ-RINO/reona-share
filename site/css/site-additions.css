@@ -46,15 +46,15 @@
 /* ===== サーキュラーギャラリー ===== */
 .cgal {
   --cards: 12;
-  --radius: clamp(124px, 34vw, 232px);
-  --card-width: clamp(54px, 14vw, 84px);
-  --center-size: clamp(180px, 52vw, 280px);
+  --center-size: clamp(108px, 28vw, 142px);
+  --card-width: clamp(48px, 12vw, 70px);
+  --radius: clamp(132px, 36vw, 156px);
   margin-top: var(--space-6);
 }
 
 .cgal__stage {
   position: relative;
-  width: min(100%, 430px);
+  width: min(100%, 400px);
   aspect-ratio: 1;
   margin: 0 auto;
 }
@@ -86,6 +86,7 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  filter: grayscale(.18) sepia(.20) saturate(.82) brightness(1.03) contrast(.95);
 }
 
 .cgal__label {
@@ -134,15 +135,17 @@
   border-radius: 18px;
   border: 1px solid rgba(110, 133, 114, 0.35);
   box-shadow: 0 18px 30px rgba(11, 12, 11, 0.12);
+  filter: grayscale(.18) sepia(.20) saturate(.82) brightness(1.03) contrast(.95);
   transition: transform 300ms ease, border-color 300ms ease, box-shadow 300ms ease;
 }
 
 .cgal__card:hover img,
 .cgal__card:focus-visible img,
 .cgal__card.is-active img {
-  transform: scale(1.08);
+  transform: scale(1.04);
   border-color: rgba(92, 116, 98, 0.76);
   box-shadow: 0 22px 36px rgba(11, 12, 11, 0.18);
+  filter: grayscale(.08) sepia(.12) saturate(.94) brightness(1.02) contrast(.97);
 }
 
 .cgal__card:focus-visible {
@@ -160,22 +163,23 @@
   }
 
   .cgal {
-    --radius: clamp(160px, 22vw, 260px);
-    --card-width: clamp(66px, 7vw, 96px);
-    --center-size: clamp(240px, 26vw, 340px);
+    --center-size: clamp(198px, 20vw, 250px);
+    --card-width: clamp(62px, 6.5vw, 88px);
+    --radius: clamp(216px, 24vw, 306px);
   }
 }
 
 /* ===== 料金メニュー ===== */
 .menu-flow-note { text-align: center; color: var(--color-text-muted); font-size: 13px; margin: var(--space-3) 0 0; }
 .menu-list { display: grid; gap: var(--space-5); margin-top: var(--space-5); }
-.menu { padding: var(--space-card); border: var(--border-hairline); border-radius: 24px; background: rgba(255,255,255,0.45); }
+.menu { display: flex; flex-direction: column; padding: var(--space-card); border: var(--border-hairline); border-radius: 24px; background: rgba(255,255,255,0.45); }
 .menu h3 { margin-bottom: var(--space-2); }
 .menu .card__body { color: var(--color-text-muted); margin-bottom: var(--space-4); font-size: 14px; }
 .menu .def-row dd { font: 600 17px/1.3 var(--font-heading); color: var(--color-text); text-align: right; }
 .menu .dt-note { display: block; font-weight: 400; font-size: 11px; color: var(--color-text-muted); letter-spacing: .04em; margin-top: 2px; }
 .menu .yen-note { font-size: .62em; color: var(--color-text-muted); margin-left: 2px; }
-.menu .btn { width: 100%; margin-top: var(--space-5); }
+.menu .btn { width: 100%; margin-top: auto; }
+.menu .def-list { margin-bottom: var(--space-5); }
 .tag-row--center { justify-content: center; margin-top: var(--space-6); }
 .menu--trial .def-row--online-trial {
   grid-template-columns: 7.8em 1fr;
@@ -196,6 +200,13 @@
 .menu--flagship h3, .menu--flagship .def-row dt, .menu--flagship .def-row dd { color: var(--color-text-on-primary); }
 .menu--flagship .kicker, .menu--flagship .card__body, .menu--flagship .dt-note, .menu--flagship .yen-note { color: rgba(246,241,232,0.80); }
 .menu--flagship .def-row, .menu--flagship .def-row--first { border-color: rgba(246,241,232,0.22); }
+.menu--flagship .btn--primary {
+  background: var(--color-text-on-primary);
+  color: var(--color-primary-deep);
+}
+.menu--flagship .btn--primary:hover {
+  background: rgba(246, 241, 232, 0.9);
+}
 
 @media (min-width: 760px) {
   .menu-list { grid-template-columns: 1fr 1fr; align-items: start; }
