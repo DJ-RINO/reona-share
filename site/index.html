@@ -132,51 +132,61 @@
       <p class="section-note">3つを別々にやるのではなく、あなたの体と暮らしに合わせて組み合わせる。だから結果が出て、無理なく続きます。</p>
     </section>
 
-    <!-- 4. 3つの受け方: スマホは横スワイプ、PCは非対称3カラム -->
+    <!-- 4. 受け方: joinedな展開パネル -->
     <section id="channels" class="section section--bleed">
       <div class="section-head">
         <h2 class="loosen">あなたに合う、整え方を</h2>
       </div>
-      <div class="channel-track" data-channel-track>
-        <article class="channel" data-channel>
-          <div class="moon-window moon-window--card" data-window>
-            <img src="images/channel-studio.webp" alt="自然光の入る静かなヨガスタジオ" width="896" height="1280" loading="lazy" data-window-img>
+      <div class="channel-panels">
+        <p class="channel-panels__hint">ドラッグでめくる / タップでひらく</p>
+        <div class="channel-panels__viewport">
+          <div class="channel-panels__track" data-channel-panel-track>
+            <article class="channel-panel is-open" data-channel-panel tabindex="0" role="button" aria-expanded="true" aria-controls="channel-panel-body-studio">
+              <img class="channel-panel__image" src="images/channel-studio.webp" alt="自然光の入る静かなヨガスタジオ" width="896" height="1280" loading="lazy">
+              <div class="channel-panel__header">
+                <p class="kicker kicker--sm">studio</p>
+                <h3>スタジオ</h3>
+              </div>
+              <div class="channel-panel__body" id="channel-panel-body-studio">
+                <p>直接会い、安心できる居場所を作る。少人数で、一人ひとりの呼吸に合わせて整える時間。</p>
+                <a class="btn btn--primary btn--sm" href="#" data-line-cta data-cta-position="channels">LINEで相談する</a>
+              </div>
+            </article>
+            <article class="channel-panel" data-channel-panel tabindex="0" role="button" aria-expanded="false" aria-controls="channel-panel-body-online">
+              <img class="channel-panel__image" src="images/channel-online.webp" alt="自宅のリビングで受けるオンラインヨガ" width="896" height="1280" loading="lazy">
+              <div class="channel-panel__header">
+                <p class="kicker kicker--sm">online</p>
+                <h3>オンライン</h3>
+              </div>
+              <div class="channel-panel__body" id="channel-panel-body-online">
+                <p>整える習慣を毎日に届ける。自宅で、自分のペースで。続けられる仕組みで日常に。</p>
+                <a class="btn btn--primary btn--sm" href="#" data-line-cta data-cta-position="channels">LINEで相談する</a>
+              </div>
+            </article>
+            <article class="channel-panel" data-channel-panel tabindex="0" role="button" aria-expanded="false" aria-controls="channel-panel-body-personal">
+              <img class="channel-panel__image" src="images/channel-personal.webp" alt="一対一で姿勢をサポートするパーソナルレッスン" width="896" height="1280" loading="lazy">
+              <div class="channel-panel__header">
+                <p class="kicker kicker--sm">personal</p>
+                <h3>パーソナル</h3>
+              </div>
+              <div class="channel-panel__body" id="channel-panel-body-personal">
+                <p>本気の人に深く伴走する。あなたの体と心に合わせた、一対一のプログラム。</p>
+                <a class="btn btn--primary btn--sm" href="#" data-line-cta data-cta-position="channels">LINEで相談する</a>
+              </div>
+            </article>
+            <article class="channel-panel" data-channel-panel tabindex="0" role="button" aria-expanded="false" aria-controls="channel-panel-body-night">
+              <img class="channel-panel__image" src="images/channel-online.webp" alt="夜、自宅で受ける20分のオンラインヨガ" width="896" height="1280" loading="lazy">
+              <div class="channel-panel__header">
+                <p class="kicker kicker--sm">night subscription</p>
+                <h3>夜20分サブスク</h3>
+              </div>
+              <div class="channel-panel__body" id="channel-panel-body-night">
+                <p data-tbd="night-subscription-price">火・木 22:00〜の双方向オンライン。1回20分の軽いリセット習慣を、月額 ¥3,980〜で。無料体験もこの夜20分枠で受けられます。</p>
+                <a class="btn btn--primary btn--sm" href="#" data-line-cta data-cta-position="channels">LINEで相談する</a>
+              </div>
+            </article>
           </div>
-          <p class="kicker kicker--sm">studio</p>
-          <h3>スタジオ</h3>
-          <p>直接会い、安心できる居場所を作る。少人数で、一人ひとりの呼吸に合わせて整える時間。</p>
-          <a class="btn btn--ghost btn--sm" href="#" data-line-cta data-cta-position="channels">LINEで相談する</a>
-        </article>
-        <article class="channel" data-channel>
-          <div class="moon-window moon-window--card" data-window>
-            <img src="images/channel-online.webp" alt="自宅のリビングで受けるオンラインヨガ" width="896" height="1280" loading="lazy" data-window-img>
-          </div>
-          <p class="kicker kicker--sm">online</p>
-          <h3>オンライン</h3>
-          <p>整える習慣を毎日に届ける。自宅で、自分のペースで。続けられる仕組みで日常に。</p>
-          <a class="btn btn--ghost btn--sm" href="#" data-line-cta data-cta-position="channels">LINEで相談する</a>
-        </article>
-        <article class="channel" data-channel>
-          <div class="moon-window moon-window--card" data-window>
-            <img src="images/channel-personal.webp" alt="一対一で姿勢をサポートするパーソナルレッスン" width="896" height="1280" loading="lazy" data-window-img>
-          </div>
-          <p class="kicker kicker--sm">personal</p>
-          <h3>パーソナル</h3>
-          <p>本気の人に深く伴走する。あなたの体と心に合わせた、一対一のプログラム。</p>
-          <a class="btn btn--ghost btn--sm" href="#" data-line-cta data-cta-position="channels">LINEで相談する</a>
-        </article>
-        <article class="channel" data-channel>
-          <div class="moon-window moon-window--card" data-window>
-            <img src="images/channel-online.webp" alt="夜、自宅で受ける20分のオンラインヨガ" width="896" height="1280" loading="lazy" data-window-img>
-          </div>
-          <p class="kicker kicker--sm">night subscription</p>
-          <h3>夜20分サブスク</h3>
-          <p data-tbd="night-subscription-price">火・木 22:00〜の双方向オンライン。1回20分の軽いリセット習慣を、月額 ¥3,980〜で。無料体験もこの夜20分枠で受けられます。</p>
-          <a class="btn btn--ghost btn--sm" href="#" data-line-cta data-cta-position="channels">LINEで相談する</a>
-        </article>
-      </div>
-      <div class="channel-progress" data-channel-progress aria-hidden="true">
-        <span class="is-active"></span><span></span><span></span><span></span>
+        </div>
       </div>
     </section>
 

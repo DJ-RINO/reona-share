@@ -482,41 +482,118 @@
     });
   }
 
-  /* ---- 6. 受け方カード ---- */
-  var track = document.querySelector("[data-channel-track]");
-  var channels = Array.prototype.slice.call(document.querySelectorAll("[data-channel]"));
-  var progress = document.querySelector("[data-channel-progress]");
-  var spMedia = window.matchMedia("(max-width: 899px)");
-  var channelObserver = null;
+  /* ---- 6. 受け方カード: 展開パネル + ドラッグ ---- */
+  var channelTrack = document.querySelector(".channel-panels__viewport");
+  var channelPanels = Array.prototype.slice.call(document.querySelectorAll("[data-channel-panel]"));
+  var channelState = {
+    pointerId: null,
+    startX: 0,
+    startScrollLeft: 0,
+    moved: false,
+    suppressUntil: 0,
+    revealTimer: null
+  };
 
-  function armChannels() {
-    if (channelObserver) { channelObserver.disconnect(); channelObserver = null; }
-    channels.forEach(function (c) { c.classList.remove("is-current"); });
-
-    if (!spMedia.matches || !track || !("IntersectionObserver" in window)) return;
-
-    channelObserver = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          if (!entry.isIntersecting) return;
-          var idx = channels.indexOf(entry.target);
-          channels.forEach(function (c, i) {
-            c.classList.toggle("is-current", i === idx);
-          });
-          if (progress) {
-            Array.prototype.forEach.call(progress.children, function (dot, i) {
-              dot.classList.toggle("is-active", i === idx);
-            });
-          }
-        });
-      },
-      { root: track, threshold: 0.6 }
-    );
-    channels.forEach(function (c) { channelObserver.observe(c); });
+  function revealChannelPanel(panel) {
+    if (!channelTrack || !panel) return;
+    var maxScroll = channelTrack.scrollWidth - channelTrack.clientWidth;
+    if (maxScroll <= 0) return;
+    var targetLeft = panel.offsetLeft - (channelTrack.clientWidth - panel.offsetWidth) * 0.5;
+    var nextLeft = clamp(targetLeft, 0, maxScroll);
+    channelTrack.scrollTo({ left: nextLeft, behavior: reduceMotion ? "auto" : "smooth" });
   }
 
-  armChannels();
-  spMedia.addEventListener("change", armChannels);
+  function setOpenChannel(nextPanel, shouldReveal) {
+    if (!nextPanel) return;
+    channelPanels.forEach(function (panel) {
+      var isOpen = panel === nextPanel;
+      panel.classList.toggle("is-open", isOpen);
+      panel.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    });
+    if (channelState.revealTimer) {
+      window.clearTimeout(channelState.revealTimer);
+      channelState.revealTimer = null;
+    }
+    if (!shouldReveal) return;
+    revealChannelPanel(nextPanel);
+    if (!reduceMotion) {
+      channelState.revealTimer = window.setTimeout(function () {
+        revealChannelPanel(nextPanel);
+        channelState.revealTimer = null;
+      }, 760);
+    }
+  }
+
+  function isInteractiveChild(target) {
+    return !!(target && target.closest("a, button, input, select, textarea"));
+  }
+
+  if (channelTrack && channelPanels.length) {
+    channelPanels.forEach(function (panel) {
+      panel.addEventListener("focusin", function () {
+        setOpenChannel(panel, true);
+      });
+
+      panel.addEventListener("mouseenter", function () {
+        setOpenChannel(panel, false);
+      });
+
+      panel.addEventListener("click", function (event) {
+        if (Date.now() < channelState.suppressUntil) {
+          event.preventDefault();
+          event.stopPropagation();
+          return;
+        }
+        if (isInteractiveChild(event.target)) return;
+        setOpenChannel(panel, true);
+        panel.focus({ preventScroll: true });
+      });
+
+      panel.addEventListener("keydown", function (event) {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        setOpenChannel(panel, true);
+      });
+    });
+
+    channelTrack.addEventListener("pointerdown", function (event) {
+      if (event.pointerType === "touch") return;
+      if (event.button !== 0) return;
+      channelState.pointerId = event.pointerId;
+      channelState.startX = event.clientX;
+      channelState.startScrollLeft = channelTrack.scrollLeft;
+      channelState.moved = false;
+      channelTrack.classList.add("is-dragging");
+      channelTrack.setPointerCapture(event.pointerId);
+    });
+
+    channelTrack.addEventListener("pointermove", function (event) {
+      if (channelState.pointerId !== event.pointerId) return;
+      var deltaX = event.clientX - channelState.startX;
+      if (!channelState.moved && Math.abs(deltaX) > 6) channelState.moved = true;
+      if (!channelState.moved) return;
+      channelTrack.scrollLeft = channelState.startScrollLeft - deltaX;
+    });
+
+    function releaseChannelDrag(event) {
+      if (channelState.pointerId == null) return;
+      if (event && channelState.pointerId !== event.pointerId) return;
+      if (channelState.moved) channelState.suppressUntil = Date.now() + 120;
+      if (event) {
+        try {
+          channelTrack.releasePointerCapture(event.pointerId);
+        } catch (error) {
+          /* noop */
+        }
+      }
+      channelState.pointerId = null;
+      channelTrack.classList.remove("is-dragging");
+    }
+
+    channelTrack.addEventListener("pointerup", releaseChannelDrag);
+    channelTrack.addEventListener("pointercancel", releaseChannelDrag);
+    channelTrack.addEventListener("lostpointercapture", releaseChannelDrag);
+  }
 
   /* ---- 7. GSAP scrub 演出 ---- */
   window.addEventListener("load", function () {
