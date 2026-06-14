@@ -170,14 +170,12 @@
 /* ===== 料金メニュー ===== */
 .menu-flow-note { text-align: center; color: var(--color-text-muted); font-size: 13px; margin: var(--space-3) 0 0; }
 .menu-list { display: grid; gap: var(--space-5); margin-top: var(--space-5); }
-.menu { display: flex; flex-direction: column; padding: var(--space-card); border: var(--border-hairline); border-radius: 24px; background: rgba(255,255,255,0.45); }
+.menu { padding: var(--space-card); border: var(--border-hairline); border-radius: 24px; background: rgba(255,255,255,0.45); }
 .menu h3 { margin-bottom: var(--space-2); }
 .menu .card__body { color: var(--color-text-muted); margin-bottom: var(--space-4); font-size: 14px; }
 .menu .def-row dd { font: 600 17px/1.3 var(--font-heading); color: var(--color-text); text-align: right; }
 .menu .dt-note { display: block; font-weight: 400; font-size: 11px; color: var(--color-text-muted); letter-spacing: .04em; margin-top: 2px; }
 .menu .yen-note { font-size: .62em; color: var(--color-text-muted); margin-left: 2px; }
-.menu .btn { width: 100%; margin-top: auto; }
-.menu .def-list { margin-bottom: var(--space-5); }
 .tag-row--center { justify-content: center; margin-top: var(--space-6); }
 .menu--trial .def-row--online-trial {
   grid-template-columns: 7.8em 1fr;
