@@ -645,8 +645,7 @@ body.is-loaded .moon-window--hero { opacity: 1; }
 }
 
 .channel-panel:not(:is(:hover, :focus-visible, :focus-within, .is-open)) .channel-panel__header .kicker {
-  writing-mode: horizontal-tb;
-  transform: rotate(180deg);
+  display: none;
 }
 
 .channel-panel:is(:hover, :focus-visible, :focus-within, .is-open) .channel-panel__header,
