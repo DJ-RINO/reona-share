@@ -32,12 +32,13 @@
 </style></head>
 <body>
 <header>
-  <h1>決済とドメインの やさしいガイド</h1>
+  <h1>決済・ドメイン・サーバーの やさしいガイド</h1>
   <p>Reona 事業立ち上げ ／ 2026-06 ／ なるべく専門用語を使わずに説明します</p>
 </header>
 <nav class="toc">
   <a href="#pay">① 決済（Square か Stripe か）</a>
   <a href="#domain">② ドメイン（なぜ必要・探し方・作り方）</a>
+  <a href="#server">③ サーバー（どのプランにするか）</a>
   <a href="index.html">← 資料トップ</a>
 </nav>
 <div class="wrap">
@@ -112,6 +113,41 @@
   <p class="muted">出典: <a href="https://atsoho.com/blog/stripe-square-hikaku" target="_blank">StripeとSquare比較(@SOHO)</a> ／ <a href="https://squareup.com/jp/ja/townsquare/starting-subscription-business" target="_blank">Squareサブスク公式</a> ／ <a href="https://liskul.com/domain-registration-service-comparison-157115" target="_blank">ドメイン取得サービス比較(LISKUL)</a> ／ <a href="https://0115765.com/archives/9440" target="_blank">Cloudflare Registrar解説</a></p>
 </section>
 
+<section id="server">
+  <h2>③ サーバー — どのプランにするか</h2>
+  <p class="lead">サーバーは、サイトを置く「土地」です。ドメイン（住所）を取ったら、その住所にサイトを建てる土地を借ります。ここでは、どこの・どのプランがReonaに合うかを提案します。</p>
+
+  <h3>どこを使うか：エックスサーバー</h3>
+  <div class="box">
+    WordPressを動かすサーバーとして<b>国内シェアNo.1</b>で、実績と安定性が高いサービスです。独自ドメインの取得・SSL（鍵マークの暗号化）・独自メール（info@あなたのドメイン）まで一通りそろい、WordPressもボタン操作で設置できます。
+  </div>
+
+  <h3>どのプラン：いちばん安い「スタンダード」で十分</h3>
+  <div class="box">
+    エックスサーバーには スタンダード／プレミアム／ビジネス の3つがありますが、<b>Reonaは最安の「スタンダード」で性能が余ります</b>。理由は、サイトが軽い1ページ構成で、写真も軽量化済み・動画もなく、アクセスも立ち上げ初期は無理なくさばける規模だから。上位プランは将来アプリ連携などが本格化してから検討すれば十分で、<b>後からいつでも上げられます</b>。
+  </div>
+
+  <h3>料金（2026年6月時点・キャンペーン中）</h3>
+  <table>
+    <thead><tr><th>契約期間</th><th>月額（税込）</th><th>独自ドメイン無料</th></tr></thead>
+    <tbody>
+      <tr><td>12ヶ月</td><td>880円</td><td>1個</td></tr>
+      <tr><td><b>24ヶ月（おすすめ）</b></td><td><b>783円</b></td><td><b>2個</b></td></tr>
+      <tr><td>36ヶ月</td><td>693円</td><td>2個</td></tr>
+    </tbody>
+  </table>
+  <p class="muted">通常は月990〜1,100円。今は「最大30%オフキャンペーン」（〜2026/7/6 17:00、12ヶ月以上の契約が対象。割引率は12ヶ月20%／24ヶ月25%／36ヶ月30%）で上の価格。初期費用は無料、SSL・独自メールも無料で付きます。</p>
+
+  <div class="rec">
+    <b>提案: スタンダード・24ヶ月（月783円／初回一括 約18,800円）。</b><br>
+    36ヶ月だと月693円とさらに安いですが、3年の契約に縛られます。立ち上げたばかりの段階なので、<b>24ヶ月がちょうどよいバランス</b>（割引も効き、独自ドメインも2個無料）。<br>
+    あわてて今すぐ契約しなくても大丈夫です。<b>本番サイト（WordPress）を作り始める段になってからの契約でOK</b>。このキャンペーンは毎回のように繰り返されるので、7/6を逃しても同じような割引はまた来ます。<br>
+    <span class="muted">ただし「ドメイン」だけは早めに取っておくとGoogleに早く認識され有利です（②参照）。サーバー契約と同時にドメインを取ることもできます。確信度90%。</span>
+  </div>
+
+  <p class="muted">出典: <a href="https://www.xserver.ne.jp/price/" target="_blank">エックスサーバー 料金</a> ／ <a href="https://www.xserver.ne.jp/campaign/campaign_260604.php" target="_blank">キャンペーン</a> ／ <a href="https://www.xserver.ne.jp/manual/man_order_present_domain.php" target="_blank">独自ドメイン永久無料特典</a>（いずれも2026年6月時点）</p>
+</section>
+
 </div>
-<footer>Reona 決済・ドメインガイド ／ 不明点はRinoが伴走します</footer>
+<footer>Reona 決済・ドメイン・サーバーガイド ／ 不明点はRinoが伴走します</footer>
 </body></html>
