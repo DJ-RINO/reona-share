@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Reona 事業立ち上げ 共有資料</title>
 <style>
-  :root { --ink:#2b2b2b; --sub:#6b6b6b; --line:#e6e2da; --accent:#8a7a5c; --bg:#faf8f3; }
+  :root { --ink:#2b2b2b; --sub:#6b6b6b; --line:#e6e2da; --accent:#8a7a5c; --bg:#faf8f3; --navy:#2b3a55; --red:#c0392b; }
   * { box-sizing:border-box; }
   body { margin:0; font-family:-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif; color:var(--ink); background:var(--bg); line-height:1.7; }
   .hero { padding:48px 20px 28px; text-align:center; background:#fff; border-bottom:1px solid var(--line); }
@@ -17,6 +17,31 @@
   .card h2 { margin:0 0 6px; font-size:18px; border:none; padding:0; }
   .card p { margin:0; color:var(--sub); font-size:13.5px; }
   .card .go { margin-top:12px; color:var(--accent); font-size:13px; font-weight:700; }
+  /* 進行ワークフロー */
+  .flow { margin-bottom:36px; }
+  .flow > h2 { font-size:18px; margin:0 0 4px; border:none; padding:0; letter-spacing:.02em; }
+  .flow .flow-lead { color:var(--sub); font-size:13px; margin:0 0 18px; }
+  .flow-track { background:#fff; border:1px solid var(--line); border-radius:14px; padding:20px 18px; margin-bottom:16px; }
+  .flow-track .track-ttl { font-size:14.5px; font-weight:700; margin:0 0 14px; color:var(--navy); }
+  .step { display:flex; gap:13px; align-items:flex-start; }
+  .step .num { flex:0 0 auto; width:30px; height:30px; border-radius:50%; background:var(--accent); color:#fff; font-weight:700; display:flex; align-items:center; justify-content:center; font-size:14px; }
+  .step .s-body { flex:1; min-width:0; }
+  .step .who { display:inline-block; font-size:11px; padding:1px 9px; border-radius:20px; margin:0 4px 5px 0; }
+  .who.leona { background:#efe9df; color:var(--accent); }
+  .who.rino { background:#dde3ee; color:var(--navy); }
+  .who.crit { background:#f6d4cf; color:var(--red); }
+  .who.done { background:#cfe8d0; color:#2e6b3a; }
+  .step .s-ttl { font-weight:700; font-size:14.5px; }
+  .step .s-desc { color:var(--sub); font-size:12.5px; margin-top:3px; }
+  .step .s-link { display:inline-block; margin-top:7px; color:var(--accent); font-size:12.5px; font-weight:700; text-decoration:none; }
+  .arrow { padding:7px 0 7px 15px; color:var(--sub); font-size:11.5px; display:flex; align-items:center; gap:7px; }
+  .arrow::before { content:"↓"; color:var(--accent); font-weight:700; font-size:14px; }
+  .start-step { border:2px solid var(--red); border-radius:11px; padding:13px 14px; }
+  .todo-list { list-style:none; padding:0; margin:0 0 12px; }
+  .todo-list li { font-size:13px; padding:10px 0; border-bottom:1px solid var(--line); }
+  .todo-list li:last-child { border-bottom:none; }
+  .todo-list li b { color:var(--ink); }
+  .done-note { margin-top:6px; background:#f1f7f1; border:1px solid #cfe3cf; color:#2e6b3a; font-size:12px; border-radius:8px; padding:10px 12px; line-height:1.6; }
   footer { text-align:center; color:var(--sub); font-size:12px; padding:20px; }
 </style></head>
 <body>
@@ -25,6 +50,85 @@
   <p>ヨガ事業 立ち上げ ／ 共有資料 ／ 2026-06</p>
 </div>
 <div class="wrap">
+
+  <section class="flow">
+    <h2>進行ワークフロー — 何から動くと一番スムーズか</h2>
+    <p class="flow-lead">レオナさんのタスクと、Rino側の作業はつながっています。<b>🔴「ドメイン取得」が全ての出発点</b>。ここが動くと本番サイトまで一気に進みます。各ステップの「→」から、くわしい説明ページに飛べます。</p>
+
+    <div class="flow-track">
+      <p class="track-ttl">① 本番サイトが立ち上がるまでの順番</p>
+
+      <div class="start-step">
+        <div class="step">
+          <div class="num">1</div>
+          <div class="s-body">
+            <span class="who leona">レオナさん</span><span class="who crit">🔴 最優先・起点</span>
+            <div class="s-ttl">ドメインを決めて取得する</div>
+            <div class="s-desc">サイトの「住所」です。これが無いと、この先のサーバー契約もサイト構築も始められません。候補を3〜5個決めて取得するところまでをお願いします（接続作業はRinoが対応）。</div>
+            <a class="s-link" href="guide.html#domain">ドメインのやさしい解説を見る →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow">ドメインが決まらないと、次に進めません</div>
+
+      <div class="step">
+        <div class="num">2</div>
+        <div class="s-body">
+          <span class="who rino">Rino</span>
+          <div class="s-ttl">エックスサーバーを契約する</div>
+          <div class="s-desc">取得したドメインを置く「土地」を借ります。ドメインが決まってから契約します。</div>
+        </div>
+      </div>
+
+      <div class="arrow">サーバーが用意できたら</div>
+
+      <div class="step">
+        <div class="num">3</div>
+        <div class="s-body">
+          <span class="who rino">Rino</span>
+          <div class="s-ttl">WordPressで本番サイトを構築する</div>
+          <div class="s-desc">実際に運用する本番サイトを組み立てます。</div>
+        </div>
+      </div>
+
+      <div class="arrow">完成すると</div>
+
+      <div class="step">
+        <div class="num">✓</div>
+        <div class="s-body">
+          <span class="who done">本番環境</span>
+          <div class="s-ttl">いつでも実物を確認できる状態に</div>
+          <div class="s-desc">本番サイトができあがり、修正や追加をしながら、いつでも実物を見て確認できるようになります。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-track">
+      <p class="track-ttl">② 早く動くほど「得」すること</p>
+      <div class="step">
+        <div class="num" style="background:#e8dcc4;color:#6b5a36">早</div>
+        <div class="s-body">
+          <div class="s-ttl">ドメイン取得・サイト公開は、早いほどGoogleに有利</div>
+          <div class="s-desc">サイトはGoogleに見つけてもらい、信頼を「育てて」もらうまでに時間がかかります。早く公開するほど、その育つ時間が増え、検索で上に出やすくなります（SEO）。だから登録系は後回しにせず、できるだけ早く動くほど得をします。</div>
+          <a class="s-link" href="guide.html#domain">なぜ早い方がいいか（理由③）→</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-track">
+      <p class="track-ttl">③ 価格確定とサイト公開を進めるための宿題</p>
+      <p class="s-desc" style="margin:0 0 12px">この3つが揃うと、料金とLINEの仕組みが一気に固まります。</p>
+      <ul class="todo-list">
+        <li><span class="who leona">レオナさん</span> 月に動ける時間（パーソナル何件／グループ何本）— <b>価格の逆算に必須</b></li>
+        <li><span class="who leona">レオナさん</span> LINE公式の<b>ログイン情報</b>（自動返信を組むため。※サイトのボタン用URLとは別物）</li>
+        <li><span class="who leona">レオナさん</span> 男性向けパーソナルの料金イメージ＋男女で分けたい理由</li>
+      </ul>
+      <a class="s-link" href="tasks.html">宿題リストをくわしく見る →</a>
+      <div class="done-note">✅ 受領済み：サイト用FAQ ／ <b>LINE友だち追加URL</b>（本日サイトのボタンに反映しました。タップで友だち追加に飛びます）</div>
+    </div>
+  </section>
+
   <div class="cards">
     <a class="card" href="mens-fitness-pricing.html">
       <span class="badge">価格調査</span>
