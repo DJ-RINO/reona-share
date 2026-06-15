@@ -357,7 +357,7 @@
   }
 
   /* ---- 2. LINE URL（確定したらここを1行変えるだけで全CTAに反映） ---- */
-  var LINE_URL = "#";
+  var LINE_URL = "https://lin.ee/xEWmuID";
 
   document.querySelectorAll("[data-line-cta]").forEach(function (el) {
     el.setAttribute("href", LINE_URL);
