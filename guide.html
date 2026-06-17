@@ -41,6 +41,7 @@
   <a href="#domain-candidates">└ ドメイン候補の比べかた</a>
   <a href="#server">③ サーバー（どのプランにするか）</a>
   <a href="#access">④ 権限の渡し方（Rinoに作業を任せる）</a>
+  <a href="#wp-setup">⑤ 本番サイトをはじめる準備（一度きり）</a>
   <a href="index.html">← 資料トップ</a>
 </nav>
 <div class="wrap">
@@ -230,6 +231,38 @@
   </div>
 
   <p class="muted">出典（2026年6月時点）: <a href="https://www.xserver.ne.jp/manual/man_tool_info.php" target="_blank">XServerアカウント利用方法</a>（会員ページとサーバーパネルの役割）／ <a href="https://www.xserver.ne.jp/support/faq/faq_tool_server.php" target="_blank">サーバーパネル FAQ</a>（ログインURL）／ <a href="https://www.xserver.ne.jp/manual/man_order_loginsecurity.php" target="_blank">ログイン時の認証</a>（OFF方法・制作者へ任せる場合の案内）／ <a href="https://www.xserver.ne.jp/manual/man_order_twostepauth.php" target="_blank">二段階認証設定</a>（会員ページ／サーバーパネルで別設定）／ <a href="https://www.xserver.ne.jp/manual/man_server_adminuser.php" target="_blank">管理者ユーザー設定</a>（ビジネスプラン専用機能）</p>
+</section>
+
+<section id="wp-setup">
+  <h2>⑤ 本番サイトをはじめる準備（レオナさんの一度きりの作業）</h2>
+  <p class="lead">前の「方法2」で進めます。レオナさんが<b>下のA・B・Cだけ</b>やってくれれば、あとの本番サイト作りはRinoが引き取ります。サーバーパネルに入るのはこの時だけ（メールにコードが来ても、レオナさんご自身のログインなので問題ありません）。</p>
+
+  <h3>A. WordPressを設置する（約5分）</h3>
+  <div class="step"><b>1.</b> サーバーパネルにログイン → 「<b>WordPress簡単インストール</b>」をクリック → 「<b>WordPressインストール</b>」タブを開く。</div>
+  <div class="step"><b>2.</b> 項目を入力：
+    <ul>
+      <li><b>サイトURL</b>：ドメインを選び、<b>うしろの入力欄（初期値「wp」）は空にする</b>。空にするとトップ（https://ドメイン/）に、「wp」のままだと https://ドメイン/wp/ に入ります。<b>本番のトップに出すなら空</b>。</li>
+      <li><b>ブログ名</b>：REONA（あとで変更できます）</li>
+      <li><b>ユーザー名／パスワード</b>：WordPressにログインする管理者。<b>レオナさんが決めて控える</b>（これがサイトの中身を書く鍵）。</li>
+      <li><b>メールアドレス</b>：レオナさんのメール</li>
+      <li><b>データベース</b>：「<b>自動でデータベースを生成する</b>」を選択</li>
+    </ul>
+  </div>
+  <div class="step"><b>3.</b> 「確認画面へ進む」→「インストールする」。完了画面に出る<b>管理画面URL・ユーザー名・パスワード</b>を控える。</div>
+
+  <h3>B. Rino専用のFTPアカウントを発行する（約3分）</h3>
+  <div class="step"><b>1.</b> サーバーパネル → 「<b>追加FTPアカウント設定</b>」 → 「FTPアカウント追加」。</div>
+  <div class="step"><b>2.</b> 対象ドメインを選び、<b>FTPユーザーID</b>（例：rino）と<b>パスワード</b>を設定して追加。ホームディレクトリは初期設定のままでOK。</div>
+  <div class="step"><b>3.</b> 「<b>追加FTP情報確認</b>」で <b>FTPホスト名</b>（例 sv***.xserver.jp）・<b>FTPユーザー名</b>・<b>FTPパスワード</b> を確認。</div>
+
+  <h3>C. Rinoに送るもの（これだけ・LINEでOK）</h3>
+  <div class="box">
+    <b>① WordPress</b>：管理画面URL（例 https://ドメイン/wp-admin/）＋ 管理ユーザー名・パスワード<br>
+    <b>② FTP 3点</b>：ホスト名 ／ ユーザー名 ／ パスワード<br>
+    <span class="muted">※「会員ページ」「サーバーパネル」のログインは渡さなくて大丈夫です。万一に備え、パスワードはIDと別の手段で送る／送った後に控えたら消す、が安心。</span>
+  </div>
+
+  <p class="muted">出典（2026年6月時点）: <a href="https://www.xserver.ne.jp/manual/man_install_auto_word.php" target="_blank">WordPress簡単インストール手順</a> ／ <a href="https://www.xserver.ne.jp/manual/man_ftp_setting.php" target="_blank">FTPアカウント設定</a>（いずれもエックスサーバー公式）</p>
 </section>
 
 </div>
