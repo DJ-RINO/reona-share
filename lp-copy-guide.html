@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>レオナさん｜LP 文章の書き込みガイド（2026-06-18）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600;800&family=Noto+Sans+JP:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,500;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   REONA site v4 — 「アトリエ (Atelier)」
+   明るい紙の上のエディトリアルコラージュ × バネ物理。
+
+   鉄則:
+   - ファーストビューは CSS だけで完成（JS・フォント・CDNを待たない）
+   - 隠し初期状態(opacity:0)は CSS アニメの from にのみ存在。
+     アニメ無効環境では最初から完成形が出る
+   - .fx(GSAP有効)はカード束レイアウト等の「加点」にだけ使う
+   ============================================================ */
+
+:root {
+  --green: #6E8572;
+  --beige: #DCCEBB;
+  --ivory: #F6F1E8;
+  --stone: #8F9491;
+  --deep:  #56695A;
+  --ink:   #3E443C;
+
+  --green-18: rgba(110, 133, 114, 0.18);
+  --green-35: rgba(110, 133, 114, 0.35);
+  --ink-12:   rgba(62, 68, 60, 0.12);
+  --ink-shadow: rgba(62, 68, 60, 0.16);
+
+  --serif: "Shippori Mincho B1", "Hiragino Mincho ProN", serif;
+  --sans:  "Noto Sans JP", "Hiragino Sans", sans-serif;
+  --en:    "Cormorant Garamond", "Didot", serif;
+
+  --spring: cubic-bezier(0.34, 1.56, 0.45, 1); /* ぷるん */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 31px, var(--ink-12) 31px 31.5px),
+    var(--ivory);
+  background-size: 100% 640px, auto; /* ノート罫線をうっすら */
+  background-repeat: repeat-y, repeat;
+  color: var(--ink);
+  font: 300 14.5px/2.05 var(--sans);
+  letter-spacing: 0.04em;
+  overflow-x: hidden;
+  padding-bottom: calc(72px + env(safe-area-inset-bottom));
+}
+
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+p { margin: 0; }
+h1, h2, h3 { margin: 0; font-family: var(--serif); font-weight: 800; }
+
+:focus-visible { outline: 2px solid var(--deep); outline-offset: 3px; }
+
+.en { font-family: var(--en); font-style: italic; font-weight: 500; }
+.sp-only { display: inline; }
+@media (min-width: 900px) { .sp-only { display: none; } }
+
+/* ============ 共通: 見出し ============ */
+
+.sec-head {
+  font-size: clamp(24px, 6.6vw, 40px);
+  line-height: 1.75;
+  letter-spacing: 0.06em;
+  text-align: center;
+  margin: 0 auto 7dvh;
+  max-width: 16em;
+}
+.sec-head--left { text-align: left; margin-left: 0; }
+
+.sec-head__en {
+  display: block;
+  font-size: 17px;
+  letter-spacing: 0.22em;
+  color: var(--green);
+  margin-bottom: 6px;
+}
+
+/* ============ 共通: ボタン ============ */
+
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  min-height: 46px;
+  padding: 14px 30px;
+  border: none;
+  border-radius: 999px;
+  font: 500 13px/1 var(--sans);
+  letter-spacing: 0.14em;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 240ms var(--spring), background 240ms var(--ease-out), box-shadow 240ms var(--ease-out);
+}
+.btn:hover { transform: translateY(-2px) rotate(-0.5deg); }
+.btn:active { transform: scale(0.95); }
+
+.btn--ink {
+  background: var(--ink);
+  color: var(--ivory);
+  box-shadow: 4px 4px 0 var(--green-35);
+}
+.btn--ink:hover { background: var(--deep); }
+
+.btn--ghost { background: transparent; box-shadow: inset 0 0 0 1.5px var(--ink); }
+.btn--lg { padding: 17px 36px; font-size: 13.5px; }
+.btn--sm { min-height: 40px; padding: 11px 20px; font-size: 12px; }
+
+.btn .ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(246, 241, 232, 0.5);
+  transform: scale(0);
+  pointer-events: none;
+}
+.btn--ghost .ripple { background: var(--green-18); }
+
+/* ============ マーカーペン ============ */
+
+.marker {
+  background: linear-gradient(transparent 58%, var(--green-35) 58% 92%, transparent 92%) no-repeat 0 0;
+  background-size: 100% 100%;
+  color: inherit;
+  padding: 0 0.08em;
+}
+
+/* Hero のマーカーはロード直後に「引かれる」 */
+.hero .marker {
+  background-size: 0% 100%;
+  animation: draw-marker 700ms var(--ease-out) 950ms forwards;
+}
+
+/* JS が is-marked を付けるまで待つ版（アニメ無効環境では最初から引かれている） */
+.marker--js { background-size: 0% 100%; }
+.marker--js.is-marked { background-size: 100% 100%; transition: background-size 700ms var(--ease-out); }
+@media (prefers-reduced-motion: reduce) { .marker--js { background-size: 100% 100% !important; } }
+body:not(.fx) .marker--js { background-size: 100% 100%; }
+
+@keyframes draw-marker { to { background-size: 100% 100%; } }
+
+/* ============ ヘッダー ============ */
+
+.site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+}
+
+.wordmark {
+  font: 800 17px/1 var(--serif);
+  letter-spacing: 0.4em;
+  text-decoration: none;
+}
+
+/* ============ 1. Hero ============ */
+
+.hero {
+  position: relative;
+  padding: calc(64px + env(safe-area-inset-top)) 0 0;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.hero__grid {
+  position: relative;
+  padding: 2dvh 22px 0;
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.hero__issue {
+  font-size: 16px;
+  letter-spacing: 0.2em;
+  color: var(--deep);
+  margin-bottom: 10px;
+  animation: rise-in 700ms var(--spring) 80ms backwards;
+}
+
+.hero__title {
+  font-size: clamp(34px, 9.6vw, 60px);
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+}
+.hero__title .row { white-space: nowrap; }
+.hero__title .row { display: block; }
+.hero__title .row.a { animation: rise-in 700ms var(--spring) 160ms backwards; }
+.hero__title .row.b { animation: rise-in 700ms var(--spring) 280ms backwards; }
+.hero__title .row.c { animation: rise-in 700ms var(--spring) 400ms backwards; }
+.hero__title em {
+  font-style: normal;
+  color: var(--deep);
+}
+
+.hero__lead {
+  max-width: 30em;
+  margin-top: 14px;
+  font-size: 13.5px;
+  animation: rise-in 700ms var(--spring) 540ms backwards;
+}
+
+.hero__cta { margin-top: 20px; animation: rise-in 700ms var(--spring) 660ms backwards; }
+
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(34px) rotate(0.6deg); }
+}
+
+/* --- 紙焼きコラージュ --- */
+
+.collage {
+  position: relative;
+  height: 34dvh;
+  min-height: 230px;
+  margin-top: 3dvh;
+  pointer-events: none;
+}
+
+.snap {
+  position: absolute;
+  margin: 0;
+  background: #fff;
+  padding: 8px 8px 26px; /* 紙焼きの白フチ */
+  box-shadow: 0 10px 28px var(--ink-shadow);
+  will-change: transform;
+}
+.snap img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.88); }
+
+.snap--1 {
+  left: 4%; bottom: 6%;
+  width: min(38vw, 200px);
+  aspect-ratio: 3 / 4;
+  transform: rotate(-6deg);
+  animation: snap-in 800ms var(--spring) 350ms backwards;
+}
+.snap--2 {
+  left: 36%; bottom: 16%;
+  width: min(40vw, 210px);
+  aspect-ratio: 4 / 5;
+  transform: rotate(3.5deg);
+  z-index: 2;
+  animation: snap-in 800ms var(--spring) 500ms backwards;
+}
+.snap--3 {
+  right: 3%; bottom: 2%;
+  width: min(36vw, 190px);
+  aspect-ratio: 3 / 4;
+  transform: rotate(8deg);
+  animation: snap-in 800ms var(--spring) 650ms backwards;
+}
+
+@keyframes snap-in {
+  from { opacity: 0; transform: translateY(60px) rotate(0deg) scale(0.92); }
+}
+
+.sticker {
+  position: absolute;
+  z-index: 3;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font: 700 12px/1 var(--sans);
+  letter-spacing: 0.18em;
+  background: var(--green);
+  color: var(--ivory);
+  box-shadow: 3px 3px 0 var(--ink-12);
+  animation: snap-in 700ms var(--spring) 800ms backwards;
+}
+.sticker--kumamoto { left: 30%; bottom: 4%; transform: rotate(-8deg); }
+.sticker--since {
+  right: 8%; bottom: 58%;
+  background: var(--beige);
+  color: var(--ink);
+  font-family: var(--en);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 14px;
+  transform: rotate(5deg);
+  animation-delay: 900ms;
+}
+
+/* --- 回転バッジ（純CSS） --- */
+
+.badge {
+  position: absolute;
+  top: calc(2dvh + 4px);
+  right: 14px;
+  width: 92px; height: 92px;
+  animation: rise-in 700ms var(--spring) 750ms backwards;
+}
+.badge svg {
+  width: 100%; height: 100%;
+  animation: spin 16s linear infinite;
+}
+.badge text {
+  font: 500 11.5px var(--en);
+  font-style: italic;
+  letter-spacing: 2.5px;
+  fill: var(--deep);
+}
+.badge__core {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 30px;
+  color: var(--green);
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* --- 英字マーキー（純CSS・唯一のマーキー） --- */
+
+.marquee {
+  overflow: hidden;
+  border-top: 1.5px solid var(--ink);
+  border-bottom: 1.5px solid var(--ink);
+  background: var(--ivory);
+  padding: 12px 0;
+  margin-top: 3dvh;
+}
+.marquee__inner {
+  display: flex;
+  width: max-content;
+  white-space: nowrap;
+  animation: marquee 18s linear infinite;
+  font: 500 17px/1 var(--en);
+  font-style: italic;
+  letter-spacing: 0.14em;
+  color: var(--deep);
+}
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+@media (min-width: 900px) {
+  .hero__grid { display: grid; grid-template-columns: 7fr 5fr; align-items: center; gap: 40px; padding-top: 4dvh; }
+  .collage { height: 56dvh; margin-top: 0; }
+  .badge { right: 40px; top: 6dvh; width: 110px; height: 110px; }
+}
+
+/* ============ 2. 悩みリスト ============ */
+
+.list { padding: 14dvh 22px; max-width: 760px; margin: 0 auto; }
+
+.worry-ol { list-style: none; margin: 0; padding: 0; }
+
+.worry-li {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 14px;
+  align-items: center;
+  padding: 26px 0;
+  border-bottom: 1.5px solid var(--ink-12);
+}
+.worry-li:first-child { border-top: 1.5px solid var(--ink-12); }
+
+.worry-li .num {
+  font-size: 44px;
+  line-height: 1;
+  color: var(--green);
+}
+.worry-li p {
+  font: 600 clamp(15px, 4.2vw, 19px)/1.95 var(--serif);
+  letter-spacing: 0.06em;
+}
+
+.list__note { margin-top: 5dvh; text-align: center; max-width: 34em; margin-inline: auto; }
+
+/* ============ 3. 付箋ノート ============ */
+
+.notes { padding: 10dvh 22px 12dvh; max-width: 1100px; margin: 0 auto; }
+
+.notes__row { display: grid; gap: 26px; }
+
+.note {
+  padding: 26px 24px 30px;
+  background: #fff;
+  box-shadow: 0 12px 30px var(--ink-shadow);
+}
+.note--a { transform: rotate(-1.4deg); border-top: 8px solid var(--green); }
+.note--b { transform: rotate(1deg); border-top: 8px solid var(--beige); }
+.note--c { transform: rotate(-0.6deg); border-top: 8px solid var(--stone); }
+
+.note__en { display: block; font-size: 24px; line-height: 1; color: var(--green); margin-bottom: 10px; }
+.note h3 { font-size: 18px; letter-spacing: 0.12em; margin-bottom: 8px; }
+
+.notes__foot { margin: 7dvh auto 0; max-width: 34em; text-align: center; }
+
+@media (min-width: 900px) { .notes__row { grid-template-columns: 1fr 1fr 1fr; gap: 34px; } }
+
+/* ============ 4. カードの山（ドラッグ） ============ */
+
+.deck-sec { padding: 12dvh 0 12dvh; overflow: hidden; }
+
+.deck-hint {
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  color: var(--stone);
+  margin: -4dvh 0 4dvh;
+}
+body:not(.fx) .deck-hint { display: none; }
+
+.deck { position: relative; }
+
+.deal {
+  background: #fff;
+  padding: 14px 14px 22px;
+  box-shadow: 0 16px 44px var(--ink-shadow);
+}
+
+.deal__fig { margin: 0 0 16px; overflow: hidden; }
+.deal__fig img { width: 100%; aspect-ratio: 7 / 8; object-fit: cover; filter: saturate(0.88); }
+
+.deal__body { text-align: center; padding: 0 8px 6px; }
+.deal__en { display: block; font-size: 22px; line-height: 1; color: var(--green); margin-bottom: 6px; }
+.deal__body h3 { font-size: 19px; letter-spacing: 0.16em; margin-bottom: 8px; }
+.deal__body p { font-size: 13px; margin-bottom: 16px; }
+
+/* fxなし: 縦に普通に並ぶ */
+body:not(.fx) .deck { display: grid; gap: 36px; padding: 0 22px; max-width: 480px; margin: 0 auto; }
+body:not(.fx) .deck-nav { display: none; }
+
+/* fx: 山に積む（位置・回転は JS が散らす） */
+.fx .deck {
+  /* カード実高（写真+本文）+ 積み重なりのオフセット分 */
+  height: min(176vw, 700px);
+  max-width: 420px;
+  margin: 0 auto;
+  touch-action: pan-y;
+}
+.fx .deal {
+  position: absolute;
+  top: 0;
+  left: 22px;
+  right: 22px;
+  will-change: transform;
+  cursor: grab;
+}
+.fx .deal:active { cursor: grabbing; }
+
+.deck-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  margin-top: 4dvh;
+}
+.deck-nav__btn {
+  width: 46px; height: 46px;
+  border: 1.5px solid var(--ink);
+  border-radius: 50%;
+  background: transparent;
+  font-size: 17px;
+  color: var(--ink);
+  cursor: pointer;
+  transition: transform 220ms var(--spring), background 220ms;
+  -webkit-tap-highlight-color: transparent;
+}
+.deck-nav__btn:hover { background: var(--green-18); }
+.deck-nav__btn:active { transform: scale(0.9); }
+
+.deck-nav__dots { display: flex; gap: 8px; }
+.deck-nav__dots i {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--ink-12);
+  transition: background 300ms, transform 300ms var(--spring);
+}
+.deck-nav__dots i.is-on { background: var(--green); transform: scale(1.35); }
+
+@media (min-width: 900px) {
+  .fx .deck { max-width: 480px; height: 600px; }
+}
+
+/* ============ 5. チケット ============ */
+
+.tickets { padding: 12dvh 22px; max-width: 760px; margin: 0 auto; }
+
+.ticket {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 64px;
+  background: #fff;
+  box-shadow: 0 14px 36px var(--ink-shadow);
+  border-radius: 14px;
+  margin-bottom: 5dvh;
+  transform: rotate(-0.8deg);
+}
+.ticket--sub { transform: rotate(0.7deg); background: var(--beige); }
+.ticket--sub .ticket__stub { border-left-color: var(--ink); }
+
+.ticket__main { padding: 30px 24px 28px; min-width: 0; }
+
+.ticket__tag {
+  display: inline-block;
+  font-size: 17px;
+  color: var(--green);
+  margin-bottom: 8px;
+}
+.ticket__main h3 { font-size: 21px; letter-spacing: 0.12em; margin-bottom: 10px; }
+.ticket__main > p { margin-bottom: 14px; }
+.ticket__main .btn { margin-top: 16px; width: 100%; }
+
+.ticket__stub {
+  position: relative;
+  border-left: 2px dashed var(--stone);
+  display: grid;
+  place-items: center;
+}
+.ticket__stub .en {
+  writing-mode: vertical-rl;
+  font-size: 15px;
+  letter-spacing: 0.3em;
+  color: var(--stone);
+}
+/* ミシン目の切り欠き */
+.ticket__stub::before, .ticket__stub::after {
+  content: "";
+  position: absolute;
+  left: -11px;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--ivory);
+}
+.ticket__stub::before { top: -10px; }
+.ticket__stub::after { bottom: -10px; }
+
+.def { margin: 10px 0; }
+.def > div {
+  display: grid;
+  grid-template-columns: 7.5em 1fr;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--ink-12);
+}
+.def dt { font-weight: 400; opacity: 0.65; }
+.def dd { margin: 0; }
+
+.tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.tags span {
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+  font: 500 12px/1 var(--sans);
+  letter-spacing: 0.12em;
+  color: var(--deep);
+}
+
+/* ============ 6. 流れ ============ */
+
+.flow { padding: 6dvh 22px 12dvh; max-width: 760px; margin: 0 auto; }
+
+.flow__ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 5dvh; }
+.flow__ol li {
+  display: grid;
+  grid-template-columns: 58px 1fr;
+  column-gap: 16px;
+  align-items: start;
+}
+/* 番号は2行ぶち抜き。見出しと本文は右カラムに揃える */
+.flow__ol li .num { grid-row: 1 / span 2; }
+.flow__ol li p { grid-column: 2; }
+.flow__ol .num {
+  width: 52px; height: 52px;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--green);
+  border-radius: 50%;
+  font-size: 24px;
+  color: var(--green);
+  transform: rotate(-6deg);
+}
+.flow__ol h3 { font-size: 17px; letter-spacing: 0.1em; margin-bottom: 4px; }
+
+/* ============ 声 ============ */
+
+.voices { padding: 10dvh 22px; max-width: 720px; margin: 0 auto; }
+.quote { margin: 0 0 24px; padding: 24px 26px; background: #fff; box-shadow: 0 10px 28px var(--ink-shadow); transform: rotate(-0.5deg); }
+.quote p { font: 600 15px/2 var(--serif); }
+.quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 12px; color: var(--stone); }
+
+/* ============ 7. About ============ */
+
+.about { padding: 12dvh 22px; max-width: 1100px; margin: 0 auto; }
+
+.about__photo {
+  margin: 0 auto 6dvh;
+  width: min(76vw, 360px);
+  background: #fff;
+  padding: 10px 10px 46px;
+  box-shadow: 0 14px 40px var(--ink-shadow);
+  transform: rotate(-2deg);
+  position: relative;
+}
+.about__photo img { width: 100%; object-fit: cover; filter: saturate(0.88); }
+
+.about__sig {
+  position: absolute;
+  right: 18px; bottom: 6px;
+  font-size: 30px;
+  color: var(--deep);
+}
+
+.about__txt > p { max-width: 36em; }
+
+.about__quote {
+  margin: 4dvh 0;
+  padding: 24px 22px;
+  background: var(--green-18);
+  border-radius: 4px;
+  transform: rotate(0.4deg);
+}
+.about__quote p { font: 800 clamp(18px, 5vw, 24px)/1.9 var(--serif); letter-spacing: 0.06em; }
+.about__quote cite { display: block; margin-top: 10px; font-style: normal; font-size: 13px; }
+
+.about__cred { font-size: 12.5px; color: var(--stone); }
+
+@media (min-width: 900px) {
+  .about__cols { display: grid; grid-template-columns: 5fr 7fr; gap: 64px; align-items: start; }
+  .about__photo { position: sticky; top: 90px; width: 100%; max-width: 400px; }
+}
+
+/* ============ 8. 特典 ============ */
+
+.gift { padding: 4dvh 22px 12dvh; }
+.gift__panel {
+  position: relative;
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 7dvh 26px;
+  text-align: center;
+  background: #fff;
+  box-shadow: 0 14px 40px var(--ink-shadow);
+  transform: rotate(-0.6deg);
+}
+.gift__tag {
+  position: absolute;
+  top: -16px; left: 50%;
+  transform: translateX(-50%) rotate(-4deg);
+  padding: 8px 18px;
+  background: var(--green);
+  color: var(--ivory);
+  border-radius: 999px;
+  font-size: 16px;
+}
+.gift__panel h2 { font-size: clamp(19px, 5.2vw, 26px); letter-spacing: 0.08em; line-height: 1.9; }
+.gift__panel p { max-width: 30em; margin: 16px auto 24px; }
+
+/* ============ 9. FAQ・アクセス ============ */
+
+.faq { padding: 8dvh 22px 12dvh; max-width: 680px; margin: 0 auto; }
+
+.faq__list details { border-bottom: 1.5px solid var(--ink-12); }
+.faq__list details:first-child { border-top: 1.5px solid var(--ink-12); }
+.faq__list summary {
+  list-style: none;
+  cursor: pointer;
+  position: relative;
+  padding: 19px 40px 19px 0;
+  font-weight: 500;
+  -webkit-tap-highlight-color: transparent;
+}
+.faq__list summary::-webkit-details-marker { display: none; }
+.faq__list summary::after {
+  content: "+";
+  position: absolute;
+  right: 4px; top: 50%;
+  margin-top: -0.72em;
+  font: 400 24px/1.4 var(--sans);
+  color: var(--green);
+  transition: transform 420ms var(--spring);
+}
+.faq__list details[open] summary::after { transform: rotate(135deg); }
+.faq__list details p { padding: 0 0 20px; color: var(--deep); max-width: 36em; }
+
+.access { margin-top: 11dvh; }
+.def--access > div { grid-template-columns: 8.5em 1fr; }
+.access__note { margin-top: 26px; text-align: center; }
+
+/* ============ 10. クロージング ============ */
+
+.closing {
+  position: relative;
+  padding: 6dvh 0 14dvh;
+  overflow: hidden;
+  text-align: center;
+}
+
+/* スクロール連動の巨大文字（マーキーではなく scrub で流れる） */
+.closing__big {
+  font: 800 clamp(58px, 17vw, 160px)/1.3 var(--serif);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  color: var(--green-18);
+  will-change: transform;
+  margin-bottom: 2dvh;
+}
+
+.closing__inner { padding: 0 26px; }
+
+.closing__words {
+  font: 800 clamp(20px, 5.6vw, 30px)/2 var(--serif);
+  letter-spacing: 0.1em;
+  margin-bottom: 6dvh;
+}
+
+/* 押すと弾ける巨大円形CTA */
+.orb {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: min(62vw, 280px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--deep);
+  color: var(--ivory);
+  text-decoration: none;
+  font: 600 clamp(14px, 4vw, 18px)/2 var(--serif);
+  letter-spacing: 0.14em;
+  box-shadow: 0 22px 60px var(--ink-shadow), 8px 8px 0 var(--green-35);
+  transition: transform 260ms var(--spring), background 300ms;
+  animation: orb-breath 4.5s ease-in-out infinite;
+  -webkit-tap-highlight-color: transparent;
+}
+.orb:hover { background: var(--ink); }
+.orb:active { transform: scale(0.93); animation-play-state: paused; }
+
+@keyframes orb-breath {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.045); }
+}
+
+.closing__en { margin-top: 5dvh; font-size: 16px; letter-spacing: 0.2em; color: var(--deep); }
+
+/* 紙吹雪（JSが生成） */
+.confetti {
+  position: fixed;
+  z-index: 80;
+  width: 10px; height: 14px;
+  border-radius: 50% 50% 50% 0;
+  pointer-events: none;
+}
+
+/* ============ フッター ============ */
+
+.site-footer {
+  background: var(--ink);
+  color: var(--ivory);
+  text-align: center;
+  padding: 7dvh 24px 6dvh;
+}
+.wordmark--footer { font-size: 14px; letter-spacing: 0.5em; }
+.footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 22px; margin: 24px 0; }
+.footer-links a { font-size: 12.5px; letter-spacing: 0.1em; text-decoration: none; opacity: 0.85; }
+.footer-copy { font-size: 11px; opacity: 0.55; }
+
+/* ============ 追従CTAバー ============ */
+
+.cta-bar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 60;
+  padding: 10px 18px calc(10px + env(safe-area-inset-bottom));
+  background: rgba(246, 241, 232, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1.5px solid var(--ink-12);
+  transform: translateY(0);
+  transition: transform 500ms var(--ease-out);
+}
+.cta-bar .btn { width: 100%; }
+.cta-bar.is-hidden { transform: translateY(110%); }
+
+/* ============ Reduced motion: 全て静止・完成形 ============ */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .marquee__inner, .badge svg, .orb { animation: none; }
+  .hero .marker { background-size: 100% 100%; animation: none; }
+}
+
+
+/* ============ ガイド用の上書き・追加スタイル ============ */
+:root{ --mark:#c0392b; --mark-bg:#fff4f1; --mark-soft:#e8b9b0; }
+
+/* ガイド全体の地 */
+body.guide{ padding-bottom: 0; }
+
+/* --- 指示書（冒頭サマリー） --- */
+.guide-head{ background:#fff; border-bottom:2px solid var(--ink); padding:26px 20px; }
+.guide-head h1{ font-family:var(--serif); font-size:21px; line-height:1.5; margin:0 0 6px; }
+.guide-head .sub{ font-size:13px; color:var(--deep); margin:2px 0; line-height:1.7; }
+.spec{ max-width:920px; margin:0 auto; padding:26px 20px 10px; }
+.spec h2{ font-family:var(--serif); font-size:18px; border-left:5px solid var(--mark); padding-left:11px; margin:0 0 6px; }
+.spec .lead{ font-size:13.5px; color:var(--deep); margin:0 0 18px; line-height:1.8; }
+.spec table{ width:100%; border-collapse:collapse; background:#fff; font-size:13px; box-shadow:0 8px 24px var(--ink-shadow); }
+.spec th,.spec td{ border:1px solid var(--ink-12); padding:10px 11px; text-align:left; vertical-align:top; line-height:1.7; }
+.spec th{ background:var(--ink); color:var(--ivory); font-weight:500; letter-spacing:.04em; }
+.spec td.no{ text-align:center; font-weight:700; color:var(--mark); white-space:nowrap; }
+.spec td.cnt{ white-space:nowrap; font-weight:700; }
+.spec tr:nth-child(even) td{ background:#faf8f3; }
+.spec .legend{ margin:18px 0 4px; font-size:12.5px; color:var(--deep); background:var(--mark-bg); border:1px dashed var(--mark-soft); border-radius:8px; padding:12px 14px; line-height:1.85; }
+.spec .legend b{ color:var(--mark); }
+
+/* プレビュー見出し（区切り） */
+.preview-head{ max-width:920px; margin:34px auto 0; padding:0 20px; }
+.preview-head h2{ font-family:var(--serif); font-size:18px; border-left:5px solid var(--green); padding-left:11px; margin:0 0 4px; }
+.preview-head p{ font-size:13px; color:var(--deep); margin:0 0 4px; }
+
+/* --- LPプレビューを「紙面」として囲う --- */
+.lp-frame{ position:relative; max-width:520px; margin:22px auto 60px; box-shadow:0 30px 80px rgba(62,68,60,.28); border:1px solid var(--ink-12); }
+@media(min-width:900px){ .lp-frame{ max-width:1140px; } }
+
+/* プレビュー内では固定UIを止める（ガイドとして上から下まで読む用） */
+.lp-frame .site-header{ position:static; }
+.lp-frame .cta-bar{ position:static; transform:none; margin-top:0; }
+.lp-frame .hero{ min-height:auto; }
+/* アニメ前提の初期非表示を確実に解除 */
+.lp-frame *{ animation:none !important; }
+.lp-frame .marker--js{ background-size:100% 100% !important; }
+.lp-frame [hidden]{ display:block !important; }
+
+/* --- 写真プレースホルダ（実画像の代わり：撮る写真の指示も兼ねる） --- */
+.ph{
+  display:grid; place-items:center; text-align:center;
+  background:
+    repeating-linear-gradient(135deg, rgba(110,133,114,.10) 0 10px, transparent 10px 20px),
+    var(--beige);
+  color:var(--deep); font:500 11.5px/1.7 var(--sans); letter-spacing:.04em;
+  padding:14px; border:1px solid rgba(62,68,60,.12); min-height:120px;
+}
+.ph small{ display:block; font-size:10px; color:var(--stone); margin-top:4px; }
+.snap .ph{ width:100%; height:100%; }
+.deal__fig .ph{ aspect-ratio:7/8; }
+.about__photo .ph{ aspect-ratio:3/4; }
+
+/* --- 注釈：番号バッジ＋破線ハイライト --- */
+.anno{ position:relative; outline:2.5px dashed var(--mark); outline-offset:5px; border-radius:10px; }
+.anno--circle{ border-radius:50%; outline-offset:8px; }
+.anno__pin{
+  position:absolute; top:-15px; left:-15px; z-index:5;
+  width:30px; height:30px; border-radius:50%;
+  background:var(--mark); color:#fff; font:700 14px/30px var(--sans);
+  text-align:center; box-shadow:0 3px 8px rgba(192,57,43,.4);
+}
+.anno__pin--br{ top:auto; left:auto; bottom:-15px; right:-15px; }
+.anno__tag{
+  display:inline-block; margin:8px 0 0; padding:4px 11px;
+  background:var(--mark); color:#fff; border-radius:6px;
+  font:700 11.5px/1.5 var(--sans); letter-spacing:.03em;
+}
+/* 追加が必要な「新しい箇所」を空ブロックで差し込む指示カード */
+.add-slot{
+  margin:18px 22px; padding:16px 16px 14px; max-width:480px;
+  margin-inline:auto; background:var(--mark-bg);
+  border:2.5px dashed var(--mark); border-radius:10px; position:relative;
+}
+.add-slot h4{ margin:0 0 6px; font:700 14px/1.6 var(--sans); color:var(--mark); }
+.add-slot p{ font-size:12.5px; color:var(--deep); line-height:1.8; }
+
+.guide-foot{ background:var(--ink); color:var(--ivory); text-align:center; padding:30px 20px; font-size:12px; line-height:1.9; }
+.guide-foot a{ color:var(--beige); }
+</style>
+</head>
+<body class="guide">
+
+<header class="guide-head">
+  <h1>LP 文章の書き込みガイド</h1>
+  <p class="sub">2026-06-18 ／ いまのLPは「枠」はできていて、<b>レオナさんの言葉</b>を入れる場所が残っています。</p>
+  <p class="sub">下の表で「どこに・何を・何文字くらい」を確認 → プレビューの<b style="color:#c0392b">赤い番号①②③…</b>の場所に対応します。書ける所から、話し言葉のままで大丈夫です。</p>
+</header>
+
+<section class="spec">
+  <h2>① 指示書 — どこに、何文字、何を書くか</h2>
+  <p class="lead">文字数は「目安」です。多少前後してOK。うまく書こうとせず、<b>レオナさんが普段お客さんに話す言葉</b>のまま出してください。整えるのはRino側でやります。</p>
+
+  <table>
+    <thead><tr><th class="no">No.</th><th>場所</th><th>何を書く（レオナさんの言葉で）</th><th class="cnt">文字数の目安</th></tr></thead>
+    <tbody>
+      <tr><td class="no">①</td><td>トップの一言<br>（ヒーロー）</td><td>「整えると、人はやり直せる」を、<b>なぜそう思うのか</b>を一文で。夜20分のヨガから立て直した実感を、重すぎない入口の言葉に。</td><td class="cnt">60〜100字</td></tr>
+      <tr><td class="no">②</td><td>こんな思い、<br>ありませんか（4つ）</td><td>いまは仮の文。<b>実際にお客さんから聞く悩み</b>に差し替え。産後・三日坊主・後回し・あきらめ…で合っているか確認も。</td><td class="cnt">各15〜30字 ×4</td></tr>
+      <tr><td class="no">③</td><td>3つのアプローチ<br>（ヨガ／筋トレ／腸活）</td><td>それぞれ、<b>レオナさんならではの一言</b>。「私はこう向き合っている」が伝わる説明に。</td><td class="cnt">各40〜70字 ×3</td></tr>
+      <tr><td class="no">④</td><td>受け方<br>（スタジオ／オンライン／パーソナル）</td><td>それぞれ「どんな人に・どんな時間か」。<b>※今回話した「夜20分サブスク」「20分パーソナル」を足して4〜5枚にするかは別途相談（下のメモ参照）。</b></td><td class="cnt">各40〜70字</td></tr>
+      <tr><td class="no">⑤</td><td>受講者の声<br>（体験談）<span style="color:#c0392b">★最重要</span></td><td>購入を決める一番の決め手。<b>実際の声を2件以上</b>。年代・受講期間・どう変わったか。モニターさんの声でもOK。</td><td class="cnt">各60〜100字＋属性</td></tr>
+      <tr><td class="no">⑥</td><td>レオナさんの想い<br>（About 本文）</td><td>核になる自己開示。<b>どこまで書くかはレオナさんが決める</b>。崩れた時期→夜20分ヨガ→整え直した流れ。子ども・職歴の線引きも。</td><td class="cnt">200〜300字</td></tr>
+      <tr><td class="no">⑦</td><td>信条のひとこと<br>（About 引用）</td><td>レオナさんが一番伝えたい短い言葉。「私は強い人じゃない。だから整える」のような。</td><td class="cnt">30〜60字</td></tr>
+      <tr><td class="no">⑧</td><td>LINE登録特典</td><td>友だち追加した人に<b>何をプレゼントするか</b>。おうちで整える小さな習慣集、動画、など中身を一つ決める。</td><td class="cnt">40〜70字</td></tr>
+      <tr><td class="no">⑨</td><td>クーポンのお知らせ<br><span style="color:#c0392b">（新しく追加する箇所）</span></td><td>「Instagram友だち登録でクーポン進呈中」をサイトにも明記。直接来た人が損した気にならないように。</td><td class="cnt">20〜40字</td></tr>
+      <tr><td class="no">⑩</td><td>料金の数字<br>（体験・月額・パーソナル）</td><td>※これは文章ではなく<b>金額の確定待ち</b>。決まった額を入れます（女性サブスク・男性メニュー）。</td><td class="cnt">数字</td></tr>
+    </tbody>
+  </table>
+
+  <div class="legend">
+    <b>マークの見方：</b> プレビュー内の <b>破線の囲み＋赤い番号</b> が「ここに言葉が要る」場所です。番号は上の表と対応。<br>
+    <b>写真について：</b> ベージュの斜線ボックスは「ここに写真が入る」場所。<b>どんな写真を撮ればいいか</b>もそこに書いてあるので、撮影の参考にしてください（7/5イベント・パークヨガ等で）。
+  </div>
+</section>
+
+<div class="preview-head">
+  <h2>② LP全文プレビュー（注釈つき）</h2>
+  <p>いまのLPを上から下まで通して表示しています。動き（アニメ）は止めた静止版です。</p>
+</div>
+
+<!-- ================= LP 本体プレビュー ================= -->
+<div class="lp-frame">
+
+  <header class="site-header">
+    <span class="wordmark">REONA</span>
+    <span class="btn btn--ink btn--sm">LINEで相談</span>
+  </header>
+
+  <main>
+
+    <!-- 1. Hero -->
+    <section id="hero" class="hero">
+      <div class="hero__grid">
+        <div class="hero__txt">
+          <p class="hero__issue en">wellness magazine by Reona</p>
+          <h1 class="hero__title">
+            <span class="row a">体と心を</span>
+            <span class="row b"><mark class="marker">整える</mark>と、</span>
+            <span class="row c">人は<em>やり直せる</em>。</span>
+          </h1>
+          <div class="anno">
+            <span class="anno__pin">①</span>
+            <p class="hero__lead">忙しさの中で自分を後回しにしている人へ。ヨガとボディメイクを通して、自分の人生を選べる状態へ。強くなるためじゃない、自分に戻るために。</p>
+            <span class="anno__tag">① ここを、レオナさんの"なぜ"の言葉に（60〜100字）</span>
+          </div>
+          <div class="hero__cta">
+            <span class="btn btn--ink btn--lg">LINEで体験について相談する</span>
+          </div>
+        </div>
+
+        <div class="collage" aria-hidden="true">
+          <figure class="snap snap--1"><div class="ph">写真：レッスン風景<small>自然光・季節感</small></div></figure>
+          <figure class="snap snap--2"><div class="ph">写真：スタジオ／海辺<small>整える雰囲気</small></div></figure>
+          <figure class="snap snap--3"><div class="ph">写真：レオナさん<small>プロフィール</small></div></figure>
+          <span class="sticker sticker--kumamoto">熊本</span>
+          <span class="sticker sticker--since en">breathe &amp; begin</span>
+        </div>
+      </div>
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee__inner"><span>yoga × training × gut health&ensp;･&ensp;yoga × training × gut health&ensp;･&ensp;</span></div>
+      </div>
+    </section>
+
+    <!-- コンセプト「整う・語らう」追加メモ -->
+    <div class="add-slot">
+      <h4>＋ 追加検討：コンセプト「整う・語らう」の一文</h4>
+      <p>今回話した「夜20分サブスク＝整える・語らう場」の世界観を、トップ近くに一文入れたい。心と体の両方が整う場であることが伝わる短文（40〜80字）。書けたら⑫として送ってください。</p>
+    </div>
+
+    <!-- 2. 悩み -->
+    <section id="worries" class="list">
+      <h2 class="sec-head"><span class="sec-head__en en">for you</span>こんな思いに、心当たりはありませんか</h2>
+      <div class="anno">
+        <span class="anno__pin">②</span>
+        <ol class="worry-ol">
+          <li class="worry-li"><span class="num en">01</span><p>産後から、<mark class="marker">自分の体に自信が持てなくなった</mark></p></li>
+          <li class="worry-li"><span class="num en">02</span><p>何を始めても、<mark class="marker">三日坊主で終わってしまう</mark></p></li>
+          <li class="worry-li"><span class="num en">03</span><p>家事や仕事に追われて、<mark class="marker">自分のことは後回し</mark></p></li>
+          <li class="worry-li"><span class="num en">04</span><p>年齢のせいだと、どこかで<mark class="marker">あきらめかけている</mark></p></li>
+        </ol>
+        <span class="anno__tag">② 実際にお客さんから聞く悩みに差し替え（各15〜30字）</span>
+      </div>
+      <p class="list__note">それは、意思が弱いからではありません。自分に合う整え方に、まだ出会っていないだけ。ここから一緒に始めましょう。</p>
+    </section>
+
+    <!-- 3. アプローチ -->
+    <section id="approach" class="notes">
+      <h2 class="sec-head"><span class="sec-head__en en">method</span>体を変えて、心を整える</h2>
+      <div class="anno">
+        <span class="anno__pin">③</span>
+        <div class="notes__row">
+          <div class="note note--a"><span class="note__en en">yoga</span><h3>ヨガ</h3><p>呼吸とともに、こわばった体と心をほどく。初心者の方も、体がかたい方も大丈夫です。</p></div>
+          <div class="note note--b"><span class="note__en en">training</span><h3>筋トレ</h3><p>体は、何歳からでも変えられる。一人ひとりの体力に合わせた無理のないボディメイク。</p></div>
+          <div class="note note--c"><span class="note__en en">gut health</span><h3>腸活</h3><p>内側から整える食事と習慣のアドバイス。続けられる整え方を。</p></div>
+        </div>
+        <span class="anno__tag">③ 3つそれぞれ、レオナさんならではの一言に（各40〜70字）</span>
+      </div>
+      <p class="notes__foot">3つを別々にやるのではなく、あなたの体と暮らしに合わせて組み合わせる。だから結果が出て、無理なく続きます。</p>
+    </section>
+
+    <!-- 4. 受け方 -->
+    <section id="channels" class="deck-sec">
+      <h2 class="sec-head"><span class="sec-head__en en">three ways</span>あなたに合う、整え方を</h2>
+      <div class="anno" style="display:block">
+        <span class="anno__pin">④</span>
+        <div class="deck">
+          <article class="deal"><figure class="deal__fig"><div class="ph">写真：スタジオ<small>少人数・自然光</small></div></figure><div class="deal__body"><span class="deal__en en">studio</span><h3>スタジオ</h3><p>直接会い、安心できる居場所を作る。少人数で、一人ひとりの呼吸に合わせて整える時間。</p></div></article>
+          <article class="deal"><figure class="deal__fig"><div class="ph">写真：自宅オンライン<small>リビングで受ける</small></div></figure><div class="deal__body"><span class="deal__en en">online</span><h3>オンライン</h3><p>整える習慣を毎日に届ける。自宅で、自分のペースで。続けられる仕組みで日常に。</p></div></article>
+          <article class="deal"><figure class="deal__fig"><div class="ph">写真：パーソナル<small>一対一サポート</small></div></figure><div class="deal__body"><span class="deal__en en">personal</span><h3>パーソナル</h3><p>本気の人に深く伴走する。あなたの体と心に合わせた、一対一のプログラム。</p></div></article>
+        </div>
+        <span class="anno__tag">④ 各カードの説明（各40〜70字）／構成は下メモ参照</span>
+      </div>
+      <div class="add-slot">
+        <h4>＋ 構成の相談：カードを4〜5枚にする？</h4>
+        <p>今回の打ち合わせでは <b>20分パーソナル／夜20分サブスク／スタジオ／対面パーソナル</b> の4カード案が出ました。いまのLPは3枚（スタジオ／オンライン／パーソナル）。どの構成にするか決めれば、Rino側でカードを足します。各カードから個別ページへ飛ばす形にも対応します。</p>
+      </div>
+    </section>
+
+    <!-- 5. 料金 -->
+    <section id="pricing" class="tickets">
+      <h2 class="sec-head"><span class="sec-head__en en">ticket</span>料金とはじめ方</h2>
+      <div class="anno" style="display:block">
+        <span class="anno__pin">⑩</span>
+        <div class="ticket">
+          <div class="ticket__main">
+            <span class="ticket__tag en">trial lesson</span>
+            <h3>はじめての方へ</h3>
+            <p>体験レッスンは、スタジオ・オンライン・パーソナルから選べます。</p>
+            <dl class="def">
+              <div><dt>体験料</dt><dd>¥◯,◯◯◯（税込・1回）</dd></div>
+              <div><dt>所要</dt><dd>約60分</dd></div>
+            </dl>
+            <span class="btn btn--ink">LINEで体験について相談する</span>
+          </div>
+          <div class="ticket__stub"><span class="en">admit one</span></div>
+        </div>
+        <div class="ticket ticket--sub">
+          <div class="ticket__main">
+            <span class="ticket__tag en">membership</span>
+            <h3>つづけ方</h3>
+            <dl class="def">
+              <div><dt>継続レッスン</dt><dd>月額 ◯,◯◯◯円〜</dd></div>
+              <div><dt>パーソナル</dt><dd>内容に合わせてご案内します</dd></div>
+            </dl>
+            <div class="tags"><span>少人数制</span><span>初めて歓迎</span><span>オンライン可</span></div>
+          </div>
+          <div class="ticket__stub"><span class="en">keep going</span></div>
+        </div>
+        <span class="anno__tag">⑩ 金額が決まり次第ここに入れます（文章ではなく数字）</span>
+      </div>
+    </section>
+
+    <!-- 6. 流れ -->
+    <section id="flow" class="flow">
+      <h2 class="sec-head"><span class="sec-head__en en">how to start</span>体験までの流れ</h2>
+      <ol class="flow__ol">
+        <li><span class="num en">1</span><h3>LINEで友だち追加</h3><p>下のボタンから友だち追加。気になることは、そのまま聞いてください。</p></li>
+        <li><span class="num en">2</span><h3>日程を決める</h3><p>LINEのやり取りで、ご希望の日時と受け方を調整します。</p></li>
+        <li><span class="num en">3</span><h3>当日、一緒に整える</h3><p>スタジオ、またはオンラインで。初めてでも、体がかたくても、大丈夫です。</p></li>
+      </ol>
+    </section>
+
+    <!-- 受講者の声 -->
+    <section id="voices" class="voices">
+      <h2 class="sec-head"><span class="sec-head__en en">voices</span>続けた人の、変化のことば</h2>
+      <div class="anno" style="display:block">
+        <span class="anno__pin">⑤</span>
+        <blockquote class="quote"><p>（受講者の声・準備中）</p><cite>30代・受講3ヶ月</cite></blockquote>
+        <blockquote class="quote"><p>（受講者の声・準備中）</p><cite>40代・受講3ヶ月</cite></blockquote>
+        <span class="anno__tag">⑤ ★最重要：実際の体験談を2件以上（各60〜100字＋年代・期間）</span>
+      </div>
+    </section>
+
+    <!-- 7. About -->
+    <section id="about" class="about">
+      <div class="about__cols">
+        <figure class="about__photo"><div class="ph">写真：レオナさん<small>朝の海辺・自然光</small></div></figure>
+        <div class="about__txt">
+          <h2 class="sec-head sec-head--left"><span class="sec-head__en en">about</span>強くなるためじゃない。自分に戻るためのウェルネス。</h2>
+          <div class="anno">
+            <span class="anno__pin">⑥</span>
+            <p>私自身、長いあいだ自分の体との向き合い方をこじらせて、誰にも言えず一人で抱え込んでいた時期があります。そこから少しずつ整え直せたのは、自分を責めるのをやめて、大切にする感覚を取り戻せたから。だから「整えれば、人はやり直せる」と、本気で思っています。</p>
+            <span class="anno__tag">⑥ レオナさんの想い。どこまで書くかは自分で決める（200〜300字）</span>
+          </div>
+          <blockquote class="about__quote anno anno--circle" style="display:block">
+            <span class="anno__pin anno__pin--br">⑦</span>
+            <p>私は強い人じゃない。だから、<mark class="marker">整える</mark>。</p>
+            <cite>弱くなる日があることを知っているから、また自分に戻れる方法を伝えたい。</cite>
+          </blockquote>
+          <span class="anno__tag">⑦ 一番伝えたい短い言葉（30〜60字）</span>
+          <p class="about__cred">全米ヨガアライアンス RYT200 ／ 腸活アドバイザー ／ ベストボディ・ジャパン 九州大会2連覇（2024・2025）・大阪大会優勝（2025）</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. 特典 -->
+    <section id="gift" class="gift">
+      <div class="gift__panel anno" style="display:block">
+        <span class="anno__pin">⑧</span>
+        <span class="gift__tag en">gift</span>
+        <h2>LINE登録特典を、準備しています</h2>
+        <p>友だち追加してくださった方に、おうちで「整える」を始められる小さな習慣のプレゼントを準備中です。お楽しみに。</p>
+        <span class="btn btn--ink">LINEで友だち追加する</span>
+        <span class="anno__tag">⑧ 特典の中身を決める（40〜70字）</span>
+      </div>
+      <div class="add-slot">
+        <h4>＋ 追加：クーポンのお知らせ（⑨）</h4>
+        <p>「<b>Instagram友だち登録でクーポン進呈中</b>」の一文を、ここかトップに明記します（直接来た人がクーポンを知らず損した気にならないように）。ステッカー風に斜め貼りで目立たせる案。文言を一言ください（20〜40字）。</p>
+      </div>
+    </section>
+
+    <!-- 9. FAQ・アクセス -->
+    <section id="faq" class="faq">
+      <h2 class="sec-head"><span class="sec-head__en en">q &amp; a</span>よくある質問</h2>
+      <div class="faq__list">
+        <details><summary>体がかたくても大丈夫ですか？</summary><p>大丈夫です。ヨガは「かたい体をほどく」ためのものなので、かたい方ほど変化を感じやすいです。</p></details>
+        <details><summary>運動が苦手・初心者でも参加できますか？</summary><p>できます。一人ひとりの体力に合わせて内容を調整します。</p></details>
+        <details><summary>オンラインには何が必要ですか？</summary><p>スマホ1台で受けられます。ヨガマットがあるとより快適です。</p></details>
+      </div>
+      <p style="text-align:center;color:#6b6b6b;font-size:12px;margin-top:18px">＊FAQは下書き済み。内容を確認して直したい所だけ教えてください。</p>
+    </section>
+
+    <!-- 10. クロージング -->
+    <section id="cta" class="closing">
+      <div class="closing__inner">
+        <p class="closing__words">何度でも整え直せる。<br>人生はそこからまた始まる。</p>
+        <span class="orb"><span class="orb__txt">LINEで<br>体験について<br>相談する</span></span>
+        <p class="closing__en en">wellness by Reona</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <span class="wordmark wordmark--footer">REONA</span>
+    <nav class="footer-links"><a>レッスン</a><a>料金</a><a>Reonaの想い</a><a>よくある質問</a><a>Instagram</a></nav>
+    <p class="footer-copy">© 2026 Reona — wellness by Reona</p>
+  </footer>
+
+  <div class="cta-bar"><span class="btn btn--ink">LINEで体験について相談する</span></div>
+</div>
+<!-- ================= /LP 本体プレビュー ================= -->
+
+<footer class="guide-foot">
+  レオナさん｜LP 文章の書き込みガイド ／ 2026-06-18<br>
+  書ける所から、話し言葉のままで大丈夫です。整えるのはRinoがやります。<br>
+  <a href="index.html">← 資料トップへ</a> ／ <a href="tasks.html">宿題リスト</a>
+</footer>
+
+</body>
+</html>
