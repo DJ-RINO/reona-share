@@ -219,7 +219,17 @@
     ・公開後にレオナさんが記事を書くWordPressのログインは、これとは別に用意します。<b>WordPressはレオナさんを管理者</b>に、Rinoは必要な分だけ、と分けられます（公開時に整えます）。
   </div>
 
-  <p class="muted">出典（2026年6月時点）: <a href="https://www.xserver.ne.jp/manual/man_tool_info.php" target="_blank">XServerアカウント利用方法</a>（会員ページとサーバーパネルの役割）／ <a href="https://www.xserver.ne.jp/support/faq/faq_tool_server.php" target="_blank">サーバーパネル FAQ</a>（ログインURL）／ <a href="https://www.xserver.ne.jp/manual/man_server_adminuser.php" target="_blank">管理者ユーザー設定</a>（ビジネスプラン専用機能）</p>
+  <h3>もし「メールに認証コード」が届く場合（重要）</h3>
+  <div class="box">
+    ログインしようとすると<b>登録メールアドレスにコードが届く</b>ことがあります。これは<b>「ログイン時の認証」</b>という機能で、コードがレオナさんのメールに届くため、<b>ID・パスワードを渡しただけではRinoだけでログインを完了できません。</b>対処は次のどちらか。
+  </div>
+  <div class="step"><b>方法1：レオナさんが「ログイン時の認証」をOFFにする</b><br>会員ページ（XServerコントロールパネル）→「<b>ログイン時の認証設定</b>」からOFFにできます。エックスサーバー公式も「<b>Webサイト運営者などメールで認証できない人に任せる場合はOFFに</b>」と案内しています。<b>作業が終わったらONに戻せます</b>。<span class="muted">（OFFの間だけ少しセキュリティが下がるので、作業期間だけにするのが安全）</span></div>
+  <div class="step"><b>方法2：FTP＋WordPressだけ渡す（より安全・おすすめ）</b><br>レオナさんがサーバーパネルに<b>一度だけ</b>入って、(a) WordPressを設置、(b) Rino専用のFTPアカウントを発行。Rinoは以後<b>FTPとWordPressの管理画面だけ</b>で作業します。<b>この2つはメール認証・二段階認証の対象外</b>なので、サーバーパネルのログイン自体を渡さずに済みます。</div>
+  <div class="box" style="background:#f4f7f4">
+    <b>※ 別物に注意：</b>「二段階認証（Google Authenticatorなどの<b>アプリ</b>）」は上のメール認証とは別の機能で、会員ページとサーバーパネルで<b>別々に設定</b>します。サーバーパネルにアプリの二段階認証を掛けていなければ、気にする必要はありません。
+  </div>
+
+  <p class="muted">出典（2026年6月時点）: <a href="https://www.xserver.ne.jp/manual/man_tool_info.php" target="_blank">XServerアカウント利用方法</a>（会員ページとサーバーパネルの役割）／ <a href="https://www.xserver.ne.jp/support/faq/faq_tool_server.php" target="_blank">サーバーパネル FAQ</a>（ログインURL）／ <a href="https://www.xserver.ne.jp/manual/man_order_loginsecurity.php" target="_blank">ログイン時の認証</a>（OFF方法・制作者へ任せる場合の案内）／ <a href="https://www.xserver.ne.jp/manual/man_order_twostepauth.php" target="_blank">二段階認証設定</a>（会員ページ／サーバーパネルで別設定）／ <a href="https://www.xserver.ne.jp/manual/man_server_adminuser.php" target="_blank">管理者ユーザー設定</a>（ビジネスプラン専用機能）</p>
 </section>
 
 </div>
