@@ -40,6 +40,7 @@
   <a href="#domain">② ドメイン（なぜ必要・探し方・作り方）</a>
   <a href="#domain-candidates">└ ドメイン候補の比べかた</a>
   <a href="#server">③ サーバー（どのプランにするか）</a>
+  <a href="#access">④ 権限の渡し方（Rinoに作業を任せる）</a>
   <a href="index.html">← 資料トップ</a>
 </nav>
 <div class="wrap">
@@ -177,6 +178,48 @@
   </div>
 
   <p class="muted">出典: <a href="https://www.xserver.ne.jp/price/" target="_blank">エックスサーバー 料金</a> ／ <a href="https://www.xserver.ne.jp/campaign/campaign_260604.php" target="_blank">キャンペーン</a> ／ <a href="https://www.xserver.ne.jp/manual/man_order_present_domain.php" target="_blank">独自ドメイン永久無料特典</a>（いずれも2026年6月時点）</p>
+</section>
+
+<section id="access">
+  <h2>④ サーバーの権限をRinoに渡す方法（安全な渡し方）</h2>
+  <p class="lead">本番サイト（WordPress）の構築はRinoが担当します。そのために、サーバーの「作業場」だけをレオナさんからRinoに渡します。<b>お金まわりは渡しません。</b>ここで、その分け方と渡し方を説明します。</p>
+
+  <h3>大前提：エックスサーバーには「2つのログイン」がある</h3>
+  <div class="box">
+    エックスサーバーは、ログインする場所が2つに分かれています。ここを分けて渡せるのが安全のポイントです。
+    <table style="margin-top:12px">
+      <thead><tr><th>ログインの種類</th><th>できること</th><th>誰が持つか</th></tr></thead>
+      <tbody>
+        <tr><td><b>会員ページ</b><br>（Xserverアカウント）</td><td>料金の支払い・契約の管理・各種申込み（＝<b>お金と契約</b>）</td><td style="color:#2e6b3a;font-weight:700">レオナさんだけ<br>（渡さない）</td></tr>
+        <tr><td><b>サーバーパネル</b></td><td>WordPressの設置・FTP・データベース・ドメイン設定・メール（＝<b>サイト構築の作業</b>）</td><td style="color:#2b3a55;font-weight:700">Rinoに渡す</td></tr>
+      </tbody>
+    </table>
+    <p style="margin:12px 0 0" class="muted">つまり「お金（会員ページ）」と「作業（サーバーパネル）」を切り離して渡せます。Rinoはカード情報や契約変更には一切触れません。</p>
+  </div>
+
+  <div class="rec" style="background:#fdf1f0;border-color:#f0c9c4">
+    <b style="color:#c0392b">いちばん大事なこと：</b> Rinoに渡すのは<b>「サーバーパネル」の情報だけ</b>。<b>「会員ページ（Xserverアカウント）」のログインは絶対に渡さないでください。</b>ここに支払い・カード・契約の全部が入っています。
+  </div>
+
+  <h3>スタンダードプランでの渡し方</h3>
+  <div class="box">
+    ユーザーを分けて細かく権限を割り当てる機能（管理者ユーザー設定）は、エックスサーバーでは<b>「ビジネスプラン」専用</b>で、レオナさんの「スタンダードプラン」にはありません。<br>
+    そのため渡し方は、<b>「サーバーパネルのログイン情報」を共有する</b>形になります（下の手順）。あとから<b>サーバーパスワードを変えれば、その共有はいつでも止められます</b>（＝レオナさんが主導権を持ち続けられる）。
+  </div>
+
+  <h3>レオナさんの手順（3つ渡すだけ）</h3>
+  <div class="step"><b>1.</b> <b>会員ページ</b>にログイン → <a href="https://secure.xserver.ne.jp/xapanel/login/xserver/" target="_blank">secure.xserver.ne.jp/xapanel/login/xserver/</a></div>
+  <div class="step"><b>2.</b> <b>サーバーパネルのログイン情報</b>（<b>サーバーID</b> と <b>サーバーパスワード</b>）を確認。契約時にエックスサーバーから届いた<b>「サーバーアカウント設定完了のお知らせ」メール</b>に書いてあります。見当たらなければ、会員ページの「サーバー管理」からサーバーパネルに入れます（パスワードはそこで変更も可）。</div>
+  <div class="step"><b>3.</b> 下の<b>3つだけ</b>をRinoに送る：<br>　・サーバーパネルのURL： <a href="https://secure.xserver.ne.jp/xapanel/login/xserver/server/" target="_blank">secure.xserver.ne.jp/xapanel/login/xserver/server/</a><br>　・<b>サーバーID</b><br>　・<b>サーバーパスワード</b></div>
+
+  <h3>送るときの安全のコツ</h3>
+  <div class="box">
+    ・パスワードはLINEのトークにそのまま長く残さない。<b>IDとパスワードを別々に送る</b>か、Rinoが受け取って控えたら<b>そのメッセージを消す</b>。<br>
+    ・<b>作業が終わったら「サーバーパスワード」を変更</b>すれば、渡したログインは使えなくなります（権限の回収）。<br>
+    ・公開後にレオナさんが記事を書くWordPressのログインは、これとは別に用意します。<b>WordPressはレオナさんを管理者</b>に、Rinoは必要な分だけ、と分けられます（公開時に整えます）。
+  </div>
+
+  <p class="muted">出典（2026年6月時点）: <a href="https://www.xserver.ne.jp/manual/man_tool_info.php" target="_blank">XServerアカウント利用方法</a>（会員ページとサーバーパネルの役割）／ <a href="https://www.xserver.ne.jp/support/faq/faq_tool_server.php" target="_blank">サーバーパネル FAQ</a>（ログインURL）／ <a href="https://www.xserver.ne.jp/manual/man_server_adminuser.php" target="_blank">管理者ユーザー設定</a>（ビジネスプラン専用機能）</p>
 </section>
 
 </div>
