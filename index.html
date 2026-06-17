@@ -31,6 +31,9 @@
   .who.rino { background:var(--navy); color:#fff; }
   .who.crit { background:#f6d4cf; color:var(--red); }
   .who.done { background:#cfe8d0; color:#2e6b3a; }
+  .s-ttl s, .todo-list s { text-decoration-color:#7fae86; color:#8a8a8a; }
+  .step.is-done .num { background:#9bbf9f; }
+  .done-step { border:1.5px solid #cfe3cf; border-radius:11px; padding:13px 14px; background:#f6faf6; }
   .step .s-ttl { font-weight:700; font-size:14.5px; }
   .step .s-desc { color:var(--sub); font-size:12.5px; margin-top:3px; }
   .step .s-link { display:inline-block; margin-top:7px; color:var(--accent); font-size:12.5px; font-weight:700; text-decoration:none; }
@@ -53,41 +56,39 @@
 
   <section class="flow">
     <h2>進行ワークフロー — 何から動くと一番スムーズか</h2>
-    <p class="flow-lead">レオナさんのタスクと、Rino側の作業はつながっています。<b>🔴「ドメイン取得」が全ての出発点</b>。ここが動くと本番サイトまで一気に進みます。各ステップの「→」から、くわしい説明ページに飛べます。</p>
+    <p class="flow-lead"><b>✅ ドメイン取得・サーバー契約が完了しました（本日）。</b>出発点がクリアになったので、次は本番サイトの構築に進みます。各ステップの「→」から、くわしい説明ページに飛べます。</p>
 
     <div class="flow-track">
       <p class="track-ttl">① 本番サイトが立ち上がるまでの順番</p>
 
-      <div class="start-step">
-        <div class="step">
+      <div class="done-step">
+        <div class="step is-done">
           <div class="num">1</div>
           <div class="s-body">
-            <span class="who leona">レオナさん</span><span class="who crit">🔴 最優先・起点</span>
-            <div class="s-ttl">ドメインを決めて取得する</div>
-            <div class="s-desc">サイトの「住所」です。これが無いと、この先のサーバー契約もサイト構築も始められません。候補を3〜5個決めて取得するところまでをお願いします（接続作業はRinoが対応）。</div>
-            <a class="s-link" href="guide.html#domain">ドメインのやさしい解説を見る →</a><br>
-            <a class="s-link" href="guide.html#domain-candidates">ドメインの選び方候補（比較）→</a>
+            <span class="who leona">レオナさん</span><span class="who done">✅ 完了（本日）</span>
+            <div class="s-ttl"><s>ドメインを決めて取得する</s></div>
+            <div class="s-desc">サイトの「住所」です。<b>取得完了しました。</b>接続作業はRinoが対応します。</div>
           </div>
         </div>
       </div>
 
-      <div class="arrow">ドメインが決まらないと、次に進めません</div>
+      <div class="arrow">取得済み ✓</div>
 
-      <div class="step">
+      <div class="step is-done">
         <div class="num">2</div>
         <div class="s-body">
-          <span class="who rino">Rino</span>
-          <div class="s-ttl">エックスサーバーを契約する</div>
-          <div class="s-desc">取得したドメインを置く「土地」を借ります。ドメインが決まってから契約します。<br><b>おすすめは「エックスサーバー スタンダード」</b>。24ヶ月契約で月<b>783円</b>（税込・今だけキャンペーン価格／初回一括 約18,800円）。独自ドメイン2個無料・SSL・独自メール込みで、Reonaのサイトには十分すぎる性能です。<a class="s-link" href="guide.html#server">サーバーのくわしい説明 →</a></div>
+          <span class="who rino">Rino</span><span class="who done">✅ 完了（本日）</span>
+          <div class="s-ttl"><s>エックスサーバーを契約する</s></div>
+          <div class="s-desc"><b>契約完了しました。</b>メモ通り「エックスサーバー スタンダード」24ヶ月契約（月<b>783円</b>・初回一括 約18,800円）。独自ドメイン2個無料・SSL・独自メール込み。<a class="s-link" href="guide.html#server">サーバーのくわしい説明 →</a></div>
         </div>
       </div>
 
-      <div class="arrow">サーバーが用意できたら</div>
+      <div class="arrow">契約済み → 次はここ</div>
 
       <div class="step">
         <div class="num">3</div>
         <div class="s-body">
-          <span class="who rino">Rino</span>
+          <span class="who rino">Rino</span><span class="who crit">← 次はここ</span>
           <div class="s-ttl">WordPressで本番サイトを構築する</div>
           <div class="s-desc">実際に運用する本番サイトを組み立てます。</div>
         </div>
@@ -121,12 +122,12 @@
       <p class="track-ttl">③ 価格確定とサイト公開を進めるための宿題</p>
       <p class="s-desc" style="margin:0 0 12px">この3つが揃うと、料金とLINEの仕組みが一気に固まります。</p>
       <ul class="todo-list">
-        <li><span class="who leona">レオナさん</span> 月に動ける時間（パーソナル何件／グループ何本）— <b>価格の逆算に必須</b></li>
-        <li><span class="who leona">レオナさん</span> LINE公式の<b>ログイン情報</b>（自動返信を組むため。※サイトのボタン用URLとは別物）</li>
-        <li><span class="who leona">レオナさん</span> 男性向けパーソナルの料金イメージ＋男女で分けたい理由</li>
+        <li><span class="who leona">レオナさん</span><span class="who done">✅ 確定</span> <s>月に動ける時間（パーソナル何件／グループ何本）</s>（対面4／グループ4／オンライン10・6/17確定）</li>
+        <li><span class="who leona">レオナさん</span><span class="who crit">🔴 残り</span> LINE公式の<b>ログイン情報</b>（自動返信を組むため。※サイトのボタン用URLとは別物）</li>
+        <li><span class="who leona">レオナさん</span><span class="who done">✅ 確定</span> <s>男性向けパーソナルの料金イメージ＋男女で分けたい理由</s>（6/17確定）</li>
       </ul>
       <a class="s-link" href="tasks.html">宿題リストをくわしく見る →</a>
-      <div class="done-note">✅ 受領済み：サイト用FAQ ／ <b>LINE友だち追加URL</b>（本日サイトのボタンに反映しました。タップで友だち追加に飛びます）</div>
+      <div class="done-note">✅ 完了：ドメイン取得・サーバー契約（本日）／ 稼働時間・男性料金（6/17確定）／ サイト用FAQ・LINE友だち追加URL受領。<b>残るはLINE公式ログイン情報のみ。</b></div>
     </div>
   </section>
 
