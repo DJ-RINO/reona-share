@@ -1,0 +1,45 @@
+/* ===== 男性LP 専用オーバーライド ===== */
+
+/* 料金カードの行: ラベルは可変幅・価格は右端で全カード揃える
+   （既定の grid 7em 1fr だと「体験パーソナル」が折返して左に寄るため） */
+#pricing .menu .def-row {
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  column-gap: var(--space-4);
+}
+
+/* フラッグシップ（ハイブリッド）に受賞画像を横へ添える */
+.menu--flagship {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+}
+.menu--flagship .menu__main {
+  display: flex;
+  flex-direction: column;
+}
+.menu--flagship .menu__media {
+  border-radius: 18px;
+  overflow: hidden;
+  align-self: stretch;
+}
+.menu--flagship .menu__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  aspect-ratio: 4 / 5;
+  filter: var(--img-filter);
+}
+
+@media (min-width: 760px) {
+  .menu--flagship {
+    grid-template-columns: 1.2fr 0.9fr;
+    align-items: stretch;
+    column-gap: var(--space-6);
+  }
+  .menu--flagship .menu__media img {
+    aspect-ratio: auto;
+    min-height: 100%;
+  }
+}
