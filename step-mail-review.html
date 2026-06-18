@@ -1,0 +1,1997 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>ステップメール 確認ドラフト | REONA</title>
+  <style>
+    /* ---- リセット ---- */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ---- カラートークン ---- */
+    :root {
+      --c-bg:          #F6F1E8;
+      --c-surface:     #FFFFFF;
+      --c-surface-sub: #EFE8DB;
+      --c-ink:         #3E443C;
+      --c-ink-soft:    #84887E;
+      --c-green:       #6E8572;
+      --c-green-deep:  #56695A;
+      --c-border:      rgba(62,68,60,0.18);
+      --c-green-tint:  rgba(110,133,114,0.10);
+      --c-warn-bg:     #FFF7DC;
+      --c-warn-border: #E8C84A;
+      --c-warn-text:   #6B5A00;
+      --c-note-bg:     rgba(110,133,114,0.08);
+      --c-note-border: rgba(110,133,114,0.30);
+      --c-ok:          #4A7C59;
+      --c-ok-bg:       rgba(74,124,89,0.10);
+      --c-check-border:rgba(62,68,60,0.35);
+    }
+
+    /* ---- ベース ---- */
+    html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+
+    body {
+      background: var(--c-bg);
+      color: var(--c-ink);
+      font-family: "Hiragino Sans", "Noto Sans JP", sans-serif;
+      font-weight: 300;
+      font-size: 14px;
+      line-height: 2.0;
+      letter-spacing: 0.03em;
+      min-height: 100vh;
+    }
+
+    /* ---- ページ幅 ---- */
+    .wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* ---- ページヘッダ ---- */
+    .page-header {
+      background: var(--c-green);
+      color: #F6F1E8;
+      padding: 28px 20px 24px;
+      text-align: center;
+    }
+    .page-header__label {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.75;
+      margin-bottom: 6px;
+    }
+    .page-header__title {
+      font-family: "Hiragino Mincho ProN", "Noto Serif JP", serif;
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1.5;
+      letter-spacing: 0.06em;
+    }
+
+    /* ---- 冒頭ノート ---- */
+    .intro-note {
+      background: var(--c-surface);
+      border-left: 3px solid var(--c-green);
+      margin: 20px 20px 0;
+      padding: 16px 18px;
+      border-radius: 0 6px 6px 0;
+      font-size: 13.5px;
+      line-height: 1.85;
+    }
+    .intro-note__lead {
+      font-size: 15px;
+      font-family: "Hiragino Mincho ProN", "Noto Serif JP", serif;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--c-green-deep);
+    }
+    .intro-note p + p { margin-top: 8px; }
+
+    /* ---- ステータスバッジ群 ---- */
+    .status-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 16px 20px 0;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+    }
+    .badge--fixed  { background: var(--c-ok-bg); color: var(--c-ok); border: 1px solid rgba(74,124,89,0.30); }
+    .badge--pend   { background: var(--c-warn-bg); color: var(--c-warn-text); border: 1px solid var(--c-warn-border); }
+    .badge--note   { background: var(--c-note-bg); color: var(--c-green-deep); border: 1px solid var(--c-note-border); }
+
+    /* ---- 未確定まとめ欄 ---- */
+    .global-pending {
+      margin: 16px 20px 0;
+      background: var(--c-warn-bg);
+      border: 1px solid var(--c-warn-border);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .global-pending__title {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--c-warn-text);
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    .global-pending__list {
+      list-style: none;
+      font-size: 12.5px;
+      color: var(--c-warn-text);
+      line-height: 1.7;
+    }
+    .global-pending__list li { padding-left: 12px; position: relative; }
+    .global-pending__list li::before { content: "·"; position: absolute; left: 0; }
+
+    /* ---- テーマセクション ---- */
+    .section-spacer { height: 28px; }
+
+    .theme-section { margin-bottom: 4px; }
+
+    .theme-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 20px 12px;
+      background: var(--c-surface-sub);
+      border-top: 1.5px solid var(--c-border);
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .theme-header:active { opacity: 0.8; }
+
+    .theme-num {
+      width: 28px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--c-green);
+      color: #F6F1E8;
+      border-radius: 50%;
+      font-size: 13px;
+      font-family: "Hiragino Mincho ProN", "Noto Serif JP", serif;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .theme-title-block { flex: 1; min-width: 0; }
+    .theme-title {
+      font-family: "Hiragino Mincho ProN", "Noto Serif JP", serif;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      line-height: 1.45;
+    }
+    .theme-sub {
+      font-size: 11.5px;
+      color: var(--c-ink-soft);
+      margin-top: 2px;
+      letter-spacing: 0.04em;
+    }
+
+    .theme-chevron {
+      width: 20px; height: 20px;
+      flex-shrink: 0;
+      color: var(--c-ink-soft);
+      transition: transform 0.2s ease;
+    }
+    .theme-section.is-open .theme-chevron { transform: rotate(180deg); }
+
+    .theme-body {
+      display: none;
+      background: var(--c-surface);
+      border-bottom: 1px solid var(--c-border);
+    }
+    .theme-section.is-open .theme-body { display: block; }
+
+    /* ---- メール通カード ---- */
+    .mail-card {
+      border-top: 1px solid var(--c-border);
+      padding: 20px 20px 18px;
+    }
+    .mail-card:first-child { border-top: none; }
+
+    .mail-card__header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .mail-card__num {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--c-green);
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .mail-card__type {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--c-ink);
+      flex: 1;
+    }
+    .mail-card__timing {
+      font-size: 11px;
+      color: var(--c-ink-soft);
+      flex-shrink: 0;
+    }
+
+    /* ---- メッセージバブル ---- */
+    .bubbles { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+
+    .bubble-group { display: flex; flex-direction: column; gap: 4px; }
+    .bubble-label {
+      font-size: 10.5px;
+      color: var(--c-ink-soft);
+      letter-spacing: 0.05em;
+      padding-left: 2px;
+    }
+    .bubble {
+      background: var(--c-bg);
+      border: 1px solid var(--c-border);
+      border-radius: 4px 16px 16px 16px;
+      padding: 12px 14px;
+      font-size: 13.5px;
+      line-height: 1.85;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    /* ---- 未回答ハイライト ---- */
+    .unanswered {
+      display: inline;
+      background: var(--c-warn-bg);
+      border: 1px solid var(--c-warn-border);
+      border-radius: 4px;
+      padding: 1px 5px;
+      color: var(--c-warn-text);
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.6;
+      white-space: normal;
+    }
+
+    /* ---- 確認チェックボックスUI ---- */
+    .check-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: var(--c-note-bg);
+      border: 1px solid var(--c-note-border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-top: 4px;
+    }
+    .check-label { font-size: 12.5px; color: var(--c-ink-soft); line-height: 1.7; flex: 1; }
+
+    .check-options { display: flex; flex-direction: column; gap: 7px; flex-shrink: 0; }
+    .check-opt {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 12.5px;
+      color: var(--c-ink);
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .check-opt input[type="radio"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 18px; height: 18px;
+      border: 1.5px solid var(--c-check-border);
+      border-radius: 50%;
+      position: relative;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .check-opt input[type="radio"]:checked {
+      background: var(--c-green);
+      border-color: var(--c-green);
+    }
+    .check-opt input[type="radio"]:checked::after {
+      content: "";
+      position: absolute;
+      top: 4px; left: 4px;
+      width: 8px; height: 8px;
+      background: #F6F1E8;
+      border-radius: 50%;
+    }
+    .check-opt--fix input[type="radio"]:checked { background: var(--c-ok); border-color: var(--c-ok); }
+    .check-opt--redo input[type="radio"]:checked { background: #B85C2A; border-color: #B85C2A; }
+
+    /* ---- メモ欄 ---- */
+    .memo-wrap { margin-top: 10px; }
+    .memo-wrap label { display: block; font-size: 11.5px; color: var(--c-ink-soft); margin-bottom: 4px; }
+    .memo-wrap textarea {
+      width: 100%;
+      border: 1px solid var(--c-border);
+      border-radius: 6px;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--c-ink);
+      background: var(--c-surface);
+      resize: vertical;
+      min-height: 60px;
+      line-height: 1.7;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .memo-wrap textarea:focus { border-color: var(--c-green); }
+    .memo-wrap textarea::placeholder { color: var(--c-ink-soft); opacity: 0.7; }
+
+    /* ---- コピーボタン（まとめてコピー） ---- */
+    .copy-section {
+      margin: 0 20px 40px;
+      padding-top: 24px;
+    }
+    .copy-section__title {
+      font-family: "Hiragino Mincho ProN", "Noto Serif JP", serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--c-ink);
+      margin-bottom: 6px;
+    }
+    .copy-section__note { font-size: 12px; color: var(--c-ink-soft); margin-bottom: 14px; }
+    .btn-copy {
+      display: block;
+      width: 100%;
+      padding: 14px 20px;
+      background: var(--c-green);
+      color: #F6F1E8;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-copy:active { background: var(--c-green-deep); }
+    .btn-copy.copied { background: var(--c-ok); }
+
+    /* ---- フッタ ---- */
+    .page-footer {
+      text-align: center;
+      padding: 24px 20px 40px;
+      font-size: 11.5px;
+      color: var(--c-ink-soft);
+      border-top: 1px solid var(--c-border);
+    }
+
+    /* ---- ユーティリティ ---- */
+    .mt4  { margin-top: 4px; }
+    .mt8  { margin-top: 8px; }
+    .mt12 { margin-top: 12px; }
+
+    /* ---- デスクトップ補正 ---- */
+    @media (min-width: 540px) {
+      .page-header { padding: 36px 24px 30px; }
+      .wrap        { padding: 0 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ページヘッダ -->
+<div class="page-header">
+  <p class="page-header__label">LINE ステップメール 確認用ドラフト</p>
+  <p class="page-header__title">REONA<br>ステップメール 全6テーマ × 各4通</p>
+</div>
+
+<div class="wrap">
+
+  <!-- 冒頭ノート -->
+  <div class="intro-note">
+    <p class="intro-note__lead">これは確認用ドラフトです。気になったところだけ教えてください。</p>
+    <p>Rinoとのやりとりをもとに、回答のテレコ（ズレ）を修正して流し込んだ版です。レオナさんの原文はそのまま使っています。</p>
+    <p>黄色いハイライト部分は「まだ答えていない箇所」です。ここは後で教えてもらえれば差し替えます。各メールの下に「このままでOK／直したい」を選べる欄があります。</p>
+  </div>
+
+  <!-- ステータスバッジ -->
+  <div class="status-bar">
+    <span class="badge badge--fixed">テレコ修正済み</span>
+    <span class="badge badge--pend">価格・正式名称 未確定</span>
+    <span class="badge badge--pend">3冠表記 未確定</span>
+    <span class="badge badge--note">男性回答の多くが未記入</span>
+  </div>
+
+  <!-- 共通 未回答まとめ -->
+  <div class="global-pending">
+    <p class="global-pending__title">全テーマ共通の未記入項目（先に確定できると助かります）</p>
+    <ul class="global-pending__list">
+      <li>■5：3冠の正確な書き方（大会名・年・部門）</li>
+      <li>■6：夜20分サブスクの正式名称・無料期間・申込条件</li>
+      <li>■7：「深める」コースの中身（現在「難しい。」のみ）</li>
+    </ul>
+  </div>
+
+</div><!-- /wrap -->
+
+<div class="section-spacer"></div>
+
+<!-- ============================================================
+     ① 腸活 × 女性
+     ============================================================ -->
+<div class="theme-section" id="theme-a">
+  <div class="theme-header" onclick="toggleTheme('theme-a')" role="button" aria-expanded="false" aria-controls="theme-a-body">
+    <div class="theme-num">①</div>
+    <div class="theme-title-block">
+      <div class="theme-title">腸活 × 女性</div>
+      <div class="theme-sub">40代・更年期前後／シングルマザー</div>
+    </div>
+    <svg class="theme-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="5 8 10 13 15 8"/>
+    </svg>
+  </div>
+  <div class="theme-body" id="theme-a-body">
+
+    <!-- 1通目 -->
+    <div class="mail-card">
+      <div class="mail-card__header">
+        <span class="mail-card__num">1通目</span>
+        <span class="mail-card__type">ストーリー</span>
+        <span class="mail-card__timing">登録翌日</span>
+      </div>
+      <div class="bubbles">
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し①</span>
+          <div class="bubble">「朝、起きた瞬間からもう重い」
+
+お腹が張って
+気持ちまでどんより。
+
+更年期かな、歳かな、と
+諦めかけていませんか？</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し②</span>
+          <div class="bubble">私も昔、体も心もボロボロでした。
+
+吐いて常にからっぽか、食べてお腹いっぱいだったり。
+とにかく体がだるくて、
+「死にたい」「消えたい」って毎日ノートに書いてた頃もありました。
+
+でも「整える」を少しずつ取り戻したら
+まず最初に、身体が軽くなったんです。
+
+何歳からでも、体は応えてくれます。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し③</span>
+          <div class="bubble">次は
+「40代の不調、実は腸かも」
+という意外な話をお届けします。
+
+明日、届けますね。</div>
+        </div>
+      </div>
+      <div class="check-row">
+        <span class="check-label">この通について：</span>
+        <div class="check-options">
+          <label class="check-opt check-opt--fix">
+            <input type="radio" name="a1" value="ok"> このままOK
+          </label>
+          <label class="check-opt check-opt--redo">
+            <input type="radio" name="a1" value="redo"> 直したい
+          </label>
+        </div>
+      </div>
+      <div class="memo-wrap mt8">
+        <label for="memo-a1">気になった点・直したい箇所（任意）</label>
+        <textarea id="memo-a1" placeholder="例：「死にたい」の表現はもう少し柔らかく、など"></textarea>
+      </div>
+    </div><!-- /mail-card -->
+
+    <!-- 2通目 -->
+    <div class="mail-card">
+      <div class="mail-card__header">
+        <span class="mail-card__num">2通目</span>
+        <span class="mail-card__type">教育</span>
+        <span class="mail-card__timing">2〜3日後</span>
+      </div>
+      <div class="bubbles">
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し①</span>
+          <div class="bubble">40代から体が重くなるのは
+「ホルモンのせい」だけじゃないんです。
+
+実は"腸"が
+一番影響しているかもしれません。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し②</span>
+          <div class="bubble">腸が整うと
+気力も巡りも戻ってきます。
+
+今日からできるのは、たった1つ。
+朝イチの白湯。これだけ。
+
+慣れてきたら、毎日体に取り入れたいものを足していきます。
+納豆・ヨーグルト・キムチ・味噌汁（発酵食品をまず1〜2品）。
+白米を全部やめるとメンタル的にキツいから、
+最初は白米＋もち麦に変えるだけでも始めやすいですよ。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し③</span>
+          <div class="bubble">今夜、まずは白湯1杯だけ試してみてください。
+
+次は、実際に変わった方の話を
+お届けします。</div>
+        </div>
+      </div>
+      <div class="check-row">
+        <span class="check-label">この通について：</span>
+        <div class="check-options">
+          <label class="check-opt check-opt--fix">
+            <input type="radio" name="a2" value="ok"> このままOK
+          </label>
+          <label class="check-opt check-opt--redo">
+            <input type="radio" name="a2" value="redo"> 直したい
+          </label>
+        </div>
+      </div>
+      <div class="memo-wrap mt8">
+        <label for="memo-a2">気になった点・直したい箇所（任意）</label>
+        <textarea id="memo-a2" placeholder=""></textarea>
+      </div>
+    </div><!-- /mail-card -->
+
+    <!-- 3通目 -->
+    <div class="mail-card">
+      <div class="mail-card__header">
+        <span class="mail-card__num">3通目</span>
+        <span class="mail-card__type">証拠</span>
+        <span class="mail-card__timing">4〜5日後</span>
+      </div>
+      <div class="bubbles">
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し①</span>
+          <div class="bubble">こんな方がいました。
+
+<span class="unanswered">未回答：腸活で変わった40代女性の声（本人の言葉そのまま）／A3</span></div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し②</span>
+          <div class="bubble">始める前は
+<span class="unanswered">未回答：その方のBefore（張り・だるさ・気力など）／A4</span>
+
+それが
+<span class="unanswered">未回答：After（期間・体の変化＋気持ちの変化）／A5</span>
+
+体が整うと、心まで軽くなる。
+それを何度も見てきました。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し③</span>
+          <div class="bubble">「私にもできるかな」
+そう思えたら、もう半分進んでいます。
+
+次は、一緒に始める方法を
+お伝えしますね。</div>
+        </div>
+      </div>
+      <div class="global-pending" style="margin: 0 0 14px;">
+        <p class="global-pending__title">この通の未記入（3か所）</p>
+        <ul class="global-pending__list">
+          <li>A3：変わった40代女性の声（本人の言葉そのまま）</li>
+          <li>A4：その方のBefore</li>
+          <li>A5：After（期間・体の変化・気持ちの変化）</li>
+        </ul>
+      </div>
+      <div class="check-row">
+        <span class="check-label">この通について：</span>
+        <div class="check-options">
+          <label class="check-opt check-opt--fix">
+            <input type="radio" name="a3" value="ok"> 未回答以外はOK
+          </label>
+          <label class="check-opt check-opt--redo">
+            <input type="radio" name="a3" value="redo"> 構成も直したい
+          </label>
+        </div>
+      </div>
+      <div class="memo-wrap mt8">
+        <label for="memo-a3">気になった点（任意）</label>
+        <textarea id="memo-a3" placeholder=""></textarea>
+      </div>
+    </div><!-- /mail-card -->
+
+    <!-- 4通目 -->
+    <div class="mail-card">
+      <div class="mail-card__header">
+        <span class="mail-card__num">4通目</span>
+        <span class="mail-card__type">オファー</span>
+        <span class="mail-card__timing">6〜7日後</span>
+      </div>
+      <div class="bubbles">
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し①</span>
+          <div class="bubble">ここまで読んでくれて
+ありがとうございます。
+
+一人で全部抱えてきた
+あなたへ。
+
+もう、一人でがんばらなくていい。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し②</span>
+          <div class="bubble">夜、子どもが寝たあとの20分。
+
+おうちで「整える」を始められる
+サブスク無料体験を用意しました。
+
+まずは腸とお腹まわりから
+無理のないペースで一緒に。
+
+<span class="unanswered">未回答：夜20分サブスク無料体験の正式名称・条件（日数/先着など）／■6</span></div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し③</span>
+          <div class="bubble">気になる方は
+「体験」と送ってください。
+
+何歳からでも、体は変わる。
+一緒にやりましょう。</div>
+        </div>
+      </div>
+      <div class="check-row">
+        <span class="check-label">この通について：</span>
+        <div class="check-options">
+          <label class="check-opt check-opt--fix">
+            <input type="radio" name="a4" value="ok"> このままOK
+          </label>
+          <label class="check-opt check-opt--redo">
+            <input type="radio" name="a4" value="redo"> 直したい
+          </label>
+        </div>
+      </div>
+      <div class="memo-wrap mt8">
+        <label for="memo-a4">気になった点（任意）</label>
+        <textarea id="memo-a4" placeholder=""></textarea>
+      </div>
+    </div><!-- /mail-card -->
+
+  </div><!-- /theme-body -->
+</div><!-- /theme-section -->
+
+
+<!-- ============================================================
+     ② 腸活 × 男性
+     ============================================================ -->
+<div class="theme-section" id="theme-b">
+  <div class="theme-header" onclick="toggleTheme('theme-b')" role="button" aria-expanded="false" aria-controls="theme-b-body">
+    <div class="theme-num">②</div>
+    <div class="theme-title-block">
+      <div class="theme-title">腸活 × 男性</div>
+      <div class="theme-sub">健康診断きっかけ・管理職</div>
+    </div>
+    <svg class="theme-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="5 8 10 13 15 8"/>
+    </svg>
+  </div>
+  <div class="theme-body" id="theme-b-body">
+
+    <div class="mail-card">
+      <div class="mail-card__header">
+        <span class="mail-card__num">1通目</span>
+        <span class="mail-card__type">ストーリー</span>
+        <span class="mail-card__timing">登録翌日</span>
+      </div>
+      <div class="bubbles">
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し①</span>
+          <div class="bubble">健康診断の紙を見て
+ため息をついた、あの感じ。
+
+「わかってる。でも今さら何を…」
+
+運動でも食事でもなく
+まず"腸"からだとしたら、どうですか？</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し②</span>
+          <div class="bubble">私も昔、体と心を一度崩しました。
+<span class="unanswered">未回答：崩していた頃のお腹・腸の状態（男性版）／B1</span>
+
+薬でも根性でもなく
+脳腸相関を学んで、腸を意識し始めたんです。
+そこから少しずつ立て直せました。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し③</span>
+          <div class="bubble">次は
+40代後半の体が変わらない
+"本当の理由"を1つだけお話しします。
+
+きつい運動の話ではありません。
+明日、届けますね。</div>
+        </div>
+      </div>
+      <div class="check-row">
+        <span class="check-label">この通について：</span>
+        <div class="check-options">
+          <label class="check-opt check-opt--fix">
+            <input type="radio" name="b1" value="ok"> このままOK
+          </label>
+          <label class="check-opt check-opt--redo">
+            <input type="radio" name="b1" value="redo"> 直したい
+          </label>
+        </div>
+      </div>
+      <div class="memo-wrap mt8">
+        <label for="memo-b1">気になった点（任意）</label>
+        <textarea id="memo-b1" placeholder="B1（男性の腸の状態）の回答も、ここに書いてもらえると助かります"></textarea>
+      </div>
+    </div>
+
+    <div class="mail-card">
+      <div class="mail-card__header">
+        <span class="mail-card__num">2通目</span>
+        <span class="mail-card__type">教育</span>
+        <span class="mail-card__timing">2〜3日後</span>
+      </div>
+      <div class="bubbles">
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し①</span>
+          <div class="bubble">40代後半で体が変わらない理由。
+それは"代謝が落ちた"ではなく
+
+腸が疲れて
+食べた物を活かせていないから。
+
+減らす前に、まず腸を動かす。これが先です。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し②</span>
+          <div class="bubble">今日からできるのは"引く"より"足す"。
+
+例えば朝、白湯＋発酵を1つ。
+<span class="unanswered">未回答：男性に最初にすすめる"足す腸活"の具体メニュー（食材・量・タイミング）／B3</span>
+
+管理職で外食続きでも
+枝豆・冷奴・刺身・焼き魚・サラダを先に食べる。
+血糖値の上昇を防ぐためです。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し③</span>
+          <div class="bubble">まず3日、これだけ試してみてください。
+
+次は、同じ40代の男性が
+腸から数値ごと変わった話をお届けします。</div>
+        </div>
+      </div>
+      <div class="check-row">
+        <span class="check-label">この通について：</span>
+        <div class="check-options">
+          <label class="check-opt check-opt--fix">
+            <input type="radio" name="b2" value="ok"> このままOK
+          </label>
+          <label class="check-opt check-opt--redo">
+            <input type="radio" name="b2" value="redo"> 直したい
+          </label>
+        </div>
+      </div>
+      <div class="memo-wrap mt8">
+        <label for="memo-b2">気になった点（任意）</label>
+        <textarea id="memo-b2" placeholder="B3（男性向け足す腸活メニュー）の回答もここに書いてください"></textarea>
+      </div>
+    </div>
+
+    <div class="mail-card">
+      <div class="mail-card__header">
+        <span class="mail-card__num">3通目</span>
+        <span class="mail-card__type">証拠</span>
+        <span class="mail-card__timing">4〜5日後</span>
+      </div>
+      <div class="bubbles">
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し①</span>
+          <div class="bubble">こんな男性がいました。
+
+<span class="unanswered">未回答：健康診断の数値で来た40代後半男性の最初の状態（数値/体重/腹囲/口ぐせ）／B5</span>
+「もう手遅れだろ」と言っていた方です。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し②</span>
+          <div class="bubble">やったのは食事制限ではなく
+腸を整える順番を変えただけ。
+
+Before→After：
+<span class="unanswered">未回答：その男性のビフォーアフター（体重・数値・期間）／B6</span>
+
+そして本人がこぼした一言が
+<span class="unanswered">未回答：変化した時に本人が言った"感情"の言葉／B7</span>
+でした。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し③</span>
+          <div class="bubble">数字より、表情が変わる。
+それが腸活の本当の効き目です。
+
+あなたはどうですか？
+次で、一緒に始める方法をお伝えします。</div>
+        </div>
+      </div>
+      <div class="global-pending" style="margin: 0 0 14px;">
+        <p class="global-pending__title">この通の未記入（3か所）</p>
+        <ul class="global-pending__list">
+          <li>B5：最初の状態（数値・体重・腹囲・口ぐせ）</li>
+          <li>B6：Before→After（体重・数値・期間）</li>
+          <li>B7：変化した時に本人が言った感情の言葉</li>
+        </ul>
+      </div>
+      <div class="check-row">
+        <span class="check-label">この通について：</span>
+        <div class="check-options">
+          <label class="check-opt check-opt--fix">
+            <input type="radio" name="b3" value="ok"> 未回答以外はOK
+          </label>
+          <label class="check-opt check-opt--redo">
+            <input type="radio" name="b3" value="redo"> 構成も直したい
+          </label>
+        </div>
+      </div>
+      <div class="memo-wrap mt8">
+        <label for="memo-b3">気になった点（任意）</label>
+        <textarea id="memo-b3" placeholder=""></textarea>
+      </div>
+    </div>
+
+    <div class="mail-card">
+      <div class="mail-card__header">
+        <span class="mail-card__num">4通目</span>
+        <span class="mail-card__type">オファー</span>
+        <span class="mail-card__timing">6〜7日後</span>
+      </div>
+      <div class="bubbles">
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し①</span>
+          <div class="bubble">4通、読んでくれてありがとうございます。
+
+腸を整える→体が応える→数値が動く。
+この順番なら、40代後半でも遅くない。
+
+本気で変えたいなら、今が分岐点です。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し②</span>
+          <div class="bubble">男性には「ハイブリッド・パーソナル」を。
+
+ストレッチ＋腸活＋ヨガ＋パーソナルを組み合わせ
+硬い体の可動域と股関節をゆるめ
+筋トレの効果まで底上げします。
+
+ベストボディ3冠の私が
+<span class="unanswered">未回答：男性パーソナルで"実際に勝てる体"として大事にしている考え方・約束／B8</span>
+直接お教えします。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し③</span>
+          <div class="bubble">健康診断の数値が気になっているなら
+一人で抱えず、まず話してください。
+
+「相談」と送ってください。
+あなたに合う始め方をご案内します。</div>
+        </div>
+      </div>
+      <div class="check-row">
+        <span class="check-label">この通について：</span>
+        <div class="check-options">
+          <label class="check-opt check-opt--fix">
+            <input type="radio" name="b4" value="ok"> このままOK
+          </label>
+          <label class="check-opt check-opt--redo">
+            <input type="radio" name="b4" value="redo"> 直したい
+          </label>
+        </div>
+      </div>
+      <div class="memo-wrap mt8">
+        <label for="memo-b4">気になった点（任意）</label>
+        <textarea id="memo-b4" placeholder="B8（勝てる体の考え方）の回答もここに書いてください"></textarea>
+      </div>
+    </div>
+
+  </div><!-- /theme-body -->
+</div>
+
+
+<!-- ============================================================
+     ③ ヨガ × 女性
+     ============================================================ -->
+<div class="theme-section" id="theme-c">
+  <div class="theme-header" onclick="toggleTheme('theme-c')" role="button" aria-expanded="false" aria-controls="theme-c-body">
+    <div class="theme-num">③</div>
+    <div class="theme-title-block">
+      <div class="theme-title">ヨガ × 女性</div>
+      <div class="theme-sub">産後・ワーママの「自分後回し」</div>
+    </div>
+    <svg class="theme-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="5 8 10 13 15 8"/>
+    </svg>
+  </div>
+  <div class="theme-body" id="theme-c-body">
+
+    <div class="mail-card">
+      <div class="mail-card__header">
+        <span class="mail-card__num">1通目</span>
+        <span class="mail-card__type">ストーリー</span>
+        <span class="mail-card__timing">登録翌日</span>
+      </div>
+      <div class="bubbles">
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し①</span>
+          <div class="bubble">「自分のことは、また今度でいいや」
+
+子どもと仕事で1日が終わって
+気づけば自分のケアはゼロ。
+
+鏡を見るのも、なんだか後回し。
+
+そんな毎日になっていませんか？</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し②</span>
+          <div class="bubble">私も二児の母で
+「自分は後回し」をずっとやってきました。
+
+子供を寝かしつけた後かな。
+ベットでボロボロに泣いてた。
+何もなく、理由もなく、勝手に涙が出て来てた。
+
+そこからヨガで
+少しずつ自分を取り戻していきました。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し③</span>
+          <div class="bubble">次回は
+「時間がないのに続けられた」
+たった1つの考え方をお伝えします。
+
+明日の夜、届けますね。</div>
+        </div>
+      </div>
+      <div class="check-row">
+        <span class="check-label">この通について：</span>
+        <div class="check-options">
+          <label class="check-opt check-opt--fix">
+            <input type="radio" name="c1" value="ok"> このままOK
+          </label>
+          <label class="check-opt check-opt--redo">
+            <input type="radio" name="c1" value="redo"> 直したい
+          </label>
+        </div>
+      </div>
+      <div class="memo-wrap mt8">
+        <label for="memo-c1">気になった点（任意）</label>
+        <textarea id="memo-c1" placeholder=""></textarea>
+      </div>
+    </div>
+
+    <div class="mail-card">
+      <div class="mail-card__header">
+        <span class="mail-card__num">2通目</span>
+        <span class="mail-card__type">教育</span>
+        <span class="mail-card__timing">2〜3日後</span>
+      </div>
+      <div class="bubbles">
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し①</span>
+          <div class="bubble">「時間ができたらヨガやろう」
+
+これ、続かない人の口ぐせです。
+
+まとまった時間は
+ワーママには永遠に来ない。
+
+だから"ながら"に乗せるのが正解。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し②</span>
+          <div class="bubble">私が今もやっているのは
+ベットにいながらも出来るヨガの呼吸法。
+
+体力がまだある時は
+キャット&カウ、チャイルドポーズ、シャバアーサナ。
+
+布団の上で、できる日にできるぶんだけ。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し③</span>
+          <div class="bubble">今夜、子どもを寝かしつけたあと
+布団の上で呼吸だけ試してみてください。
+
+次回は
+実際に変わった方の話をお届けします。</div>
+        </div>
+      </div>
+      <div class="check-row">
+        <span class="check-label">この通について：</span>
+        <div class="check-options">
+          <label class="check-opt check-opt--fix">
+            <input type="radio" name="c2" value="ok"> このままOK
+          </label>
+          <label class="check-opt check-opt--redo">
+            <input type="radio" name="c2" value="redo"> 直したい
+          </label>
+        </div>
+      </div>
+      <div class="memo-wrap mt8">
+        <label for="memo-c2">気になった点（任意）</label>
+        <textarea id="memo-c2" placeholder=""></textarea>
+      </div>
+    </div>
+
+    <div class="mail-card">
+      <div class="mail-card__header">
+        <span class="mail-card__num">3通目</span>
+        <span class="mail-card__type">証拠</span>
+        <span class="mail-card__timing">4〜5日後</span>
+      </div>
+      <div class="bubbles">
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し①</span>
+          <div class="bubble">「私と同じだ」と思った方の話を
+ひとつ。
+
+産後ずっと体が戻らず
+自分を責めていたママさんです。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し②</span>
+          <div class="bubble"><span class="unanswered">未回答：産後ママの生徒さんのBefore→After（◯ヶ月で体重/ウエスト、睡眠・気分・家族への接し方。数字＋感情）／C3</span>
+
+体が整うと
+表情が変わって
+気持ちにも余白が生まれます。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し③</span>
+          <div class="bubble">"私はもう無理かも"
+
+そう思っていた時こそ
+変わるサインだと思っています。
+
+次回、一緒に始める方法をお伝えしますね。</div>
+        </div>
+      </div>
+      <div class="global-pending" style="margin: 0 0 14px;">
+        <p class="global-pending__title">この通の未記入（1か所）</p>
+        <ul class="global-pending__list">
+          <li>C3：産後ママ生徒さんのBefore→After（数字＋感情）</li>
+        </ul>
+      </div>
+      <div class="check-row">
+        <span class="check-label">この通について：</span>
+        <div class="check-options">
+          <label class="check-opt check-opt--fix">
+            <input type="radio" name="c3" value="ok"> 未回答以外はOK
+          </label>
+          <label class="check-opt check-opt--redo">
+            <input type="radio" name="c3" value="redo"> 構成も直したい
+          </label>
+        </div>
+      </div>
+      <div class="memo-wrap mt8">
+        <label for="memo-c3">気になった点（任意）</label>
+        <textarea id="memo-c3" placeholder="C3の回答もここに書いてもらえると助かります"></textarea>
+      </div>
+    </div>
+
+    <div class="mail-card">
+      <div class="mail-card__header">
+        <span class="mail-card__num">4通目</span>
+        <span class="mail-card__type">オファー</span>
+        <span class="mail-card__timing">6〜7日後</span>
+      </div>
+      <div class="bubbles">
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し①</span>
+          <div class="bubble">ここまで読んでくれて
+ありがとうございます。
+
+「自分も大切にしていい」
+少しでもそう思えていたら嬉しいです。
+
+後回しにしてきたあなたへ。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し②</span>
+          <div class="bubble">子どもが寝たあとのおうち時間に
+「夜20分サブスク無料体験」を
+ご用意しています。
+
+画面の前で、私と一緒に
+今日の体をほどく20分。
+初月無料で試せます。
+
+<span class="unanswered">未回答：夜20分サブスク無料体験の正式名称・無料期間・申込条件／■6</span></div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し③</span>
+          <div class="bubble">気になる方は
+「体験」と送ってください。
+
+空きと始め方を
+そっとご案内します。</div>
+        </div>
+      </div>
+      <div class="check-row">
+        <span class="check-label">この通について：</span>
+        <div class="check-options">
+          <label class="check-opt check-opt--fix">
+            <input type="radio" name="c4" value="ok"> このままOK
+          </label>
+          <label class="check-opt check-opt--redo">
+            <input type="radio" name="c4" value="redo"> 直したい
+          </label>
+        </div>
+      </div>
+      <div class="memo-wrap mt8">
+        <label for="memo-c4">気になった点（任意）</label>
+        <textarea id="memo-c4" placeholder=""></textarea>
+      </div>
+    </div>
+
+  </div><!-- /theme-body -->
+</div>
+
+
+<!-- ============================================================
+     ④ ヨガ × 男性
+     ============================================================ -->
+<div class="theme-section" id="theme-d">
+  <div class="theme-header" onclick="toggleTheme('theme-d')" role="button" aria-expanded="false" aria-controls="theme-d-body">
+    <div class="theme-num">④</div>
+    <div class="theme-title-block">
+      <div class="theme-title">ヨガ × 男性</div>
+      <div class="theme-sub">呼吸とヨガで自律神経を整える</div>
+    </div>
+    <svg class="theme-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="5 8 10 13 15 8"/>
+    </svg>
+  </div>
+  <div class="theme-body" id="theme-d-body">
+
+    <div class="mail-card">
+      <div class="mail-card__header">
+        <span class="mail-card__num">1通目</span>
+        <span class="mail-card__type">ストーリー</span>
+        <span class="mail-card__timing">登録翌日</span>
+      </div>
+      <div class="bubbles">
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し①</span>
+          <div class="bubble">「寝たのに疲れが抜けない」
+「ベッドに入っても頭がオフにならない」
+
+それ、体力の問題じゃなく
+自律神経が乱れているサインかもしれません。
+
+がんばれる人ほど、見落とします。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し②</span>
+          <div class="bubble">私も昔、体と心がバラバラになった時期がありました。
+
+朝は起きれず、夜は眠れなく、
+ネットサーフィンして、
+周りと比べて落ち込んだりしてた。
+
+そこを抜け出せたきっかけが、呼吸とヨガでした。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し③</span>
+          <div class="bubble">次回は、高ストレスな毎日でも
+今夜30秒からできる
+「自律神経を整える呼吸」を1つだけお届けします。
+
+明日、届けますね。</div>
+        </div>
+      </div>
+      <div class="check-row">
+        <span class="check-label">この通について：</span>
+        <div class="check-options">
+          <label class="check-opt check-opt--fix">
+            <input type="radio" name="d1" value="ok"> このままOK
+          </label>
+          <label class="check-opt check-opt--redo">
+            <input type="radio" name="d1" value="redo"> 直したい
+          </label>
+        </div>
+      </div>
+      <div class="memo-wrap mt8">
+        <label for="memo-d1">気になった点（任意）</label>
+        <textarea id="memo-d1" placeholder=""></textarea>
+      </div>
+    </div>
+
+    <div class="mail-card">
+      <div class="mail-card__header">
+        <span class="mail-card__num">2通目</span>
+        <span class="mail-card__type">教育</span>
+        <span class="mail-card__timing">2〜3日後</span>
+      </div>
+      <div class="bubbles">
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し①</span>
+          <div class="bubble">疲れが抜けない人の多くは
+「呼吸が浅い」だけ。
+
+意外ですが、睡眠より先に
+直すべきは呼吸です。
+
+デスクワークで前かがみが続くと
+呼吸が浅くなり、神経が休めません。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し②</span>
+          <div class="bubble">今日のたった1つ。
+4秒吸って、8秒かけて吐く。
+吐く方を長くすると副交感神経が働き、体が休息モードに入ります。
+
+会議前・移動中・寝る前に1分でOK。道具も場所もいりません。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し③</span>
+          <div class="bubble"><span class="unanswered">未回答：この呼吸法（呼吸×ヨガ）で本人の睡眠や朝の体感が変わった具体的な瞬間／D2</span>
+
+次回は、同じように整った男性のリアルな変化をお伝えします。
+気になる方は「呼吸」とだけ返してもらえれば、寝る前用のやり方を送りますね。</div>
+        </div>
+      </div>
+      <div class="check-row">
+        <span class="check-label">この通について：</span>
+        <div class="check-options">
+          <label class="check-opt check-opt--fix">
+            <input type="radio" name="d2" value="ok"> このままOK
+          </label>
+          <label class="check-opt check-opt--redo">
+            <input type="radio" name="d2" value="redo"> 直したい
+          </label>
+        </div>
+      </div>
+      <div class="memo-wrap mt8">
+        <label for="memo-d2">気になった点（任意）</label>
+        <textarea id="memo-d2" placeholder="D2（呼吸で変わった瞬間）の回答もここに書いてください"></textarea>
+      </div>
+    </div>
+
+    <div class="mail-card">
+      <div class="mail-card__header">
+        <span class="mail-card__num">3通目</span>
+        <span class="mail-card__type">証拠</span>
+        <span class="mail-card__timing">4〜5日後</span>
+      </div>
+      <div class="bubbles">
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し①</span>
+          <div class="bubble">こんな方がいました。
+
+40代・座りっぱなしの管理職。
+「運動する時間も気力もない」「ヨガなんて自分には無理」が口ぐせでした。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し②</span>
+          <div class="bubble">始めたのは、寝る前の呼吸と
+硬くなった股関節をゆるめる軽いヨガだけ。
+
+<span class="unanswered">未回答：その男性のBefore→After（寝つき◯分→◯分、夜中に起きる回数、朝の軽さ、集中など。数字＋感情）／D3</span></div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し③</span>
+          <div class="bubble"><span class="unanswered">未回答：「体が変わると仕事や気持ちまで変わった」と本人が言った言葉・場面／D4</span>
+
+あなたは今、朝目覚めた瞬間
+体は軽いですか？それとも重いですか。
+
+次回、一緒に整える方法をお伝えします。</div>
+        </div>
+      </div>
+      <div class="global-pending" style="margin: 0 0 14px;">
+        <p class="global-pending__title">この通の未記入（2か所）</p>
+        <ul class="global-pending__list">
+          <li>D3：Before→After（数字＋感情）</li>
+          <li>D4：体・仕事・気持ちが変わった時の本人の言葉</li>
+        </ul>
+      </div>
+      <div class="check-row">
+        <span class="check-label">この通について：</span>
+        <div class="check-options">
+          <label class="check-opt check-opt--fix">
+            <input type="radio" name="d3" value="ok"> 未回答以外はOK
+          </label>
+          <label class="check-opt check-opt--redo">
+            <input type="radio" name="d3" value="redo"> 構成も直したい
+          </label>
+        </div>
+      </div>
+      <div class="memo-wrap mt8">
+        <label for="memo-d3">気になった点（任意）</label>
+        <textarea id="memo-d3" placeholder=""></textarea>
+      </div>
+    </div>
+
+    <div class="mail-card">
+      <div class="mail-card__header">
+        <span class="mail-card__num">4通目</span>
+        <span class="mail-card__type">オファー</span>
+        <span class="mail-card__timing">6〜7日後</span>
+      </div>
+      <div class="bubbles">
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し①</span>
+          <div class="bubble">4日間ありがとうございました。
+
+呼吸→変化の話と読んでくれたあなたは、もう「整える側」に立っています。
+
+「もう少しで限界かも」なら、今が切り替えどきです。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し②</span>
+          <div class="bubble">男性向けに、ヨガ・呼吸・腸活・パーソナルを組み合わせた
+「ハイブリッド・パーソナル」をご用意しています。
+
+硬い股関節と浅い呼吸をほどき、可動域を広げてから鍛える。
+だから、ただ追い込むより疲れにくく、効きます。
+
+<span class="unanswered">未回答：男性ハイブリッド・パーソナルの特典 or 限定枠（人数・期間・初回特典など）／D5</span></div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し③</span>
+          <div class="bubble">三冠を獲った私自身が
+「実際に結果が出る整え方」で伴走します。
+
+まずは「相談」とだけ返してください。
+あなたの今の疲れに合わせて、最初の一歩をご案内します。</div>
+        </div>
+      </div>
+      <div class="check-row">
+        <span class="check-label">この通について：</span>
+        <div class="check-options">
+          <label class="check-opt check-opt--fix">
+            <input type="radio" name="d4" value="ok"> このままOK
+          </label>
+          <label class="check-opt check-opt--redo">
+            <input type="radio" name="d4" value="redo"> 直したい
+          </label>
+        </div>
+      </div>
+      <div class="memo-wrap mt8">
+        <label for="memo-d4">気になった点（任意）</label>
+        <textarea id="memo-d4" placeholder="D5（特典・限定枠）の回答もここに書いてください"></textarea>
+      </div>
+    </div>
+
+  </div><!-- /theme-body -->
+</div>
+
+
+<!-- ============================================================
+     ⑤ トレーニング × 女性
+     ============================================================ -->
+<div class="theme-section" id="theme-e">
+  <div class="theme-header" onclick="toggleTheme('theme-e')" role="button" aria-expanded="false" aria-controls="theme-e-body">
+    <div class="theme-num">⑤</div>
+    <div class="theme-title-block">
+      <div class="theme-title">トレーニング × 女性</div>
+      <div class="theme-sub">無理なくボディメイク・きつくない</div>
+    </div>
+    <svg class="theme-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="5 8 10 13 15 8"/>
+    </svg>
+  </div>
+  <div class="theme-body" id="theme-e-body">
+
+    <div class="mail-card">
+      <div class="mail-card__header">
+        <span class="mail-card__num">1通目</span>
+        <span class="mail-card__type">ストーリー</span>
+        <span class="mail-card__timing">登録翌日</span>
+      </div>
+      <div class="bubbles">
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し①</span>
+          <div class="bubble">「今度こそ体を変える」
+
+そう決めて始めたのに
+きつくて、3日でやめてしまう。
+
+そんな自分を
+「また続かなかった」って
+責めていませんか？</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し②</span>
+          <div class="bubble">実は私も昔、体も心も崩して
+動くことすら怖かった時期がありました。
+
+太る自分が嫌だった。
+痩せたいけど痩せれなくて、
+SNSで見る人が羨ましくて比べてた。
+口癖は「なんでこんな体なんだろう」。
+
+そこから少しずつ立て直して
+今はベストボディの舞台に立てるまでになりました。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し③</span>
+          <div class="bubble">続かないのは
+意志が弱いからじゃない。
+
+「きつすぎるやり方」を
+選んでいるだけなんです。
+
+次は、きつくないのに体が変わる
+"最初の一歩"の話を
+明日お届けしますね。</div>
+        </div>
+      </div>
+      <div class="check-row">
+        <span class="check-label">この通について：</span>
+        <div class="check-options">
+          <label class="check-opt check-opt--fix">
+            <input type="radio" name="e1" value="ok"> このままOK
+          </label>
+          <label class="check-opt check-opt--redo">
+            <input type="radio" name="e1" value="redo"> 直したい
+          </label>
+        </div>
+      </div>
+      <div class="memo-wrap mt8">
+        <label for="memo-e1">気になった点（任意）</label>
+        <textarea id="memo-e1" placeholder=""></textarea>
+      </div>
+    </div>
+
+    <div class="mail-card">
+      <div class="mail-card__header">
+        <span class="mail-card__num">2通目</span>
+        <span class="mail-card__type">教育</span>
+        <span class="mail-card__timing">2〜3日後</span>
+      </div>
+      <div class="bubbles">
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し①</span>
+          <div class="bubble">続かない人がやりがちな
+たった1つの間違い。
+
+それは
+「いきなりキツい筋トレから入る」こと。
+
+体が驚いて、嫌いになって
+やめてしまうんです。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し②</span>
+          <div class="bubble">私が一番大事にしているのは
+まず"動ける体"に戻すこと。
+
+まずやってほしいのは、背中のストレッチ。
+背中をほぐすだけで胸が開けて、
+肩・首・背中全体に伸びを感じられます。
+
+これだけで
+同じ動きでも効きが変わります。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し③</span>
+          <div class="bubble">今夜、テレビを見ながら
+1分だけ試してみてください。
+
+次は、実際に体が変わった方の
+お話をお届けします。
+
+"きつくないのに変わる"
+って本当なんです。</div>
+        </div>
+      </div>
+      <div class="check-row">
+        <span class="check-label">この通について：</span>
+        <div class="check-options">
+          <label class="check-opt check-opt--fix">
+            <input type="radio" name="e2" value="ok"> このままOK
+          </label>
+          <label class="check-opt check-opt--redo">
+            <input type="radio" name="e2" value="redo"> 直したい
+          </label>
+        </div>
+      </div>
+      <div class="memo-wrap mt8">
+        <label for="memo-e2">気になった点（任意）</label>
+        <textarea id="memo-e2" placeholder=""></textarea>
+      </div>
+    </div>
+
+    <div class="mail-card">
+      <div class="mail-card__header">
+        <span class="mail-card__num">3通目</span>
+        <span class="mail-card__type">証拠</span>
+        <span class="mail-card__timing">4〜5日後</span>
+      </div>
+      <div class="bubbles">
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し①</span>
+          <div class="bubble">少し前に
+こんなメッセージをもらいました。
+
+「運動が大嫌いだったのに
+初めて"続けられた"と思えました」
+
+こんな方が、たくさんいます。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し②</span>
+          <div class="bubble"><span class="unanswered">未回答：運動が苦手だった女性受講者のBefore→After（期間・体の数字＋本人の気持ちの言葉）／E3</span>
+
+体が変わると
+表情まで変わっていくんです。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し③</span>
+          <div class="bubble">「自分にはどうせ無理」
+
+そう思っていた人ほど
+変わっていきます。
+
+あなたは今
+どんな自分になりたいですか？
+
+次は、一緒に始める方法を
+お伝えしますね。</div>
+        </div>
+      </div>
+      <div class="global-pending" style="margin: 0 0 14px;">
+        <p class="global-pending__title">この通の未記入（1か所）</p>
+        <ul class="global-pending__list">
+          <li>E3：苦手だった女性受講者のBefore→After（期間・数字・気持ちの言葉）</li>
+        </ul>
+      </div>
+      <div class="check-row">
+        <span class="check-label">この通について：</span>
+        <div class="check-options">
+          <label class="check-opt check-opt--fix">
+            <input type="radio" name="e3" value="ok"> 未回答以外はOK
+          </label>
+          <label class="check-opt check-opt--redo">
+            <input type="radio" name="e3" value="redo"> 構成も直したい
+          </label>
+        </div>
+      </div>
+      <div class="memo-wrap mt8">
+        <label for="memo-e3">気になった点（任意）</label>
+        <textarea id="memo-e3" placeholder="E3の回答もここに書いてもらえると助かります"></textarea>
+      </div>
+    </div>
+
+    <div class="mail-card">
+      <div class="mail-card__header">
+        <span class="mail-card__num">4通目</span>
+        <span class="mail-card__type">オファー</span>
+        <span class="mail-card__timing">6〜7日後</span>
+      </div>
+      <div class="bubbles">
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し①</span>
+          <div class="bubble">ここまで読んでくれて
+ありがとうございます。
+
+続かなかった過去は
+あなたのせいじゃない。
+
+やり方を変えるだけで
+体は必ず応えてくれます。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し②</span>
+          <div class="bubble">まずは気軽に試せる
+「夜20分サブスク無料体験」を
+ご用意しています。
+
+子どもが寝たあとの20分で
+きつくない動きから始められます。
+
+最初に体験できるのは、呼吸を整えるリラックスヨガ。
+自分の体の様子、呼吸の様子を観察しながら整える、座ったままでもできるヨガです。
+息があがる動きはしません。
+
+「1日お疲れ様でした。今日、この時間だけは頭の中をよぎる思考などは手放して、自分の体と呼吸だけに意識を向ける時間に、一緒にしませんか？」</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し③</span>
+          <div class="bubble">「もっとちゃんと変えたい」
+という方には
+整える→深める→極めるの
+伴走プランもあります。
+
+まずは
+「体験」と送ってください。
+
+一緒に始めましょう。</div>
+        </div>
+      </div>
+      <div class="check-row">
+        <span class="check-label">この通について：</span>
+        <div class="check-options">
+          <label class="check-opt check-opt--fix">
+            <input type="radio" name="e4" value="ok"> このままOK
+          </label>
+          <label class="check-opt check-opt--redo">
+            <input type="radio" name="e4" value="redo"> 直したい
+          </label>
+        </div>
+      </div>
+      <div class="memo-wrap mt8">
+        <label for="memo-e4">気になった点（任意）</label>
+        <textarea id="memo-e4" placeholder=""></textarea>
+      </div>
+    </div>
+
+  </div><!-- /theme-body -->
+</div>
+
+
+<!-- ============================================================
+     ⑥ トレーニング × 男性
+     ============================================================ -->
+<div class="theme-section" id="theme-f">
+  <div class="theme-header" onclick="toggleTheme('theme-f')" role="button" aria-expanded="false" aria-controls="theme-f-body">
+    <div class="theme-num">⑥</div>
+    <div class="theme-title-block">
+      <div class="theme-title">トレーニング × 男性</div>
+      <div class="theme-sub">3冠チャンピオン × ハイブリッド</div>
+    </div>
+    <svg class="theme-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="5 8 10 13 15 8"/>
+    </svg>
+  </div>
+  <div class="theme-body" id="theme-f-body">
+
+    <div class="mail-card">
+      <div class="mail-card__header">
+        <span class="mail-card__num">1通目</span>
+        <span class="mail-card__type">ストーリー</span>
+        <span class="mail-card__timing">登録翌日</span>
+      </div>
+      <div class="bubbles">
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し①</span>
+          <div class="bubble">「ちゃんと筋トレしてるのに、体が変わらない」
+
+ジムに行っても
+プロテイン飲んでも
+見た目だけ変わらない。
+
+そんな停滞、感じていませんか？</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し②</span>
+          <div class="bubble">実は私も昔、体と心を一度崩しました。
+
+そこから立て直す中で気づいたんです。
+
+効かないのは、努力が足りないからじゃない。
+「体が硬くて、鍛えたい筋肉に効いていない」だけ。
+
+私自身も元々は体ガチガチ女でした。
+骨盤の歪みで、股関節の可動域も狭かったんです。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し③</span>
+          <div class="bubble">次回は
+デスクワークの男性が
+何年やっても体が変わらない
+「たった1つの理由」をお伝えします。
+
+明日届けますね。</div>
+        </div>
+      </div>
+      <div class="check-row">
+        <span class="check-label">この通について：</span>
+        <div class="check-options">
+          <label class="check-opt check-opt--fix">
+            <input type="radio" name="f1" value="ok"> このままOK
+          </label>
+          <label class="check-opt check-opt--redo">
+            <input type="radio" name="f1" value="redo"> 直したい
+          </label>
+        </div>
+      </div>
+      <div class="memo-wrap mt8">
+        <label for="memo-f1">気になった点（任意）</label>
+        <textarea id="memo-f1" placeholder=""></textarea>
+      </div>
+    </div>
+
+    <div class="mail-card">
+      <div class="mail-card__header">
+        <span class="mail-card__num">2通目</span>
+        <span class="mail-card__type">教育</span>
+        <span class="mail-card__timing">2〜3日後</span>
+      </div>
+      <div class="bubbles">
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し①</span>
+          <div class="bubble">デスクワークの男性が変わらない理由。
+
+それは「股関節が硬い」ことです。
+
+股関節が硬いと
+スクワットもデッドリフトも
+本来効くべき大きい筋肉に効かない。
+
+細い筋肉でごまかすから、伸びない。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し②</span>
+          <div class="bubble">今日からできることを1つ。
+
+筋トレの前に
+股関節を1分だけ動かしてから始める。
+
+たったこれだけで
+可動域が広がって
+同じ重量でも効きが変わります。
+
+<span class="unanswered">未回答：股関節を動かしてから鍛えると効果が変わる、現場で見ている具体的な変化／F2</span></div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し③</span>
+          <div class="bubble">次回は
+硬くて太かった男性が
+実際にどこまで変わったか
+数字でお見せします。
+
+今夜、筋トレ前に1分だけ試してみてください。</div>
+        </div>
+      </div>
+      <div class="check-row">
+        <span class="check-label">この通について：</span>
+        <div class="check-options">
+          <label class="check-opt check-opt--fix">
+            <input type="radio" name="f2" value="ok"> このままOK
+          </label>
+          <label class="check-opt check-opt--redo">
+            <input type="radio" name="f2" value="redo"> 直したい
+          </label>
+        </div>
+      </div>
+      <div class="memo-wrap mt8">
+        <label for="memo-f2">気になった点（任意）</label>
+        <textarea id="memo-f2" placeholder="F2（股関節で変わる現場の変化）の回答もここに書いてください"></textarea>
+      </div>
+    </div>
+
+    <div class="mail-card">
+      <div class="mail-card__header">
+        <span class="mail-card__num">3通目</span>
+        <span class="mail-card__type">証拠</span>
+        <span class="mail-card__timing">4〜5日後</span>
+      </div>
+      <div class="bubbles">
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し①</span>
+          <div class="bubble">こんな男性がいました。
+
+デスクワークで体はガチガチ。
+自己流の筋トレは何年も停滞。
+「もう体質だと思ってた」と。
+
+<span class="unanswered">未回答：その男性の最初の状態（年齢・職業・悩み）／F3</span></div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し②</span>
+          <div class="bubble">可動域を広げてから
+筋トレの強度を上げていったら
+
+<span class="unanswered">未回答：その方のBefore→After（体重・体脂肪・サイズの数字）／F4</span>
+
+さらに
+<span class="unanswered">未回答：数字以外で一番喜んだ感情の変化／F5</span>
+
+体が動くと、自信が戻る。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し③</span>
+          <div class="bubble">あなたも
+「体質」だと諦めていませんか？
+
+硬さを取れば、まだ伸びます。
+
+次回は
+3冠チャンピオンが本気で教える
+体の変え方をご案内します。</div>
+        </div>
+      </div>
+      <div class="global-pending" style="margin: 0 0 14px;">
+        <p class="global-pending__title">この通の未記入（3か所）</p>
+        <ul class="global-pending__list">
+          <li>F3：その男性の最初の状態（年齢・職業・悩み）</li>
+          <li>F4：Before→After（体重・体脂肪・サイズの数字）</li>
+          <li>F5：数字以外で一番喜んだ感情の変化</li>
+        </ul>
+      </div>
+      <div class="check-row">
+        <span class="check-label">この通について：</span>
+        <div class="check-options">
+          <label class="check-opt check-opt--fix">
+            <input type="radio" name="f3" value="ok"> 未回答以外はOK
+          </label>
+          <label class="check-opt check-opt--redo">
+            <input type="radio" name="f3" value="redo"> 構成も直したい
+          </label>
+        </div>
+      </div>
+      <div class="memo-wrap mt8">
+        <label for="memo-f3">気になった点（任意）</label>
+        <textarea id="memo-f3" placeholder=""></textarea>
+      </div>
+    </div>
+
+    <div class="mail-card">
+      <div class="mail-card__header">
+        <span class="mail-card__num">4通目</span>
+        <span class="mail-card__type">オファー</span>
+        <span class="mail-card__timing">6〜7日後</span>
+      </div>
+      <div class="bubbles">
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し①</span>
+          <div class="bubble">ここまで読んでくれてありがとうございます。
+
+鍛えてるのに変わらないのは
+あなたの努力不足じゃない。
+
+「硬さを取って、正しく効かせる」
+ここを変えるだけで、体は応えます。</div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し②</span>
+          <div class="bubble">私はベストボディジャパンで
+九州2連覇＋大阪優勝の3冠。
+
+その「実際に勝てるボディメイク」を
+ストレッチ・股関節調整・筋トレを
+組み合わせたハイブリッド・パーソナルで
+あなたに直接お伝えします。
+
+本気の男性向けの内容なので
+<span class="unanswered">未回答：男性ハイブリッド・パーソナルの価格・特典・限定枠（プレミアム前提）／F6</span></div>
+        </div>
+        <div class="bubble-group">
+          <span class="bubble-label">吹き出し③</span>
+          <div class="bubble">「体質」で片付けてきた体を
+本気で変えたい方へ。
+
+気になる方は
+「本気」と送ってください。
+
+3冠チャンピオンが直接ご案内します。</div>
+        </div>
+      </div>
+      <div class="check-row">
+        <span class="check-label">この通について：</span>
+        <div class="check-options">
+          <label class="check-opt check-opt--fix">
+            <input type="radio" name="f4" value="ok"> このままOK
+          </label>
+          <label class="check-opt check-opt--redo">
+            <input type="radio" name="f4" value="redo"> 直したい
+          </label>
+        </div>
+      </div>
+      <div class="memo-wrap mt8">
+        <label for="memo-f4">気になった点（任意）</label>
+        <textarea id="memo-f4" placeholder="F6（価格・特典・限定枠）の回答もここに書いてください"></textarea>
+      </div>
+    </div>
+
+  </div><!-- /theme-body -->
+</div>
+
+
+<!-- まとめてコピー -->
+<div class="wrap">
+  <div class="copy-section">
+    <p class="copy-section__title">フィードバックをまとめてコピー</p>
+    <p class="copy-section__note">チェックとメモの内容をLINEやチャットに貼り付けて送れます。</p>
+    <button class="btn-copy" id="copyBtn" onclick="copyFeedback()">フィードバックをコピーする</button>
+  </div>
+</div>
+
+<!-- フッタ -->
+<footer class="page-footer">
+  確認用ドラフト — 2026-06-18<br>
+  作成: Rino / 本文原稿: Reona
+</footer>
+
+<script>
+  /* ---- アコーディオン ---- */
+  function toggleTheme(id) {
+    const section = document.getElementById(id);
+    const header  = section.querySelector('.theme-header');
+    const isOpen  = section.classList.contains('is-open');
+    section.classList.toggle('is-open', !isOpen);
+    header.setAttribute('aria-expanded', String(!isOpen));
+  }
+
+  /* ---- まとめてコピー ---- */
+  function copyFeedback() {
+    const LABELS = {
+      a1: '①腸活女-1通目', a2: '①腸活女-2通目', a3: '①腸活女-3通目', a4: '①腸活女-4通目',
+      b1: '②腸活男-1通目', b2: '②腸活男-2通目', b3: '②腸活男-3通目', b4: '②腸活男-4通目',
+      c1: '③ヨガ女-1通目', c2: '③ヨガ女-2通目', c3: '③ヨガ女-3通目', c4: '③ヨガ女-4通目',
+      d1: '④ヨガ男-1通目', d2: '④ヨガ男-2通目', d3: '④ヨガ男-3通目', d4: '④ヨガ男-4通目',
+      e1: '⑤トレ女-1通目', e2: '⑤トレ女-2通目', e3: '⑤トレ女-3通目', e4: '⑤トレ女-4通目',
+      f1: '⑥トレ男-1通目', f2: '⑥トレ男-2通目', f3: '⑥トレ男-3通目', f4: '⑥トレ男-4通目',
+    };
+
+    const names = Object.keys(LABELS);
+    const lines = ['【ステップメール確認フィードバック】', ''];
+
+    names.forEach(name => {
+      const radios = document.querySelectorAll('input[name="' + name + '"]');
+      const memo   = document.getElementById('memo-' + name);
+      let checked  = null;
+      radios.forEach(r => { if (r.checked) checked = r.value; });
+      const memoVal = memo ? memo.value.trim() : '';
+
+      if (checked || memoVal) {
+        lines.push('[ ' + LABELS[name] + ' ]');
+        if (checked === 'ok')   lines.push('  → このままOK');
+        if (checked === 'redo') lines.push('  → 直したい');
+        if (memoVal)            lines.push('  メモ: ' + memoVal);
+        lines.push('');
+      }
+    });
+
+    if (lines.length <= 2) {
+      lines.push('（まだ何も入力されていません）');
+    }
+
+    const text = lines.join('\n');
+    const btn  = document.getElementById('copyBtn');
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = 'コピーしました';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'フィードバックをコピーする';
+          btn.classList.remove('copied');
+        }, 2500);
+      });
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity  = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'フィードバックをコピーする';
+        btn.classList.remove('copied');
+      }, 2500);
+    }
+  }
+</script>
+</body>
+</html>
