@@ -99,7 +99,7 @@
 /* ===== 料金メニュー ===== */
 .menu-flow-note { text-align: center; color: var(--color-text-muted); font-size: 13px; margin: var(--space-3) 0 0; }
 .menu-list { display: grid; gap: var(--space-5); margin-top: var(--space-5); }
-.menu { display: flex; flex-direction: column; height: 100%; padding: var(--space-card) !important; border: var(--border-hairline) !important; border-radius: 24px !important; background: rgba(255,255,255,0.6) !important; box-shadow: var(--shadow-min); }
+.menu { display: flex; flex-direction: column; height: 100%; padding: var(--space-card) !important; border: var(--border-hairline) !important; border-radius: 24px !important; background: rgba(255,255,255,0.6) !important; box-shadow: var(--shadow-min); position: relative; }
 .menu h3 { margin-bottom: var(--space-2); }
 .menu .card__body { color: var(--color-text-muted); margin-bottom: var(--space-4); font-size: 14px; min-height: 3.4em; }
 .menu .def-list { margin-top: auto; }
@@ -121,6 +121,8 @@
   background: var(--color-text-on-primary); color: var(--color-primary-deep);
 }
 .menu__badge--soft { background: var(--color-green-tint); color: var(--color-primary-deep); }
+/* トライアルの「はじめの一歩」は角ピルにしてフローから外す（見出し位置を他カードと揃える） */
+.menu--trial .menu__badge { position: absolute; top: 16px; right: 16px; margin: 0; z-index: 2; font-size: 10px; padding: 5px 11px; }
 
 .menu--flagship { background: var(--color-primary) !important; border-color: transparent !important; }
 .menu--flagship h3, .menu--flagship .def-row dt, .menu--flagship .def-row dd { color: var(--color-text-on-primary); }
