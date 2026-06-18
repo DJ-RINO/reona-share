@@ -407,54 +407,57 @@
   else window.addEventListener("load", setupIntro, { once: true });
   setupIntroTuneGui();
 
-  function setupCircularGallery() {
-    document.querySelectorAll("[data-cgal]").forEach(function (gallery) {
-      var cards = Array.prototype.slice.call(gallery.querySelectorAll("[data-cgal-card]"));
-      var center = gallery.querySelector("[data-cgal-center]");
-      var centerImg = gallery.querySelector("[data-cgal-center-img]");
-      var centerLabel = gallery.querySelector("[data-cgal-center-label]");
-      var orbit = gallery.querySelector("[data-cgal-orbit]");
-      if (!cards.length || !center || !centerImg || !centerLabel || !orbit) return;
-
-      var supportsOffsetPath = window.CSS && CSS.supports && CSS.supports("offset-path", "circle(100px at 50% 50%)");
-
-      function applyFallbackLayout() {
-        if (supportsOffsetPath) return;
-        gallery.classList.add("cgal--fallback");
-        var orbitRect = orbit.getBoundingClientRect();
-        var radius = Math.min(orbitRect.width, orbitRect.height) * 0.38;
-        cards.forEach(function (card, index) {
-          var angle = (-90 + (360 / cards.length) * index) * (Math.PI / 180);
-          var x = Math.cos(angle) * radius;
-          var y = Math.sin(angle) * radius;
-          card.style.transform = "translate(-50%, -50%) translate(" + x.toFixed(2) + "px, " + y.toFixed(2) + "px)";
-        });
-      }
-
-      function setActive(index) {
+  function setupYogaCarousel() {
+    document.querySelectorAll("[data-ycar]").forEach(function (root) {
+      var track = root.querySelector("[data-ycar-track]");
+      var cards = Array.prototype.slice.call(root.querySelectorAll("[data-ycar-card]"));
+      var counter = root.querySelector("[data-ycar-cur]");
+      if (!track || !cards.length) return;
+      var n = cards.length, cur = 0, busy = false;
+      function pad(num) { return ("0" + num).slice(-2); }
+      function render(idx) {
+        cur = (idx + n) % n;
         cards.forEach(function (card, i) {
-          var active = i === index;
-          card.classList.toggle("is-active", active);
-          card.setAttribute("aria-pressed", active ? "true" : "false");
+          var off = (i - cur + n) % n;
+          card.classList.remove("is-center", "is-near-up", "is-near-down", "is-far-up", "is-far-down", "is-hidden");
+          if (off === 0) card.classList.add("is-center");
+          else if (off === 1) card.classList.add("is-near-down");
+          else if (off === 2) card.classList.add("is-far-down");
+          else if (off === n - 1) card.classList.add("is-near-up");
+          else if (off === n - 2) card.classList.add("is-far-up");
+          else card.classList.add("is-hidden");
+          card.setAttribute("aria-hidden", off === 0 ? "false" : "true");
+          card.tabIndex = off === 0 ? -1 : 0;
         });
-        var activeCard = cards[index];
-        centerImg.src = activeCard.getAttribute("data-image");
-        centerLabel.textContent = activeCard.getAttribute("data-title") || "";
+        if (counter) counter.textContent = pad(cur + 1);
       }
-
-      cards.forEach(function (card, index) {
-        card.addEventListener("click", function () { setActive(index); });
-        card.addEventListener("mouseenter", function () { setActive(index); });
-        card.addEventListener("focus", function () { setActive(index); });
+      function go(idx) { if (busy) return; busy = true; render(idx); setTimeout(function () { busy = false; }, 680); }
+      cards.forEach(function (card, i) {
+        card.addEventListener("click", function () { if (!card.classList.contains("is-center")) go(i); });
       });
-
-      setActive(0);
-      applyFallbackLayout();
-      window.addEventListener("resize", applyFallbackLayout);
+      var prev = root.querySelector("[data-ycar-prev]"), next = root.querySelector("[data-ycar-next]");
+      if (prev) prev.addEventListener("click", function () { go(cur - 1); });
+      if (next) next.addEventListener("click", function () { go(cur + 1); });
+      var vp = root.querySelector(".ycar__viewport"), x0 = null, y0 = null;
+      if (vp) {
+        vp.addEventListener("touchstart", function (e) { x0 = e.changedTouches[0].clientX; y0 = e.changedTouches[0].clientY; }, { passive: true });
+        vp.addEventListener("touchend", function (e) {
+          if (x0 === null) return;
+          var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
+          if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) go(dx < 0 ? cur + 1 : cur - 1);
+          x0 = y0 = null;
+        }, { passive: true });
+      }
+      root.setAttribute("tabindex", "0");
+      root.addEventListener("keydown", function (e) {
+        if (e.key === "ArrowLeft" || e.key === "ArrowUp") { e.preventDefault(); go(cur - 1); }
+        else if (e.key === "ArrowRight" || e.key === "ArrowDown") { e.preventDefault(); go(cur + 1); }
+      });
+      render(0);
     });
   }
 
-  setupCircularGallery();
+  setupYogaCarousel();
 
   if (reduceMotion) return;
 
