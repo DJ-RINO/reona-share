@@ -264,6 +264,22 @@
       white-space: normal;
     }
 
+    /* ---- 仮入れブロック（2026-06-19 流し込み） ---- */
+    .filled { display:block; margin:6px 0 2px; padding:11px 13px; border-radius:8px;
+      border-left:3px solid; line-height:1.85; font-size:13.5px; color:var(--c-ink); }
+    .filled__tag { display:inline-block; font-size:10.5px; font-weight:600; letter-spacing:.04em;
+      padding:2px 9px; border-radius:5px; margin-bottom:4px; }
+    .filled--draft { background:#FBF3E6; border-left-color:#C9912F; }
+    .filled--draft .filled__tag { background:#E4B25A; color:#4A3410; }
+    .filled--prop { background:#EAF1E9; border-left-color:#6E8572; }
+    .filled--prop .filled__tag { background:#6E8572; color:#F6F1E8; }
+    .filled--check { background:#F7ECE6; border-left-color:#B85C2A; }
+    .filled--check .filled__tag { background:#B85C2A; color:#FFFFFF; }
+    .legend { margin:0 20px 8px; padding:14px 16px; background:var(--c-surface);
+      border:1px solid var(--c-border); border-radius:10px; }
+    .legend__title { font-size:13px; font-weight:600; color:var(--c-ink); margin-bottom:9px; }
+    .legend__row { font-size:12.5px; color:var(--c-ink-soft); line-height:1.75; margin:6px 0; }
+
     /* ---- 確認チェックボックスUI ---- */
     .check-row {
       display: flex;
@@ -406,21 +422,28 @@
   <div class="status-bar">
     <span class="badge badge--fixed">テレコ修正済み</span>
     <span class="badge badge--pend">価格・正式名称 未確定</span>
-    <span class="badge badge--pend">3冠表記 未確定</span>
-    <span class="badge badge--note">男性回答の多くが未記入</span>
+    <span class="badge badge--pend">3冠表記 裏取り済み</span>
+    <span class="badge badge--note">男性回答 仮入れ済み（要差し替え）</span>
   </div>
 
   <!-- 共通 未回答まとめ -->
   <div class="global-pending">
     <p class="global-pending__title">全テーマ共通の未記入項目（先に確定できると助かります）</p>
     <ul class="global-pending__list">
-      <li>■5：3冠の正確な書き方（大会名・年・部門）</li>
-      <li>■6：夜20分サブスクの正式名称・無料期間・申込条件</li>
-      <li>■7：「深める」コースの中身（現在「難しい。」のみ）</li>
+      <li>■5：3冠表記は裏取り済み → ベストボディ・ジャパン ガールズクラス（18〜29歳）／九州大会2連覇（2024・2025）＋大阪大会優勝（2025）。この表記で出してよいか最終確認だけお願いします。</li>
+      <li>■6：夜20分サブスクの正式名称・無料期間・申込条件 → <b>ここが最重要</b>。複数のメールの最後（申込み導線）で使うので、ここが空だと締めが完成しません。</li>
+      <li>■7：「深める」コースの中身 → 下に文案を仮で用意しました。整える→<b>深める</b>→極めるの真ん中として、これでよいか見てください。</li>
     </ul>
   </div>
 
 </div><!-- /wrap -->
+
+<div class="legend">
+  <p class="legend__title">この資料の色分け（2026-06-19 仮入れ）</p>
+  <p class="legend__row"><b style="display:inline-block;font-size:10.5px;padding:2px 9px;border-radius:5px;background:#E4B25A;color:#4A3410;">仮例文</b> ネットの実例をもとに作った仮の声。レオナの実際のお客様の声に差し替え推奨。</p>
+  <p class="legend__row"><b style="display:inline-block;font-size:10.5px;padding:2px 9px;border-radius:5px;background:#6E8572;color:#F6F1E8;">提案</b> レオナの回答をもとにした文案。これでよければOK、直したい所だけ直す。</p>
+  <p class="legend__row"><b style="display:inline-block;font-size:10.5px;padding:2px 9px;border-radius:5px;background:#B85C2A;color:#FFFFFF;">要確認</b> 価格・正式名称など、レオナしか知らない事実。ここだけ埋めてください。</p>
+</div>
 
 <div class="section-spacer"></div>
 
@@ -563,15 +586,38 @@
           <span class="bubble-label">吹き出し①</span>
           <div class="bubble">こんな方がいました。
 
-<span class="unanswered">未回答：腸活で変わった40代女性の声（本人の言葉そのまま）／A3</span></div>
+<span class="filled filled--draft"><span class="filled__tag">仮例文 · 差し替え推奨</span>
+「ずっと自分のことは後回しで。
+気づいたら3日に1回出ればいい方、
+ひどい時は一週間ぶり、なんてことも。
+
+お腹が張って、なんだか毎日重くて。
+
+でも運動を続ける元気もなくて、
+もう体質だしって、半分あきらめてました」</span></div>
         </div>
         <div class="bubble-group">
           <span class="bubble-label">吹き出し②</span>
           <div class="bubble">始める前は
-<span class="unanswered">未回答：その方のBefore（張り・だるさ・気力など）／A4</span>
+<span class="filled filled--draft"><span class="filled__tag">仮例文 · 差し替え推奨</span>
+いつもお腹がパンと張って、
+下っ腹だけ重い感じ。
+
+朝起きてもスッキリしなくて、
+「今日もか…」って、
+なんとなく気持ちまで下がってた。</span>
 
 それが
-<span class="unanswered">未回答：After（期間・体の変化＋気持ちの変化）／A5</span>
+<span class="filled filled--draft"><span class="filled__tag">仮例文 · 差し替え推奨</span>
+主食をちょっと変えただけ。
+それを2週間くらい続けたら、
+2日に1回のペースに🌱
+
+お腹の張りがふっと軽くなって、
+出した後の「やっと出た」が気持ちいい。
+
+体が軽いと、ふしぎと心も軽くて。
+最近よく笑ってるねって、家族に言われたんです☺️</span>
 
 体が整うと、心まで軽くなる。
 それを何度も見てきました。</div>
@@ -638,7 +684,8 @@
 まずは腸とお腹まわりから
 無理のないペースで一緒に。
 
-<span class="unanswered">未回答：夜20分サブスク無料体験の正式名称・条件（日数/先着など）／■6</span></div>
+<span class="filled filled--check"><span class="filled__tag">要確認 · 記入</span>
+（夜20分サブスクの正式名称・無料期間・申込条件はレオナ確定待ち）</span></div>
         </div>
         <div class="bubble-group">
           <span class="bubble-label">吹き出し③</span>
@@ -706,7 +753,9 @@
         <div class="bubble-group">
           <span class="bubble-label">吹き出し②</span>
           <div class="bubble">私も昔、体と心を一度崩しました。
-<span class="unanswered">未回答：崩していた頃のお腹・腸の状態（男性版）／B1</span>
+<span class="filled filled--prop"><span class="filled__tag">提案 · 確認</span>
+吐いてお腹がからっぽか、食べてパンパンか、そのどっちかで。
+お腹はいつも重たいのに、なぜか体はずっとだるくて。</span>
 
 薬でも根性でもなく
 脳腸相関を学んで、腸を意識し始めたんです。
@@ -761,7 +810,13 @@
           <div class="bubble">今日からできるのは"引く"より"足す"。
 
 例えば朝、白湯＋発酵を1つ。
-<span class="unanswered">未回答：男性に最初にすすめる"足す腸活"の具体メニュー（食材・量・タイミング）／B3</span>
+<span class="filled filled--prop"><span class="filled__tag">提案 · 確認</span>
+納豆1パックでも、味噌汁1杯でもいい。
+まずは“朝に発酵を足す”、それだけです。
+
+慣れてきたら、白いご飯にもち麦を混ぜる。
+ヨーグルトやキムチを夜に1品足す。
+減らすより、1個足す方が続きます ☺️</span>
 
 管理職で外食続きでも
 枝豆・冷奴・刺身・焼き魚・サラダを先に食べる。
@@ -803,7 +858,10 @@
           <span class="bubble-label">吹き出し①</span>
           <div class="bubble">こんな男性がいました。
 
-<span class="unanswered">未回答：健康診断の数値で来た40代後半男性の最初の状態（数値/体重/腹囲/口ぐせ）／B5</span>
+<span class="filled filled--draft"><span class="filled__tag">仮例文 · 差し替え推奨</span>
+体重は80kgを超えて、
+健診では中性脂肪もコレステロールも、肝臓の数値まで赤字。
+お腹まわりは年々きつくなる一方でした。</span>
 「もう手遅れだろ」と言っていた方です。</div>
         </div>
         <div class="bubble-group">
@@ -812,10 +870,17 @@
 腸を整える順番を変えただけ。
 
 Before→After：
-<span class="unanswered">未回答：その男性のビフォーアフター（体重・数値・期間）／B6</span>
+<span class="filled filled--draft"><span class="filled__tag">仮例文 · 差し替え推奨</span>
+体重 80kg → 73kg（約半年）。
+腹囲は -7cm ほど。
+中性脂肪と肝臓の数値も、基準内に戻っていきました。
+
+激しい運動はなし。
+発酵を足して、食べる順番を変えただけ。</span>
 
 そして本人がこぼした一言が
-<span class="unanswered">未回答：変化した時に本人が言った"感情"の言葉／B7</span>
+<span class="filled filled--draft"><span class="filled__tag">仮例文 · 差し替え推奨</span>
+「もう手遅れかと思ってたけど、まだ間に合うんやな」</span>
 でした。</div>
         </div>
         <div class="bubble-group">
@@ -877,7 +942,11 @@ Before→After：
 筋トレの効果まで底上げします。
 
 ベストボディ3冠の私が
-<span class="unanswered">未回答：男性パーソナルで"実際に勝てる体"として大事にしている考え方・約束／B8</span>
+<span class="filled filled--prop"><span class="filled__tag">提案 · 確認</span>
+“100点を続ける”じゃなく
+“60点を毎日続ける”体の作り方を
+
+無理なく、リバウンドさせない順番で</span>
 直接お教えします。</div>
         </div>
         <div class="bubble-group">
@@ -1053,7 +1122,35 @@ Before→After：
         </div>
         <div class="bubble-group">
           <span class="bubble-label">吹き出し②</span>
-          <div class="bubble"><span class="unanswered">未回答：産後ママの生徒さんのBefore→After（◯ヶ月で体重/ウエスト、睡眠・気分・家族への接し方。数字＋感情）／C3</span>
+          <div class="bubble"><span class="filled filled--draft"><span class="filled__tag">仮例文 · 差し替え推奨</span>
+その方は
+体重が産後プラス6kgのまま、半年止まっていて。
+
+「体型はもう戻らない」って
+半分あきらめていたそうです。
+
+夜は腰が痛くて
+毎晩、何度も目が覚めて。
+
+理由もなく涙が出る日もあって
+子どもにも夫にも、つい当たってしまう自分が
+いちばん嫌だった、って。
+
+そこから
+寝かしつけのあと、たった10分。
+呼吸と、ゆるい動きだけ。
+それを週に3〜4回。
+
+最初の変化は体重じゃなくて
+「夜、ちゃんと眠れた」だったそうです。
+
+3ヶ月くらいで
+体重はマイナス4kg、ウエストも少しすっきり。
+
+でも本人がいちばん嬉しかったのは
+「イライラが減った」
+「子どもに、自然に笑いかけられるようになった」
+そう言ってくれたことでした。</span>
 
 体が整うと
 表情が変わって
@@ -1119,7 +1216,8 @@ Before→After：
 今日の体をほどく20分。
 初月無料で試せます。
 
-<span class="unanswered">未回答：夜20分サブスク無料体験の正式名称・無料期間・申込条件／■6</span></div>
+<span class="filled filled--check"><span class="filled__tag">要確認 · 記入</span>
+（夜20分サブスクの正式名称・無料期間・申込条件はレオナ確定待ち）</span></div>
         </div>
         <div class="bubble-group">
           <span class="bubble-label">吹き出し③</span>
@@ -1248,7 +1346,16 @@ Before→After：
         </div>
         <div class="bubble-group">
           <span class="bubble-label">吹き出し③</span>
-          <div class="bubble"><span class="unanswered">未回答：この呼吸法（呼吸×ヨガ）で本人の睡眠や朝の体感が変わった具体的な瞬間／D2</span>
+          <div class="bubble"><span class="filled filled--prop"><span class="filled__tag">提案 · 確認</span>
+私自身、ずっと夜は眠れなくて、
+布団に入ってもスマホを見て、
+周りと比べて落ち込んでた時期があったんです。
+
+でも、この呼吸を続けて、股関節をゆるめるヨガを足したら、
+ある朝ふっと「あれ、今日は体が軽いな」って思えた瞬間があって。
+
+それが嬉しくてね。
+少しずつ、夜もちゃんと眠れる日が増えていきました🌙</span>
 
 次回は、同じように整った男性のリアルな変化をお伝えします。
 気になる方は「呼吸」とだけ返してもらえれば、寝る前用のやり方を送りますね。</div>
@@ -1290,11 +1397,31 @@ Before→After：
           <div class="bubble">始めたのは、寝る前の呼吸と
 硬くなった股関節をゆるめる軽いヨガだけ。
 
-<span class="unanswered">未回答：その男性のBefore→After（寝つき◯分→◯分、夜中に起きる回数、朝の軽さ、集中など。数字＋感情）／D3</span></div>
+<span class="filled filled--draft"><span class="filled__tag">仮例文 · 差し替え推奨</span>
+寝つきは、布団に入って30〜60分かかっていたのが、
+2ヶ月ほどで10〜20分くらいに。
+
+夜中に2〜3回起きていたのも、
+今は0〜1回まで減ったそうです。
+
+「朝、起きるのがつらくなくなった」
+「久しぶりに頭まで軽い感じがする」
+
+そう話してくれました😴</span></div>
         </div>
         <div class="bubble-group">
           <span class="bubble-label">吹き出し③</span>
-          <div class="bubble"><span class="unanswered">未回答：「体が変わると仕事や気持ちまで変わった」と本人が言った言葉・場面／D4</span>
+          <div class="bubble"><span class="filled filled--draft"><span class="filled__tag">仮例文 · 差し替え推奨</span>
+ある日、その方がこう言ってくれたんです。
+
+「夜ちゃんと眠れるようになったら、
+朝のイライラが減って、
+日中も頭が回るようになった気がします」
+
+体が整うと、
+気持ちや仕事の集中まで変わってくる。
+
+それを見るたびに、続けてきてよかったなって思います☺️</span>
 
 あなたは今、朝目覚めた瞬間
 体は軽いですか？それとも重いですか。
@@ -1349,7 +1476,8 @@ Before→After：
 硬い股関節と浅い呼吸をほどき、可動域を広げてから鍛える。
 だから、ただ追い込むより疲れにくく、効きます。
 
-<span class="unanswered">未回答：男性ハイブリッド・パーソナルの特典 or 限定枠（人数・期間・初回特典など）／D5</span></div>
+<span class="filled filled--check"><span class="filled__tag">要確認 · 記入</span>
+（特典・限定枠はレオナ確定待ち：募集人数／締切の有無／初回特典）</span></div>
         </div>
         <div class="bubble-group">
           <span class="bubble-label">吹き出し③</span>
@@ -1536,7 +1664,19 @@ SNSで見る人が羨ましくて比べてた。
         </div>
         <div class="bubble-group">
           <span class="bubble-label">吹き出し②</span>
-          <div class="bubble"><span class="unanswered">未回答：運動が苦手だった女性受講者のBefore→After（期間・体の数字＋本人の気持ちの言葉）／E3</span>
+          <div class="bubble"><span class="filled filled--draft"><span class="filled__tag">仮例文 · 差し替え推奨</span>
+ずっと運動を後回しにしてきた方から、こんな声が届きました。
+
+「呼吸法と、軽い宅トレを少しだけ。
+1ヶ月で体重が3kgほど、
+お腹まわりがスッと軽くなって。」
+
+「体重より先に、
+ズボンが緩くなったのが嬉しくて☺️」
+
+数字より先に、
+“朝の目覚めが軽い”
+そこから変わっていった方が多いです。</span>
 
 体が変わると
 表情まで変わっていくんです。</div>
@@ -1747,7 +1887,18 @@ SNSで見る人が羨ましくて比べてた。
 可動域が広がって
 同じ重量でも効きが変わります。
 
-<span class="unanswered">未回答：股関節を動かしてから鍛えると効果が変わる、現場で見ている具体的な変化／F2</span></div>
+<span class="filled filled--prop"><span class="filled__tag">提案 · 確認</span>
+私自身がそうでした。
+ガチガチの股関節をゆるめてから鍛えるようにしたら、同じスクワットでもお尻と太ももにズシッと効くんです。
+
+現場でも多いのが、
+しゃがむと腰が丸まって深く座れない方。
+そういう男性ほど、股関節を1分ほぐすだけで
+スッと深く座れるようになって、
+「あれ、今のすごく効いた」って驚かれます。
+
+硬さが取れると、扱う重さは同じでも
+効く場所が変わるんですよね🌿</span></div>
         </div>
         <div class="bubble-group">
           <span class="bubble-label">吹き出し③</span>
@@ -1791,17 +1942,40 @@ SNSで見る人が羨ましくて比べてた。
 自己流の筋トレは何年も停滞。
 「もう体質だと思ってた」と。
 
-<span class="unanswered">未回答：その男性の最初の状態（年齢・職業・悩み）／F3</span></div>
+<span class="filled filled--draft"><span class="filled__tag">仮例文 · 差し替え推奨</span>
+46歳、IT系のデスクワークの男性でした。
+
+一日中パソコンの前で、
+座りっぱなしで股関節はカチカチ。
+
+自己流の筋トレは5年くらい続けてたけど、
+ここ数年はずっと停滞。
+お腹周りだけ落ちなくて、
+「もう歳だし体質かな」って
+半分あきらめてたそうです。</span></div>
         </div>
         <div class="bubble-group">
           <span class="bubble-label">吹き出し②</span>
           <div class="bubble">可動域を広げてから
 筋トレの強度を上げていったら
 
-<span class="unanswered">未回答：その方のBefore→After（体重・体脂肪・サイズの数字）／F4</span>
+<span class="filled filled--draft"><span class="filled__tag">仮例文 · 差し替え推奨</span>
+半年で
+体重 85kg → 77kg（−8kg）
+体脂肪率 26% → 20%
+ウエストも −9cmくらい。
+
+週1回のペースでも、ちゃんと体は応えてくれました。</span>
 
 さらに
-<span class="unanswered">未回答：数字以外で一番喜んだ感情の変化／F5</span>
+<span class="filled filled--draft"><span class="filled__tag">仮例文 · 差し替え推奨</span>
+本人が一番うれしそうだったのは数字じゃなくて、
+「鏡を見るのが嫌じゃなくなった」って言葉でした。
+
+体が軽く動くようになって、
+階段も駅まで歩くのも苦じゃない。
+姿勢が伸びて、
+仕事のときも堂々と振る舞えるようになったって。</span>
 
 体が動くと、自信が戻る。</div>
         </div>
@@ -1870,7 +2044,8 @@ SNSで見る人が羨ましくて比べてた。
 あなたに直接お伝えします。
 
 本気の男性向けの内容なので
-<span class="unanswered">未回答：男性ハイブリッド・パーソナルの価格・特典・限定枠（プレミアム前提）／F6</span></div>
+<span class="filled filled--check"><span class="filled__tag">要確認 · 記入</span>
+（価格・特典・限定枠はレオナ確定待ち：①正式名称②プレミアム価格③特典④限定枠）</span></div>
         </div>
         <div class="bubble-group">
           <span class="bubble-label">吹き出し③</span>
