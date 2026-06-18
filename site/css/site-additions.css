@@ -99,7 +99,7 @@
 /* ===== 料金メニュー ===== */
 .menu-flow-note { text-align: center; color: var(--color-text-muted); font-size: 13px; margin: var(--space-3) 0 0; }
 .menu-list { display: grid; gap: var(--space-5); margin-top: var(--space-5); }
-.menu { display: flex; flex-direction: column; height: 100%; padding: var(--space-card); border: var(--border-hairline); border-radius: 24px; background: rgba(255,255,255,0.45); }
+.menu { display: flex; flex-direction: column; height: 100%; padding: var(--space-card) !important; border: var(--border-hairline) !important; border-radius: 24px !important; background: rgba(255,255,255,0.6) !important; box-shadow: var(--shadow-min); }
 .menu h3 { margin-bottom: var(--space-2); }
 .menu .card__body { color: var(--color-text-muted); margin-bottom: var(--space-4); font-size: 14px; min-height: 3.4em; }
 .menu .def-list { margin-top: auto; }
@@ -122,7 +122,7 @@
 }
 .menu__badge--soft { background: var(--color-green-tint); color: var(--color-primary-deep); }
 
-.menu--flagship { background: var(--color-primary); border-color: transparent; }
+.menu--flagship { background: var(--color-primary) !important; border-color: transparent !important; }
 .menu--flagship h3, .menu--flagship .def-row dt, .menu--flagship .def-row dd { color: var(--color-text-on-primary); }
 .menu--flagship .kicker, .menu--flagship .card__body, .menu--flagship .dt-note, .menu--flagship .yen-note { color: rgba(246,241,232,0.80); }
 .menu--flagship .def-row, .menu--flagship .def-row--first { border-color: rgba(246,241,232,0.22); }
@@ -133,6 +133,13 @@
 .menu--flagship .btn--primary:hover {
   background: rgba(246, 241, 232, 0.9);
 }
+
+/* 男性向けLPへの導線（女性料金の下） */
+.men-cta { display: flex; align-items: center; justify-content: center; gap: .7em; max-width: 540px; margin: var(--space-7) auto 0; padding: 18px 26px; border: 0.5px solid var(--color-hairline); border-radius: var(--radius-pill); background: var(--color-surface-sunken); color: var(--color-primary-deep); font: 600 14px/1.5 var(--font-heading); letter-spacing: 2px; text-decoration: none; transition: background .25s var(--ease-calm), transform .25s var(--ease-calm); }
+.men-cta:hover { background: var(--color-secondary); transform: translateY(-1px); }
+.men-cta__en { font: italic 500 12px/1 var(--font-accent); letter-spacing: 2px; opacity: .65; }
+.men-cta__arrow { transition: transform .25s var(--ease-calm); }
+.men-cta:hover .men-cta__arrow { transform: translateX(4px); }
 
 @media (min-width: 760px) {
   .menu-list { grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; align-items: stretch; }
