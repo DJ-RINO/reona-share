@@ -1,0 +1,146 @@
+/* ============================================================
+   Reona site tokens — デザインシステムからの無改変結合コピー
+   コピー元: デザインシステム/claude-design/tokens/{colors,typography,spacing}.css
+   同期日: 2026-06-11（デザインシステム更新時はこのファイルを再生成すること）
+   ============================================================ */
+
+/* ============================================================
+   Reona Design System — Color tokens
+   主役はグリーン。面積で最も多いのは余白のアイボリー。
+   黒 #000 は使わない。最も濃い色はインク #3E443C。
+   ============================================================ */
+
+:root {
+  /* ---- Brand colors (確定) ---- */
+  --color-forest-green: #6E8572; /* メイン。自然体・芯のある強さ */
+  --color-sand-beige:   #DCCEBB; /* 土台。あたたかさ・安心感 */
+  --color-warm-ivory:   #F6F1E8; /* 余白・背景。呼吸・ゆとり */
+  --color-stone-gray:   #8F9491; /* アクセント。凛とした引き締め */
+
+  /* ---- Derived colors (確定・ブランドキット準拠) ---- */
+  --color-deep-green:   #56695A; /* hover・英字ラベル */
+  --color-ink:          #3E443C; /* 本文テキスト */
+  --color-ink-soft:     #84887E; /* 補足テキスト */
+  --color-hairline:     rgba(62, 68, 60, 0.22);    /* 罫線 0.5px */
+  --color-green-tint:   rgba(110, 133, 114, 0.10); /* タグ・引用背景 */
+  --color-green-tint-soft: rgba(110, 133, 114, 0.06);
+  --color-disabled:     rgba(143, 148, 145, 0.25); /* 無効状態の面 */
+
+  /* ---- Semantic aliases ---- */
+  --color-bg:           var(--color-warm-ivory); /* ページ背景 */
+  --color-surface:      #FFFFFF;                 /* カード面。大面積では使わない */
+  --color-surface-sunken: #EFE8DB;               /* bgより一段沈んだ面 */
+  --color-text:         var(--color-ink);        /* 本文 */
+  --color-text-muted:   var(--color-ink-soft);   /* 補足 */
+  --color-text-on-primary: var(--color-warm-ivory); /* グリーン面上の文字 */
+  --color-primary:      var(--color-forest-green);
+  --color-primary-deep: var(--color-deep-green); /* hover・英字ラベル */
+  --color-secondary:    var(--color-sand-beige);
+  --color-accent:       var(--color-stone-gray);
+  --color-border:       var(--color-hairline);
+  --color-primary-tint: var(--color-green-tint);
+}
+
+/* ============================================================
+   Reona Design System — Typography tokens (推奨・暫定)
+   和文ルール: weight 300–600 のみ。負の letter-spacing 禁止。
+   行間は広め。余白で呼吸する世界観をタイポでも守る。
+   ============================================================ */
+
+:root {
+  /* ---- Font families ---- */
+  --font-heading: "Noto Serif JP", "Hiragino Mincho ProN", serif;        /* 見出し */
+  --font-body:    "Noto Sans JP", "Hiragino Sans", sans-serif;           /* 本文 */
+  --font-accent:  "Cormorant Garamond", "Didot", "Hiragino Mincho ProN", serif; /* 英字・italic */
+
+  /* ---- Type scale (font shorthand: weight size/line-height family) ---- */
+  --text-display: 600 40px/1.8 var(--font-heading);  /* ヒーロー。ls 5px */
+  --text-h2:      600 30px/1.55 var(--font-heading); /* セクション見出し。ls 2.5px */
+  --text-h3:      600 19px/1.6 var(--font-heading);  /* 小見出し。ls 2px */
+  --text-body:    300 14px/2.0 var(--font-body);     /* 本文。ls 0.5px (印刷13px) */
+  --text-body-strong: 400 14px/2.0 var(--font-body);
+  --text-caption: 300 11px/1.9 var(--font-body);     /* 補足。color: muted */
+  --text-label-en: italic 500 13px/1.4 var(--font-accent); /* 英字キッカー */
+
+  /* ---- Letter spacing (和文は常に正のトラッキング) ---- */
+  --tracking-display:  5px;
+  --tracking-heading:  2.5px;
+  --tracking-h3:       2px;
+  --tracking-body:     0.5px;
+  --tracking-label-en: 3px;
+  --tracking-button:   2px;
+  --tracking-wordmark: 8px; /* REONA ワードマーク */
+}
+
+/* ============================================================
+   Reona Design System — Spacing, shape, border, shadow
+   余白で呼吸する。影は原則使わない。区切りは 0.5px hairline。
+   ============================================================ */
+
+:root {
+  /* ---- Spacing scale ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 28px;
+  --space-7: 36px;
+  --space-8: 48px;
+  --space-9: 64px;
+  --space-10: 96px;
+
+  /* ---- Semantic spacing ---- */
+  --space-section: 56px; /* セクション間 48–64px */
+  --space-group:   28px; /* 要素グループ間 20–36px */
+  --space-card:    26px; /* カード内 padding */
+
+  /* ---- Shape / radius ---- */
+  --radius-pill:  26px;            /* ボタン・タグ */
+  --radius-chip:  20px;            /* チップ */
+  --radius-card:  4px;             /* カードは最小限 0–4px */
+  --radius-arch:  140px 140px 0 0; /* 写真のアーチ型マスク（上端のみ） */
+
+  /* ---- Border / hairline ---- */
+  --border-hairline: 0.5px solid var(--color-border);
+  --border-width: 0.5px;
+
+  /* ---- Shadow (原則 none) ---- */
+  --shadow-none: none;
+  --shadow-min:  0 1px 2px rgba(62, 68, 60, 0.06);
+
+  /* ---- Imagery ---- */
+  --img-filter: saturate(0.87); /* @kind other */ /* 写真は彩度を 0.85–0.88 に抑える */
+
+  /* ---- Motion (穏やか。バウンス・派手な動きは使わない) ---- */
+  --ease-calm: cubic-bezier(0.22, 0.61, 0.36, 1); /* @kind other */
+  --dur-fast: 160ms; /* @kind other */
+  --dur-base: 280ms; /* @kind other */
+  --dur-slow: 520ms; /* @kind other */
+}
+
+/* ============================================================
+   v2 追加トークン — 「ひと呼吸」コンセプト用
+   呼吸周期・円窓・ほどけるタイポ。色は一切追加しない。
+   ============================================================ */
+
+:root {
+  /* ---- 呼吸 (4-7-8 呼吸法に近い、ゆっくりした周期) ---- */
+  --breath-cycle: 9s;                                /* 吸う→止める→吐く 1往復 */
+  --breath-cycle-slow: 14s;                          /* 背面レイヤーはさらに遅く */
+  --ease-breath: cubic-bezier(0.45, 0.05, 0.55, 0.95); /* 滑らかな往復 */
+  --ease-release: cubic-bezier(0.16, 1, 0.3, 1);     /* 吐き切るような減速 */
+  --dur-reveal: 1100ms;                              /* にじみ→輪郭の出現 */
+
+  /* ---- 円窓 (アーチの進化形。写真マスク) ---- */
+  --radius-window: 999px 999px 26px 26px;            /* 縦長の円窓 */
+  --radius-window-full: 999px;                       /* 完全な楕円 */
+
+  /* ---- ほどけるタイポ ---- */
+  --tracking-tight-start: 8px;                       /* こわばり (開始値) */
+
+  /* ---- レイヤー (z-index は3つだけ) ---- */
+  --z-spine: 1;        /* 呼吸の線 */
+  --z-header: 40;      /* ヘッダー・追従CTA */
+  --z-grain: 60;       /* グレイン (最前面・pointer-events なし) */
+}
