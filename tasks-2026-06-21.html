@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>レオナさん 残タスク＆意思決定マップ（2026-06-21）</title>
+<style>
+  :root { --ink:#2b2b2b; --sub:#6b6b6b; --line:#e6e2da; --accent:#8a7a5c; --bg:#faf8f3; --hi:#fff6ec; --red:#c0392b; --navy:#2b3a55; --green:#2e6b3a; --greenbg:#eaf3ea; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif; color:var(--ink); background:var(--bg); line-height:1.75; -webkit-text-size-adjust:100%; }
+  header { padding:28px 20px 22px; background:#fff; border-bottom:1px solid var(--line); }
+  header h1 { margin:0 0 6px; font-size:20px; line-height:1.4; }
+  header p { margin:2px 0; color:var(--sub); font-size:13px; }
+  nav.toc { position:sticky; top:0; z-index:10; background:rgba(255,255,255,.95); backdrop-filter:blur(6px); border-bottom:1px solid var(--line); padding:10px 16px; display:flex; gap:8px 14px; flex-wrap:wrap; font-size:13px; }
+  nav.toc a { color:var(--accent); text-decoration:none; white-space:nowrap; }
+  .wrap { max-width:880px; margin:0 auto; padding:18px 16px 40px; }
+  section { margin:30px 0; scroll-margin-top:56px; }
+  h2 { font-size:18px; border-left:4px solid var(--accent); padding-left:11px; margin:0 0 6px; line-height:1.4; }
+  .sublead { color:var(--sub); font-size:13px; margin:2px 0 16px; }
+
+  /* 使い方 / 全体像 */
+  .intro { background:#fff; border:2px solid var(--accent); border-radius:14px; padding:16px 18px; font-size:14px; }
+  .intro b { color:var(--navy); }
+  .map { background:var(--hi); border:1px solid #ecd9c0; border-radius:12px; padding:14px 16px; margin-top:12px; font-size:13.5px; }
+  .map .star { font-weight:700; color:var(--navy); font-size:15px; }
+  .map ul { margin:8px 0 0; padding-left:18px; }
+  .map li { margin:3px 0; }
+
+  /* 決定済み（斜線・圧縮） */
+  .done-wrap { background:var(--greenbg); border:1px solid #cfe3cf; border-radius:12px; padding:14px 16px; }
+  .done-wrap h3 { margin:0 0 8px; font-size:14px; color:var(--green); }
+  .done-list { margin:0; padding:0; list-style:none; }
+  .done-list li { font-size:13px; color:var(--sub); padding:4px 0; border-bottom:1px dashed #d3e3d3; }
+  .done-list li:last-child { border-bottom:none; }
+  .done-list s { color:#8a978a; }
+  .done-list b { color:#5a6b5a; font-weight:700; }
+
+  /* 柱（意思決定の階層） */
+  .pillar { background:#fff; border:1px solid var(--line); border-radius:14px; padding:16px 16px 6px; margin:16px 0; }
+  .pillar-head { display:flex; gap:11px; align-items:flex-start; margin-bottom:4px; }
+  .pillar-num { flex:0 0 auto; width:30px; height:30px; border-radius:9px; background:var(--navy); color:#fff; font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:center; }
+  .pillar-title { font-size:16px; font-weight:700; line-height:1.35; margin:2px 0 0; }
+  .pillar-why { color:var(--sub); font-size:12.5px; margin:2px 0 0; }
+
+  .task { border-left:3px solid var(--line); margin:12px 0 12px 6px; padding:2px 0 2px 13px; }
+  .task .label { display:inline-block; font-size:11.5px; font-weight:700; color:var(--accent); background:#f3ece0; border-radius:6px; padding:1px 8px; margin-bottom:4px; }
+  .task .what { font-weight:700; font-size:14.5px; line-height:1.5; }
+  .task .why { color:var(--sub); font-size:12.5px; margin-top:3px; }
+  .task .why b { color:var(--navy); }
+  .task.crit { border-left-color:var(--red); }
+  .pri { display:inline-block; font-size:11px; padding:1px 8px; border-radius:20px; margin-left:4px; vertical-align:middle; white-space:nowrap; }
+  .p-hi { background:#f6d4cf; color:var(--red); }
+  .p-mid { background:#e8dcc4; color:#6b5a36; }
+
+  /* なぜ（かみ砕き・比喩）callout */
+  .why-box { background:#fff; border:1px dashed var(--accent); border-radius:12px; padding:14px 16px; margin:14px 0; font-size:13.5px; }
+  .why-box .tag { display:inline-block; font-size:11.5px; font-weight:700; color:#fff; background:var(--accent); border-radius:6px; padding:1px 9px; margin-bottom:7px; }
+  .why-box p { margin:6px 0; }
+
+  /* やり方ステップ */
+  .steps { background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px 16px; margin:12px 0; }
+  .steps ol { margin:6px 0 0; padding-left:20px; }
+  .steps li { margin:6px 0; font-size:13.5px; }
+  .steps .mini { color:var(--sub); font-size:12px; }
+  figure { margin:14px 0 4px; }
+  figure img { width:100%; max-width:460px; display:block; border:1px solid var(--line); border-radius:10px; }
+  figcaption { color:var(--sub); font-size:12px; margin-top:6px; }
+  .safe { background:var(--hi); border:1px solid #ecd9c0; border-radius:10px; padding:12px 14px; font-size:13px; margin-top:12px; }
+
+  footer { padding:28px 20px; color:var(--sub); font-size:12px; text-align:center; }
+  @media (min-width:680px){ header h1{font-size:23px;} h2{font-size:20px;} }
+</style></head>
+<body>
+<header>
+  <h1>レオナさん 残タスク＆意思決定マップ</h1>
+  <p>2026-06-21 ／ 集客の設計が固まったので、いま残っているお願いだけを整理しました</p>
+  <p>終わった決定は下の「決定済み」に圧縮。今やることだけ、なぜやるかと一緒に並べています</p>
+</header>
+<nav class="toc">
+  <a href="#map">全体像</a>
+  <a href="#done">✅ 決定済み</a>
+  <a href="#p1">柱1 受け皿</a>
+  <a href="#p2">柱2 計測</a>
+  <a href="#p3">柱3 発信</a>
+  <a href="#howto">権限付与のやり方</a>
+</nav>
+<div class="wrap">
+
+<section id="map">
+  <div class="intro">
+    <b>この資料の読み方</b><br>
+    めざすゴールは一つ、<b>「体験申込を増やす」</b>。そのために必要なことを<b>3本の柱</b>に分け、各タスクに<b>「なぜやるか」</b>を付けました。上から順に見れば、何のための作業か迷わず分かります。
+    <div class="map">
+      <div class="star">★ ゴール：体験申込を増やす</div>
+      <div class="sublead" style="margin:6px 0 0">「友だちを増やす」ではなく「申込まで変える」のが勝ち筋。だから手前のどこで人が止まるかを見ながら直します。</div>
+      <ul>
+        <li><b>柱1</b>　受け皿を動かす（来た人を取りこぼさない）</li>
+        <li><b>柱2</b>　計測できる状態にする（どこで止まるか見える化）</li>
+        <li><b>柱3</b>　入口の母数を増やす（発信を続ける＝レオナさんの主戦場）</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="done">
+  <h2>✅ 決定済み（確認だけ・もう動かしません）</h2>
+  <p class="sublead">認識違いがあればここだけ指摘してください。なければ読み飛ばしてOK。</p>
+  <div class="done-wrap">
+    <h3>固まったこと</h3>
+    <ul class="done-list">
+      <li><s>めざす指標＝<b>体験申込数</b>（LINEの友だち追加はその手前のサブ指標）</s></li>
+      <li><s>当面は<b>女性向けを先行</b>。男性向けは公開を維持しつつ運用は後回し</s></li>
+      <li><s>LINEは<b>公式アカウント（無料）＋AIの自動応答</b>で回す（有料ツールは当面不要）</s></li>
+      <li><s>主オファー＝<b>「夜20分から、まず体験」＋股関節ストレッチ動画のプレゼント</b>（「無料」という言葉は使わない方針）</s></li>
+      <li><s>動ける枠（6/17）＝<b>対面4／グループ4／オンライン10</b>（予約の入り次第で増枠）</s></li>
+      <li><s>男性料金（6/17）＝<b>お試し9,000〜11,000／継続48,000／コース99,000〜250,000</b></s></li>
+      <li><s>ドメイン・サーバー契約済み／<b>管理権限はレオナさんが保持</b></s></li>
+      <li><s>サイト到達後の計測（GA4）＝<b>本番で稼働中</b>（ここはこちらで実装済み）</s></li>
+      <li><s>サイト用のFAQ＝<b>受領済み</b></s></li>
+    </ul>
+  </div>
+</section>
+
+<section id="p1">
+  <h2>柱1 ｜ 受け皿を動かす</h2>
+  <p class="sublead">来てくれた人を取りこぼさず、体験申込まで運ぶ。</p>
+
+  <div class="pillar">
+    <div class="pillar-head">
+      <div class="pillar-num">1</div>
+      <div><div class="pillar-title">来た人を受け止めて体験へ変える</div>
+      <div class="pillar-why">なぜ：申込が増えるかどうかは、ここの設計で決まる</div></div>
+    </div>
+
+    <div class="task crit">
+      <span class="label">1-α</span><span class="pri p-hi">🔴最優先</span>
+      <div class="what">LINE公式アカウントのログイン情報を共有</div>
+      <div class="why"><b>なぜ：</b>一番時間を取られているLINEの手動対応を、AIの自動応答に置き換えて負担をなくし、取りこぼしも防ぐため。ログインをもらえればこちらで組み始めます。※サイトのボタン用URLとは別物です。</div>
+    </div>
+
+    <div class="task">
+      <span class="label">1-β</span>
+      <div class="what">股関節ストレッチ動画の仕上げ（現在5本→10本目標）</div>
+      <div class="why"><b>なぜ：</b>これがLINE登録特典になります。「動画がもらえるから登録する」という、友だち追加の磁力。仕上がった分から共有してください。</div>
+    </div>
+  </div>
+</section>
+
+<section id="p2">
+  <h2>柱2 ｜ 計測できる状態にする</h2>
+  <p class="sublead">どこで人が止まっているかが見えないと、直す場所が分かりません。</p>
+
+  <div class="why-box">
+    <span class="tag">なぜ計測するの？</span>
+    <p>レオナさんが体を整えるとき、まず今の状態（体重・体組成）を<b>測り</b>ますよね。測らないと、やっていることが効いているか分からない。発信もまったく同じです。</p>
+    <p>「投稿を何人が見たか → 何人がプロフィールに来たか → 何人がリンクを押したか → 何人がLINEに入ったか → 何人が申し込んだか」。この流れの<b>どこで人が抜けているか</b>が見えて初めて、直すべき一点が分かります。数字を見ずに動くのは、目隠しで体を鍛えるようなものです。</p>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-head">
+      <div class="pillar-num">2</div>
+      <div><div class="pillar-title">発信〜申込の「数字」を集める</div>
+      <div class="pillar-why">なぜ：サイト到達後はこちらで自動計測済み。足りないのは「SNSの中の数字」</div></div>
+    </div>
+
+    <div class="task">
+      <span class="label">2-α</span><span class="pri p-mid">権限</span>
+      <div class="what">Meta Business Suite で、こちらに「閲覧権限」を付与</div>
+      <div class="why"><b>なぜ：</b>プロフィール訪問やリンクのタップ数は、InstagramがAPI（自動取得）を閉じたため、<b>画面を見るしか方法がありません</b>。<b>パスワードは渡しません</b>——招待された側は自分のアカウントで入り、レオナさんはいつでも外せます。やり方は<a href="#howto">こちら</a>。</div>
+    </div>
+
+    <div class="task">
+      <span class="label">2-β</span><span class="pri p-mid">出発点</span>
+      <div class="what">いまの数字を共有（フォロワー数・リーチ・プロフィール遷移・リンクのタップ／現在のLINE友だち数）</div>
+      <div class="why"><b>なぜ：</b>目標を置くための<b>出発点（ベースライン）</b>。今が分からないと「増えた／減った」も判断できません。Business Suiteからのエクスポート、または画面のスクショでOK。</div>
+    </div>
+  </div>
+</section>
+
+<section id="p3">
+  <h2>柱3 ｜ 入口の母数を増やす</h2>
+  <p class="sublead">発信はファネルの一番上。ここはレオナさんの主戦場です。</p>
+
+  <div class="pillar">
+    <div class="pillar-head">
+      <div class="pillar-num">3</div>
+      <div><div class="pillar-title">発信を続け、ネタと証拠をためる</div>
+      <div class="pillar-why">なぜ：すべての流入はここから始まる。レオナさんの実働はここだけでOK</div></div>
+    </div>
+
+    <div class="task">
+      <span class="label">3-α</span>
+      <div class="what">SNS発信を続ける（短い動画・ライブ・ストーリーズが主軸）</div>
+      <div class="why"><b>なぜ：</b>全ての入口。続く形に絞っています。Threadsは本人が投稿、ただし<b>「こういう内容を」という方向と下書きは毎回こちらから渡します</b>（ゼロから書かなくて大丈夫）。</div>
+    </div>
+
+    <div class="task">
+      <span class="label">3-β</span>
+      <div class="what">週1で「最近あった出来事」を一言だけ共有</div>
+      <div class="why"><b>なぜ：</b>それが発信ネタの種になります。完成した文章でなく、出来事のかけらで十分。</div>
+    </div>
+
+    <div class="task">
+      <span class="label">3-γ</span>
+      <div class="what">体験に来た人の声・変化を回収</div>
+      <div class="why"><b>なぜ：</b>「この人なら整いそう」と感じてもらう<b>証拠</b>。申込率を上げる一番効く材料です。</div>
+    </div>
+  </div>
+
+  <div class="task" style="border-left-color:var(--navy);margin-left:0">
+    <span class="label" style="color:var(--navy);background:#e4e8ef">確認1つ</span>
+    <div class="what">主な対象を「子育て中で、自分を後回しにしている女性」に置く方針でよいか</div>
+    <div class="why"><b>なぜ：</b>発信は広く（自分を後回しにしてきた人へ）、<b>商品の案内だけ</b>この層に絞ると、共感は集めつつ申込にもつながります。違和感があれば相談させてください。</div>
+  </div>
+</section>
+
+<section id="howto">
+  <h2>付録 ｜ Instagram「権限付与」のやり方</h2>
+  <p class="sublead">柱2-α の手順です。パスワードは渡さず、5分ほどで終わります。</p>
+
+  <div class="why-box">
+    <span class="tag">なぜパスワードでなく「権限付与」？</span>
+    <p>Instagramには「人間以外が操作していないか」を見張る門番がいます。AIや自動ツールでアカウントを動かすと、偽物と判断されて<b>アカウントごと消される</b>ことがあります。だから運用は人間がやり、<b>AIにアカウントを操作させることは一切しません</b>。お店に「人のふりをしたロボット」を立たせたら追い出される、のと同じです。</p>
+    <p>さらに、パスワードを共有して別の端末から入ると、Instagram自身の「不審なログイン」検知でかえってロックされることがあります。<b>正式な権限付与なら、相手は自分のアカウントで入るのでパスワードは渡らず、より安全</b>です。</p>
+  </div>
+
+  <div class="steps">
+    <b>手順（Meta Business Suite・パソコンのブラウザ）</b>
+    <ol>
+      <li>左下の<b>［設定］</b>を開く</li>
+      <li>左メニューの<b>［ユーザー］</b>をクリック</li>
+      <li>右上の<b>［ユーザーを招待］</b>をクリック</li>
+      <li>こちらの<b>メールアドレスを入力</b> →［次へ］</li>
+      <li>アクセス許可を選ぶ（<b>数値が見られる最小限</b>でOK）→［次へ］</li>
+      <li>アセットで<b>「Instagramアカウント」</b>を選び［招待］</li>
+    </ol>
+    <p class="mini">※事前にInstagramがMeta Business Suiteに連携されている必要があります（［設定］→［Instagramアカウント］で確認）。ボタン名は更新で少し変わることがあります。迷ったら画面共有で一緒に進めます。</p>
+    <figure>
+      <img src="assets/meta-invite-step1-email.png" alt="Meta Business Suite の招待画面">
+      <figcaption>「ユーザーを招待」を押すと開く画面。左の4ステップ（メールアドレス→アクセスを許可→アセットを割り当て→レビュー）の順に進むだけ。※画面はデモ用の別アカウントです。</figcaption>
+    </figure>
+    <div class="safe"><b>私たちがすること／しないこと：</b>数字を見て記録するだけ。アカウントを操作したり、勝手に投稿したりは一切しません。トレーナーが体組成の結果を見てメニューを組むのと同じで、見るだけです。</div>
+  </div>
+</section>
+
+</div>
+<footer>レオナさん 残タスク＆意思決定マップ ／ 2026-06-21 ｜ 終わった項目は「決定済み」に圧縮済み</footer>
+</body></html>
