@@ -16,7 +16,6 @@
   h2 { font-size:18px; border-left:4px solid var(--accent); padding-left:11px; margin:0 0 6px; line-height:1.4; }
   .sublead { color:var(--sub); font-size:13px; margin:2px 0 16px; }
 
-  /* 使い方 / 全体像 */
   .intro { background:#fff; border:2px solid var(--accent); border-radius:14px; padding:16px 18px; font-size:14px; }
   .intro b { color:var(--navy); }
   .map { background:var(--hi); border:1px solid #ecd9c0; border-radius:12px; padding:14px 16px; margin-top:12px; font-size:13.5px; }
@@ -24,19 +23,20 @@
   .map ul { margin:8px 0 0; padding-left:18px; }
   .map li { margin:3px 0; }
 
-  /* 決定済み（斜線・圧縮） */
   .done-wrap { background:var(--greenbg); border:1px solid #cfe3cf; border-radius:12px; padding:14px 16px; }
   .done-wrap h3 { margin:0 0 8px; font-size:14px; color:var(--green); }
   .done-list { margin:0; padding:0; list-style:none; }
-  .done-list li { font-size:13px; color:var(--sub); padding:4px 0; border-bottom:1px dashed #d3e3d3; }
+  .done-list li { font-size:13px; color:var(--sub); padding:5px 0; border-bottom:1px dashed #d3e3d3; }
   .done-list li:last-child { border-bottom:none; }
   .done-list s { color:#8a978a; }
   .done-list b { color:#5a6b5a; font-weight:700; }
+  .done-list .note { color:#9a7b4a; }
 
-  /* 柱（意思決定の階層） */
   .pillar { background:#fff; border:1px solid var(--line); border-radius:14px; padding:16px 16px 6px; margin:16px 0; }
+  .pillar.blocker { border-color:#e6bcb5; }
   .pillar-head { display:flex; gap:11px; align-items:flex-start; margin-bottom:4px; }
   .pillar-num { flex:0 0 auto; width:30px; height:30px; border-radius:9px; background:var(--navy); color:#fff; font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:center; }
+  .pillar.blocker .pillar-num { background:var(--red); }
   .pillar-title { font-size:16px; font-weight:700; line-height:1.35; margin:2px 0 0; }
   .pillar-why { color:var(--sub); font-size:12.5px; margin:2px 0 0; }
 
@@ -49,13 +49,16 @@
   .pri { display:inline-block; font-size:11px; padding:1px 8px; border-radius:20px; margin-left:4px; vertical-align:middle; white-space:nowrap; }
   .p-hi { background:#f6d4cf; color:var(--red); }
   .p-mid { background:#e8dcc4; color:#6b5a36; }
+  .p-block { background:#f6d4cf; color:var(--red); }
 
-  /* なぜ（かみ砕き・比喩）callout */
   .why-box { background:#fff; border:1px dashed var(--accent); border-radius:12px; padding:14px 16px; margin:14px 0; font-size:13.5px; }
   .why-box .tag { display:inline-block; font-size:11.5px; font-weight:700; color:#fff; background:var(--accent); border-radius:6px; padding:1px 9px; margin-bottom:7px; }
   .why-box p { margin:6px 0; }
 
-  /* やり方ステップ */
+  .confirm { background:#fff; border:1px solid var(--line); border-left:4px solid var(--navy); border-radius:10px; padding:12px 15px; margin:10px 0; }
+  .confirm .q { font-weight:700; font-size:14px; }
+  .confirm .why { color:var(--sub); font-size:12.5px; margin-top:3px; }
+
   .steps { background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px 16px; margin:12px 0; }
   .steps ol { margin:6px 0 0; padding-left:20px; }
   .steps li { margin:6px 0; font-size:13.5px; }
@@ -71,15 +74,18 @@
 <body>
 <header>
   <h1>レオナさん 残タスク＆意思決定マップ</h1>
-  <p>2026-06-21 ／ 集客の設計が固まったので、いま残っているお願いだけを整理しました</p>
-  <p>終わった決定は下の「決定済み」に圧縮。今やることだけ、なぜやるかと一緒に並べています</p>
+  <p>2026-06-21 ／ いま残っているお願いを、なぜやるかと一緒に整理しました</p>
+  <p>終わった決定は「決定済み」に圧縮。公開・配信のために<span style="color:var(--red)">いま必要な順</span>に並べています</p>
 </header>
 <nav class="toc">
   <a href="#map">全体像</a>
   <a href="#done">✅ 決定済み</a>
   <a href="#p1">柱1 受け皿</a>
   <a href="#p2">柱2 計測</a>
-  <a href="#p3">柱3 発信</a>
+  <a href="#p3">柱3 発信と証拠</a>
+  <a href="#p4">柱4 LP本体</a>
+  <a href="#p5">柱5 商品</a>
+  <a href="#confirm">確認したいこと</a>
   <a href="#howto">権限付与のやり方</a>
 </nav>
 <div class="wrap">
@@ -87,22 +93,24 @@
 <section id="map">
   <div class="intro">
     <b>この資料の読み方</b><br>
-    めざすゴールは一つ、<b>「体験申込を増やす」</b>。そのために必要なことを<b>3本の柱</b>に分け、各タスクに<b>「なぜやるか」</b>を付けました。上から順に見れば、何のための作業か迷わず分かります。
+    めざすゴールは一つ、<b>「体験申込を増やす」</b>。そのために必要なことを<b>柱</b>に分け、各タスクに<b>「なぜやるか」</b>を付けました。上から順に見れば、何のための作業か迷わず分かります。
     <div class="map">
       <div class="star">★ ゴール：体験申込を増やす</div>
-      <div class="sublead" style="margin:6px 0 0">「友だちを増やす」ではなく「申込まで変える」のが勝ち筋。だから手前のどこで人が止まるかを見ながら直します。</div>
+      <div class="sublead" style="margin:6px 0 0">「友だちを増やす」ではなく「申込まで変える」のが勝ち筋。手前のどこで人が止まるかを見ながら直します。</div>
       <ul>
         <li><b>柱1</b>　受け皿を動かす（来た人を取りこぼさない）</li>
         <li><b>柱2</b>　計測できる状態にする（どこで止まるか見える化）</li>
-        <li><b>柱3</b>　入口の母数を増やす（発信を続ける＝レオナさんの主戦場）</li>
+        <li><b>柱3</b>　発信を続け、証拠をためる（入口の母数＝主戦場）</li>
+        <li><b>柱4</b>　LP本体を仕上げる（<span style="color:var(--red)">公開のブロッカー</span>）</li>
+        <li><b>柱5</b>　商品の中身を固める（価格を確定させる前提）</li>
       </ul>
     </div>
   </div>
 </section>
 
 <section id="done">
-  <h2>✅ 決定済み（確認だけ・もう動かしません）</h2>
-  <p class="sublead">認識違いがあればここだけ指摘してください。なければ読み飛ばしてOK。</p>
+  <h2>✅ 決定済み（確認だけ）</h2>
+  <p class="sublead">固まったことです。認識違いがあればここだけ指摘してください。※印は骨子は確定・細部だけ調整中。</p>
   <div class="done-wrap">
     <h3>固まったこと</h3>
     <ul class="done-list">
@@ -111,10 +119,11 @@
       <li><s>LINEは<b>公式アカウント（無料）＋AIの自動応答</b>で回す（有料ツールは当面不要）</s></li>
       <li><s>主オファー＝<b>「夜20分から、まず体験」＋股関節ストレッチ動画のプレゼント</b>（「無料」という言葉は使わない方針）</s></li>
       <li><s>動ける枠（6/17）＝<b>対面4／グループ4／オンライン10</b>（予約の入り次第で増枠）</s></li>
-      <li><s>男性料金（6/17）＝<b>お試し9,000〜11,000／継続48,000／コース99,000〜250,000</b></s></li>
+      <li><s>男性料金の骨子（6/17）＝<b>お試し／継続／コースの3段</b></s>　<span class="note">※初回の可動域診断は別枠。上位プランの最終額は調整中（くわしくは「男性フィットネス価格」資料）</span></li>
       <li><s>ドメイン・サーバー契約済み／<b>管理権限はレオナさんが保持</b></s></li>
       <li><s>サイト到達後の計測（GA4）＝<b>本番で稼働中</b>（ここはこちらで実装済み）</s></li>
       <li><s>サイト用のFAQ＝<b>受領済み</b></s></li>
+      <li><span class="note">※女性の体験料・月額は、動ける枠から逆算して<b>確定作業中</b>（継続は「応相談」で運用）。レオナさんの作業は不要、こちらで進めます</span></li>
     </ul>
   </div>
 </section>
@@ -122,20 +131,15 @@
 <section id="p1">
   <h2>柱1 ｜ 受け皿を動かす</h2>
   <p class="sublead">来てくれた人を取りこぼさず、体験申込まで運ぶ。</p>
-
   <div class="pillar">
-    <div class="pillar-head">
-      <div class="pillar-num">1</div>
+    <div class="pillar-head"><div class="pillar-num">1</div>
       <div><div class="pillar-title">来た人を受け止めて体験へ変える</div>
-      <div class="pillar-why">なぜ：申込が増えるかどうかは、ここの設計で決まる</div></div>
-    </div>
-
+      <div class="pillar-why">なぜ：申込が増えるかは、ここの設計で決まる</div></div></div>
     <div class="task crit">
       <span class="label">1-α</span><span class="pri p-hi">🔴最優先</span>
       <div class="what">LINE公式アカウントのログイン情報を共有</div>
       <div class="why"><b>なぜ：</b>一番時間を取られているLINEの手動対応を、AIの自動応答に置き換えて負担をなくし、取りこぼしも防ぐため。ログインをもらえればこちらで組み始めます。※サイトのボタン用URLとは別物です。</div>
     </div>
-
     <div class="task">
       <span class="label">1-β</span>
       <div class="what">股関節ストレッチ動画の仕上げ（現在5本→10本目標）</div>
@@ -147,81 +151,127 @@
 <section id="p2">
   <h2>柱2 ｜ 計測できる状態にする</h2>
   <p class="sublead">どこで人が止まっているかが見えないと、直す場所が分かりません。</p>
-
   <div class="why-box">
     <span class="tag">なぜ計測するの？</span>
-    <p>レオナさんが体を整えるとき、まず今の状態（体重・体組成）を<b>測り</b>ますよね。測らないと、やっていることが効いているか分からない。発信もまったく同じです。</p>
-    <p>「投稿を何人が見たか → 何人がプロフィールに来たか → 何人がリンクを押したか → 何人がLINEに入ったか → 何人が申し込んだか」。この流れの<b>どこで人が抜けているか</b>が見えて初めて、直すべき一点が分かります。数字を見ずに動くのは、目隠しで体を鍛えるようなものです。</p>
+    <p>レオナさんが体を整えるとき、まず今の状態（体重・体組成）を<b>測り</b>ますよね。測らないと効いているか分からない。発信もまったく同じです。「投稿を何人が見た→何人がプロフィールに来た→何人がリンクを押した→何人がLINEに入った→何人が申し込んだ」の<b>どこで抜けているか</b>が見えて初めて、直す一点が分かります。</p>
   </div>
-
   <div class="pillar">
-    <div class="pillar-head">
-      <div class="pillar-num">2</div>
+    <div class="pillar-head"><div class="pillar-num">2</div>
       <div><div class="pillar-title">発信〜申込の「数字」を集める</div>
-      <div class="pillar-why">なぜ：サイト到達後はこちらで自動計測済み。足りないのは「SNSの中の数字」</div></div>
-    </div>
-
+      <div class="pillar-why">なぜ：サイト到達後はこちらで自動計測済み。足りないのは「SNSの中の数字」</div></div></div>
     <div class="task">
       <span class="label">2-α</span><span class="pri p-mid">権限</span>
       <div class="what">Meta Business Suite で、こちらに「閲覧権限」を付与</div>
-      <div class="why"><b>なぜ：</b>プロフィール訪問やリンクのタップ数は、InstagramがAPI（自動取得）を閉じたため、<b>画面を見るしか方法がありません</b>。<b>パスワードは渡しません</b>——招待された側は自分のアカウントで入り、レオナさんはいつでも外せます。やり方は<a href="#howto">こちら</a>。</div>
+      <div class="why"><b>なぜ：</b>プロフィール訪問やリンクのタップ数は、InstagramがAPI（自動取得）を閉じたため<b>画面を見るしか方法がありません</b>。<b>パスワードは渡しません</b>——招待された側は自分のアカウントで入り、いつでも外せます。やり方は<a href="#howto">こちら</a>。</div>
     </div>
-
     <div class="task">
       <span class="label">2-β</span><span class="pri p-mid">出発点</span>
       <div class="what">いまの数字を共有（フォロワー数・リーチ・プロフィール遷移・リンクのタップ／現在のLINE友だち数）</div>
-      <div class="why"><b>なぜ：</b>目標を置くための<b>出発点（ベースライン）</b>。今が分からないと「増えた／減った」も判断できません。Business Suiteからのエクスポート、または画面のスクショでOK。</div>
+      <div class="why"><b>なぜ：</b>目標を置くための<b>出発点（ベースライン）</b>。今が分からないと「増えた／減った」も判断できません。エクスポートでも画面スクショでもOK。</div>
     </div>
   </div>
 </section>
 
 <section id="p3">
-  <h2>柱3 ｜ 入口の母数を増やす</h2>
+  <h2>柱3 ｜ 発信を続け、証拠をためる</h2>
   <p class="sublead">発信はファネルの一番上。ここはレオナさんの主戦場です。</p>
-
   <div class="pillar">
-    <div class="pillar-head">
-      <div class="pillar-num">3</div>
-      <div><div class="pillar-title">発信を続け、ネタと証拠をためる</div>
-      <div class="pillar-why">なぜ：すべての流入はここから始まる。レオナさんの実働はここだけでOK</div></div>
-    </div>
-
+    <div class="pillar-head"><div class="pillar-num">3</div>
+      <div><div class="pillar-title">発信・ネタ・証拠</div>
+      <div class="pillar-why">なぜ：すべての流入はここから。声と実績は申込率を直接上げる</div></div></div>
     <div class="task">
       <span class="label">3-α</span>
       <div class="what">SNS発信を続ける（短い動画・ライブ・ストーリーズが主軸）</div>
-      <div class="why"><b>なぜ：</b>全ての入口。続く形に絞っています。Threadsは本人が投稿、ただし<b>「こういう内容を」という方向と下書きは毎回こちらから渡します</b>（ゼロから書かなくて大丈夫）。</div>
+      <div class="why"><b>なぜ：</b>全ての入口。Threadsは本人が投稿、ただし<b>「こういう内容を」という方向と下書きは毎回こちらから渡します</b>（ゼロから書かなくて大丈夫）。</div>
     </div>
-
     <div class="task">
       <span class="label">3-β</span>
-      <div class="what">週1で「最近あった出来事」を一言だけ共有</div>
-      <div class="why"><b>なぜ：</b>それが発信ネタの種になります。完成した文章でなく、出来事のかけらで十分。</div>
+      <div class="what">週1で「最近あった出来事」を一言だけ共有＋LINE用の言葉のかけら（口ぐせ・呼びかけ方）</div>
+      <div class="why"><b>なぜ：</b>発信ネタと、AI自動応答・ステップ配信のシナリオの素になります。完成文でなく、かけらで十分。</div>
     </div>
-
     <div class="task">
-      <span class="label">3-γ</span>
-      <div class="what">体験に来た人の声・変化を回収</div>
-      <div class="why"><b>なぜ：</b>「この人なら整いそう」と感じてもらう<b>証拠</b>。申込率を上げる一番効く材料です。</div>
+      <span class="label">3-γ</span><span class="pri p-mid">証拠</span>
+      <div class="what">体験・受講した人の「声・変化」を、本人の許可付きで2件以上回収（匿名・イニシャル可）</div>
+      <div class="why"><b>なぜ：</b>「この人なら整いそう」と感じてもらう<b>証拠</b>。LPの「お客様の声」欄（今は空）に載せます。申込率を上げる一番効く材料です。</div>
+    </div>
+    <div class="task">
+      <span class="label">3-δ</span><span class="pri p-mid">実績づくり</span>
+      <div class="what">一般モニターの募集（知人以外）</div>
+      <div class="why"><b>なぜ：</b>声・実績の供給源。条件は6/18の通り（実費のみ本人負担・約16万円分は無償・4週間・月1進捗）。早く実績が貯まるほど価格と訴求の説得力が増します。</div>
     </div>
   </div>
+</section>
 
-  <div class="task" style="border-left-color:var(--navy);margin-left:0">
-    <span class="label" style="color:var(--navy);background:#e4e8ef">確認1つ</span>
-    <div class="what">主な対象を「子育て中で、自分を後回しにしている女性」に置く方針でよいか</div>
-    <div class="why"><b>なぜ：</b>発信は広く（自分を後回しにしてきた人へ）、<b>商品の案内だけ</b>この層に絞ると、共感は集めつつ申込にもつながります。違和感があれば相談させてください。</div>
+<section id="p4">
+  <h2>柱4 ｜ LP本体を仕上げる</h2>
+  <p class="sublead"><span style="color:var(--red);font-weight:700">これが揃わないと、サイトを公開できません。</span>本人にしか書けない・撮れないものです。</p>
+  <div class="pillar blocker">
+    <div class="pillar-head"><div class="pillar-num">4</div>
+      <div><div class="pillar-title">LPの中身を埋める（公開ブロッカー）</div>
+      <div class="pillar-why">なぜ：今は仮の文章・写真待ちで、公開できる状態になっていない</div></div></div>
+    <div class="task crit">
+      <span class="label">4-α</span><span class="pri p-block">公開ブロッカー</span>
+      <div class="what">LP本文①〜⑩の記入（別資料「LP文章ガイド」の赤い番号①〜⑩）</div>
+      <div class="why"><b>なぜ：</b>ヒーローの一言・悩み・3つのアプローチ・信条・特典の中身・クーポン文言などが<b>まだ仮文／空欄</b>。話し言葉のままでOK。書ける所から埋めてください。</div>
+    </div>
+    <div class="task crit">
+      <span class="label">4-β</span><span class="pri p-block">公開ブロッカー</span>
+      <div class="what">プロフィール（About）ストーリーの中身を具体化</div>
+      <div class="why"><b>なぜ：</b>「崩れた時期→夜20分ヨガで立て直し→トレーニングで結果」の流れ。<b>どこまで書くか・子どもや職歴の線引き</b>は本人しか決められません。物語が訴求の核です。</div>
+    </div>
+    <div class="task crit">
+      <span class="label">4-γ</span><span class="pri p-block">公開ブロッカー</span>
+      <div class="what">サイト・SNS用の実写写真を複数枚 撮影・提出</div>
+      <div class="why"><b>なぜ：</b>今のLPは写真が全部プレースホルダー（仮）。自然光・縦構図・上半身〜全身を数枚。7/5イベントやパークヨガの撮影を活用、初期は友人協力でOK。</div>
+    </div>
+  </div>
+</section>
+
+<section id="p5">
+  <h2>柱5 ｜ 商品の中身を固める</h2>
+  <p class="sublead">中身が決まると、価格（特に上位コース）が確定します。</p>
+  <div class="pillar">
+    <div class="pillar-head"><div class="pillar-num">5</div>
+      <div><div class="pillar-title">プログラムの実体を決める</div>
+      <div class="pillar-why">なぜ：価格は「中身×稼働量」で決まる。中身が空だと価格が置けない</div></div></div>
+    <div class="task">
+      <span class="label">5-α</span>
+      <div class="what">腸活プログラムの具体メニュー（何週間・何回・組合せ）＋検査の提携フロー</div>
+      <div class="why"><b>なぜ：</b>これが固まると上位コース（腸内検査込み）の価格が確定します。本人の専門知が必要な部分です。</div>
+    </div>
+    <div class="task">
+      <span class="label">5-β</span>
+      <div class="what">伴走「深める」コース（整える↔極めるの中間）の中身を一言で</div>
+      <div class="why"><b>なぜ：</b>3段階の真ん中がまだ「難しい」で止まっています。こちらの仮提案でよいか、修正したいかだけ教えてください。</div>
+    </div>
+  </div>
+</section>
+
+<section id="confirm">
+  <h2>確認したいこと（迷ったら相談で大丈夫）</h2>
+  <p class="sublead">決め切れていない小さな分かれ道。サクッと方向だけ。</p>
+  <div class="confirm">
+    <div class="q">① 主な対象を「子育て中で、自分を後回しにしている女性」に置く方針でよいか</div>
+    <div class="why">なぜ：発信は広く（自分を後回しにしてきた人へ）、<b>商品の案内だけ</b>この層に絞ると、共感は集めつつ申込にもつながります。</div>
+  </div>
+  <div class="confirm">
+    <div class="q">② 「夜20分（サブスク）」の正式な呼び方と、体験の条件（日数・先着など）</div>
+    <div class="why">なぜ：主オファーの締めの言葉になります。今は仮の呼び方のままです。</div>
+  </div>
+  <div class="confirm">
+    <div class="q">③ トップの「受け方」カードを 3枚→4枚にするか（20分パーソナル／夜20分／スタジオ／対面）</div>
+    <div class="why">なぜ：見せ方の構成。今の実装は3枚です。</div>
   </div>
 </section>
 
 <section id="howto">
   <h2>付録 ｜ Instagram「権限付与」のやり方</h2>
   <p class="sublead">柱2-α の手順です。パスワードは渡さず、5分ほどで終わります。</p>
-
   <div class="why-box">
     <span class="tag">なぜパスワードでなく「権限付与」？</span>
     <p>Instagramには「人間以外が操作していないか」を見張る門番がいます。AIや自動ツールでアカウントを動かすと、偽物と判断されて<b>アカウントごと消される</b>ことがあります。だから運用は人間がやり、<b>AIにアカウントを操作させることは一切しません</b>。お店に「人のふりをしたロボット」を立たせたら追い出される、のと同じです。</p>
-    <p>さらに、パスワードを共有して別の端末から入ると、Instagram自身の「不審なログイン」検知でかえってロックされることがあります。<b>正式な権限付与なら、相手は自分のアカウントで入るのでパスワードは渡らず、より安全</b>です。</p>
+    <p>さらに、パスワードを共有して別端末から入ると、Instagram自身の「不審なログイン」検知でかえってロックされることがあります。<b>正式な権限付与なら、相手は自分のアカウントで入るのでパスワードは渡らず、より安全</b>です。</p>
   </div>
-
   <div class="steps">
     <b>手順（Meta Business Suite・パソコンのブラウザ）</b>
     <ol>
