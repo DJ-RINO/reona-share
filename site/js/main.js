@@ -466,6 +466,7 @@
   }
 
   setupYogaCarousel();
+  setupChannelsDeck();
 
   if (reduceMotion) return;
 
@@ -543,6 +544,7 @@
 
     function updateDeck(options) {
       var dragX = options && typeof options.dragX === "number" ? options.dragX : 0;
+      deck.classList.add("is-ready");
       order.forEach(function (card, offset) {
         var isTop = offset === 0;
         card.style.zIndex = String(order.length - offset);
@@ -689,8 +691,6 @@
 
     updateDeck();
   }
-
-  setupChannelsDeck();
 
   /* ---- 7. GSAP scrub 演出 ---- */
   window.addEventListener("load", function () {

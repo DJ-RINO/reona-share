@@ -490,6 +490,12 @@ body.is-loaded .moon-window--hero { opacity: 1; }
   touch-action: pan-y;
 }
 
+/* JS 未実行時（reduce-motion 早期 return 等）の重なり防止: 先頭1枚だけ表示 */
+.deck:not(.is-ready) .deal:not(:first-child) {
+  visibility: hidden;
+  pointer-events: none;
+}
+
 .deal {
   position: absolute;
   top: 0;
