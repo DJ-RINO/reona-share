@@ -552,7 +552,7 @@
     }
 
     function measureDeckHeight() {
-      var maxH = 480;
+      var maxH = 168;
       deals.forEach(function (card) {
         maxH = Math.max(maxH, card.offsetHeight || 0, card.scrollHeight || 0);
       });
