@@ -498,12 +498,17 @@
   function setupChannelsDeck() {
     var deck = document.querySelector("[data-deck]");
     if (!deck) return;
+    deck.classList.add("is-ready");
 
     var deals = Array.prototype.slice.call(deck.querySelectorAll("[data-deal]"));
-    var dots = Array.prototype.slice.call(document.querySelectorAll("[data-deck-dot]"));
-    var prev = document.querySelector("[data-deck-prev]");
-    var next = document.querySelector("[data-deck-next]");
+    var navRoot = deck.closest(".deck-stage") || deck.parentElement;
+    var dots = navRoot
+      ? Array.prototype.slice.call(navRoot.querySelectorAll("[data-deck-dot]"))
+      : [];
+    var prev = navRoot ? navRoot.querySelector("[data-deck-prev]") : null;
+    var next = navRoot ? navRoot.querySelector("[data-deck-next]") : null;
     var hint = document.querySelector("[data-deck-hint]");
+    var mobileMq = window.matchMedia("(max-width: 899px)");
 
     if (!deals.length) return;
 
@@ -516,6 +521,10 @@
       isDragging: false,
       isAnimating: false
     };
+
+    function isMobileDeck() {
+      return mobileMq.matches;
+    }
 
     function isInteractiveChild(target) {
       return !!(target && target.closest("a, button, input, select, textarea"));
@@ -542,26 +551,43 @@
       });
     }
 
-    function syncDeckHeight() {
-      var top = order[0];
-      if (!top) return;
-      /* 下に重なる枚（offset分の translateY）+ 影分の余白 */
-      deck.style.height = (top.offsetHeight + 36) + "px";
+    function measureDeckHeight() {
+      var maxH = 480;
+      deals.forEach(function (card) {
+        maxH = Math.max(maxH, card.offsetHeight || 0, card.scrollHeight || 0);
+      });
+      deck.style.height = maxH + "px";
     }
 
     function updateDeck(options) {
       var dragX = options && typeof options.dragX === "number" ? options.dragX : 0;
+      var mobile = isMobileDeck();
       deck.classList.add("is-ready");
       order.forEach(function (card, offset) {
         var isTop = offset === 0;
-        card.style.zIndex = String(order.length - offset);
-        card.style.opacity = offset > 2 ? "0" : "1";
-        card.style.pointerEvents = isTop ? "auto" : "none";
-        card.style.transform = getCardTransform(offset, isTop ? dragX : 0);
+        card.style.zIndex = String(order.length - offset + 10);
+        if (mobile) {
+          if (isTop) {
+            card.style.visibility = "visible";
+            card.style.opacity = "1";
+            card.style.pointerEvents = "auto";
+            card.style.transform = "translate3d(" + dragX + "px, 0, 0)";
+          } else {
+            card.style.visibility = "hidden";
+            card.style.opacity = "0";
+            card.style.pointerEvents = "none";
+            card.style.transform = "translate3d(0, 0, 0)";
+          }
+        } else {
+          card.style.visibility = "visible";
+          card.style.opacity = offset > 2 ? "0" : "1";
+          card.style.pointerEvents = isTop ? "auto" : "none";
+          card.style.transform = getCardTransform(offset, isTop ? dragX : 0);
+        }
       });
       state.activeIndex = deals.indexOf(order[0]);
       syncDeckA11y();
-      syncDeckHeight();
+      measureDeckHeight();
     }
 
     function finishDeckMove(direction) {
@@ -672,10 +698,18 @@
       card.addEventListener("lostpointercapture", releaseDeckDrag);
     }
 
+    function onNavClick(fn) {
+      return function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        fn();
+      };
+    }
+
     deals.forEach(bindDeckDrag);
 
-    if (next) next.addEventListener("click", goNextDeck);
-    if (prev) prev.addEventListener("click", goPrevDeck);
+    if (next) next.addEventListener("click", onNavClick(goNextDeck));
+    if (prev) prev.addEventListener("click", onNavClick(goPrevDeck));
 
     dots.forEach(function (dot) {
       dot.addEventListener("click", function () {
@@ -697,12 +731,27 @@
       updateDeck();
     });
 
+    if (mobileMq.addEventListener) {
+      mobileMq.addEventListener("change", function () {
+        updateDeck();
+      });
+    } else if (mobileMq.addListener) {
+      mobileMq.addListener(function () {
+        updateDeck();
+      });
+    }
+
     deals.forEach(function (card) {
       var img = card.querySelector("img");
-      if (img && !img.complete) {
-        img.addEventListener("load", syncDeckHeight, { once: true });
-      }
+      if (!img) return;
+      if (img.complete) return;
+      img.addEventListener("load", measureDeckHeight, { once: true });
     });
+
+    window.addEventListener("load", function () {
+      measureDeckHeight();
+      updateDeck();
+    }, { once: true });
 
     updateDeck();
   }
