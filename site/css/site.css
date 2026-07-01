@@ -485,9 +485,10 @@ body.is-loaded .moon-window--hero { opacity: 1; }
 .deck {
   position: relative;
   width: min(100%, 430px);
-  height: min(200vw, 760px);
+  min-height: 480px;
   margin: 0 auto;
   touch-action: pan-y;
+  isolation: isolate;
 }
 
 /* JS 未実行時（reduce-motion 早期 return 等）の重なり防止: 先頭1枚だけ表示 */
@@ -573,6 +574,8 @@ body.is-loaded .moon-window--hero { opacity: 1; }
 }
 
 .deck-nav {
+  position: relative;
+  z-index: 20;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -634,7 +637,7 @@ body.is-loaded .moon-window--hero { opacity: 1; }
 
   .deck {
     width: min(100%, 480px);
-    height: 640px;
+    min-height: 560px;
   }
 
   .deal {

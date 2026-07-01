@@ -542,6 +542,13 @@
       });
     }
 
+    function syncDeckHeight() {
+      var top = order[0];
+      if (!top) return;
+      /* 下に重なる枚（offset分の translateY）+ 影分の余白 */
+      deck.style.height = (top.offsetHeight + 36) + "px";
+    }
+
     function updateDeck(options) {
       var dragX = options && typeof options.dragX === "number" ? options.dragX : 0;
       deck.classList.add("is-ready");
@@ -554,6 +561,7 @@
       });
       state.activeIndex = deals.indexOf(order[0]);
       syncDeckA11y();
+      syncDeckHeight();
     }
 
     function finishDeckMove(direction) {
@@ -687,6 +695,13 @@
 
     window.addEventListener("resize", function () {
       updateDeck();
+    });
+
+    deals.forEach(function (card) {
+      var img = card.querySelector("img");
+      if (img && !img.complete) {
+        img.addEventListener("load", syncDeckHeight, { once: true });
+      }
     });
 
     updateDeck();
