@@ -365,6 +365,14 @@
       el.setAttribute("target", "_blank");
       el.setAttribute("rel", "noopener");
     }
+    // GA4: LINE CTA クリックを位置別に計測（cta_position はGA4でカスタムディメンション登録）
+    el.addEventListener("click", function () {
+      if (typeof window.gtag === "function") {
+        window.gtag("event", "line_cta_click", {
+          cta_position: el.getAttribute("data-cta-position") || "unknown"
+        });
+      }
+    });
   });
 
   /* ---- 3. 追従CTAバー: HeroのCTA表示中とクロージングCTA到達時は隠す ---- */
@@ -485,118 +493,204 @@
     });
   }
 
-  /* ---- 6. 受け方カード: 展開パネル + ドラッグ ---- */
-  var channelTrack = document.querySelector(".channel-panels__viewport");
-  var channelPanels = Array.prototype.slice.call(document.querySelectorAll("[data-channel-panel]"));
-  var channelState = {
-    pointerId: null,
-    startX: 0,
-    startScrollLeft: 0,
-    moved: false,
-    suppressUntil: 0,
-    revealTimer: null
-  };
+  /* ---- 6. 受け方カード: deck式カルーセル ---- */
+  function setupChannelsDeck() {
+    var deck = document.querySelector("[data-deck]");
+    if (!deck) return;
 
-  function revealChannelPanel(panel) {
-    if (!channelTrack || !panel) return;
-    var maxScroll = channelTrack.scrollWidth - channelTrack.clientWidth;
-    if (maxScroll <= 0) return;
-    var targetLeft = panel.offsetLeft - (channelTrack.clientWidth - panel.offsetWidth) * 0.5;
-    var nextLeft = clamp(targetLeft, 0, maxScroll);
-    channelTrack.scrollTo({ left: nextLeft, behavior: reduceMotion ? "auto" : "smooth" });
-  }
+    var deals = Array.prototype.slice.call(deck.querySelectorAll("[data-deal]"));
+    var dots = Array.prototype.slice.call(document.querySelectorAll("[data-deck-dot]"));
+    var prev = document.querySelector("[data-deck-prev]");
+    var next = document.querySelector("[data-deck-next]");
+    var hint = document.querySelector("[data-deck-hint]");
 
-  function setOpenChannel(nextPanel, shouldReveal) {
-    if (!nextPanel) return;
-    channelPanels.forEach(function (panel) {
-      var isOpen = panel === nextPanel;
-      panel.classList.toggle("is-open", isOpen);
-      panel.setAttribute("aria-expanded", isOpen ? "true" : "false");
-    });
-    if (channelState.revealTimer) {
-      window.clearTimeout(channelState.revealTimer);
-      channelState.revealTimer = null;
+    if (!deals.length) return;
+
+    var order = deals.slice();
+    var state = {
+      activeIndex: 0,
+      pointerId: null,
+      startX: 0,
+      dragX: 0,
+      isDragging: false,
+      isAnimating: false
+    };
+
+    function isInteractiveChild(target) {
+      return !!(target && target.closest("a, button, input, select, textarea"));
     }
-    if (!shouldReveal) return;
-    revealChannelPanel(nextPanel);
-    if (!reduceMotion) {
-      channelState.revealTimer = window.setTimeout(function () {
-        revealChannelPanel(nextPanel);
-        channelState.revealTimer = null;
-      }, 760);
+
+    function getCardTransform(offset, dragX) {
+      var y = offset * 14;
+      var scale = 1 - offset * 0.05;
+      var rotation = offset === 0 ? dragX / 24 : (offset % 2 ? 4 : -4) * Math.max(0.45, 1 - offset * 0.16);
+      return "translate3d(" + dragX + "px, " + y + "px, 0) scale(" + scale + ") rotate(" + rotation + "deg)";
     }
-  }
 
-  function isInteractiveChild(target) {
-    return !!(target && target.closest("a, button, input, select, textarea"));
-  }
-
-  if (channelTrack && channelPanels.length) {
-    channelPanels.forEach(function (panel) {
-      panel.addEventListener("focusin", function () {
-        setOpenChannel(panel, true);
+    function syncDeckA11y() {
+      deals.forEach(function (card, index) {
+        var isCurrent = index === state.activeIndex;
+        card.setAttribute("aria-hidden", isCurrent ? "false" : "true");
+        card.tabIndex = isCurrent ? 0 : -1;
       });
 
-      panel.addEventListener("mouseenter", function () {
-        setOpenChannel(panel, false);
+      dots.forEach(function (dot, index) {
+        var isOn = index === state.activeIndex;
+        dot.classList.toggle("is-on", isOn);
+        dot.setAttribute("aria-selected", isOn ? "true" : "false");
       });
+    }
 
-      panel.addEventListener("click", function (event) {
-        if (Date.now() < channelState.suppressUntil) {
-          event.preventDefault();
-          event.stopPropagation();
-          return;
+    function updateDeck(options) {
+      var dragX = options && typeof options.dragX === "number" ? options.dragX : 0;
+      order.forEach(function (card, offset) {
+        var isTop = offset === 0;
+        card.style.zIndex = String(order.length - offset);
+        card.style.opacity = offset > 2 ? "0" : "1";
+        card.style.pointerEvents = isTop ? "auto" : "none";
+        card.style.transform = getCardTransform(offset, isTop ? dragX : 0);
+      });
+      state.activeIndex = deals.indexOf(order[0]);
+      syncDeckA11y();
+    }
+
+    function finishDeckMove(direction) {
+      if (direction > 0) {
+        order.unshift(order.pop());
+      } else {
+        order.push(order.shift());
+      }
+      state.dragX = 0;
+      state.isAnimating = false;
+      if (hint) hint.style.opacity = "0";
+      updateDeck();
+    }
+
+    function animateDeckMove(direction) {
+      if (state.isAnimating) return;
+      state.isAnimating = true;
+
+      var top = order[0];
+      var travel = (deck.clientWidth || window.innerWidth) + 220;
+      top.style.transition = reduceMotion ? "none" : "transform 360ms var(--ease-calm), opacity 220ms var(--ease-calm)";
+      top.style.transform = "translate3d(" + (direction * travel) + "px, 0, 0) rotate(" + (direction * 16) + "deg)";
+      top.style.opacity = "0";
+
+      window.setTimeout(function () {
+        top.style.transition = "";
+        top.style.opacity = "";
+        finishDeckMove(direction);
+      }, reduceMotion ? 0 : 360);
+    }
+
+    function goNextDeck() {
+      animateDeckMove(-1);
+    }
+
+    function goPrevDeck() {
+      animateDeckMove(1);
+    }
+
+    function goToDeck(index) {
+      if (state.isAnimating || index === state.activeIndex) return;
+      var current = state.activeIndex;
+      var delta = (index - current + deals.length) % deals.length;
+      if (delta === 0) return;
+      if (delta <= deals.length / 2) {
+        while (state.activeIndex !== index) {
+          order.push(order.shift());
+          state.activeIndex = deals.indexOf(order[0]);
         }
-        if (isInteractiveChild(event.target)) return;
-        setOpenChannel(panel, true);
-        panel.focus({ preventScroll: true });
-      });
-
-      panel.addEventListener("keydown", function (event) {
-        if (event.key !== "Enter" && event.key !== " ") return;
-        event.preventDefault();
-        setOpenChannel(panel, true);
-      });
-    });
-
-    channelTrack.addEventListener("pointerdown", function (event) {
-      if (event.pointerType === "touch") return;
-      if (event.button !== 0) return;
-      channelState.pointerId = event.pointerId;
-      channelState.startX = event.clientX;
-      channelState.startScrollLeft = channelTrack.scrollLeft;
-      channelState.moved = false;
-      channelTrack.classList.add("is-dragging");
-      channelTrack.setPointerCapture(event.pointerId);
-    });
-
-    channelTrack.addEventListener("pointermove", function (event) {
-      if (channelState.pointerId !== event.pointerId) return;
-      var deltaX = event.clientX - channelState.startX;
-      if (!channelState.moved && Math.abs(deltaX) > 6) channelState.moved = true;
-      if (!channelState.moved) return;
-      channelTrack.scrollLeft = channelState.startScrollLeft - deltaX;
-    });
-
-    function releaseChannelDrag(event) {
-      if (channelState.pointerId == null) return;
-      if (event && channelState.pointerId !== event.pointerId) return;
-      if (channelState.moved) channelState.suppressUntil = Date.now() + 120;
-      if (event) {
-        try {
-          channelTrack.releasePointerCapture(event.pointerId);
-        } catch (error) {
-          /* noop */
+      } else {
+        while (state.activeIndex !== index) {
+          order.unshift(order.pop());
+          state.activeIndex = deals.indexOf(order[0]);
         }
       }
-      channelState.pointerId = null;
-      channelTrack.classList.remove("is-dragging");
+      if (hint) hint.style.opacity = "0";
+      updateDeck();
     }
 
-    channelTrack.addEventListener("pointerup", releaseChannelDrag);
-    channelTrack.addEventListener("pointercancel", releaseChannelDrag);
-    channelTrack.addEventListener("lostpointercapture", releaseChannelDrag);
+    function releaseDeckDrag(event) {
+      if (state.pointerId == null || state.pointerId !== event.pointerId) return;
+
+      var top = order[0];
+      var movedX = state.dragX;
+
+      state.pointerId = null;
+      state.isDragging = false;
+      state.dragX = 0;
+
+      try {
+        top.releasePointerCapture(event.pointerId);
+      } catch (error) {
+        /* noop */
+      }
+
+      top.classList.remove("is-dragging");
+
+      if (Math.abs(movedX) > 90) {
+        animateDeckMove(movedX > 0 ? 1 : -1);
+        return;
+      }
+
+      updateDeck();
+    }
+
+    function bindDeckDrag(card) {
+      card.addEventListener("pointerdown", function (event) {
+        if (state.isAnimating) return;
+        if (event.button != null && event.button !== 0) return;
+        if (isInteractiveChild(event.target)) return;
+
+        state.pointerId = event.pointerId;
+        state.startX = event.clientX;
+        state.dragX = 0;
+        state.isDragging = true;
+        card.classList.add("is-dragging");
+        card.setPointerCapture(event.pointerId);
+      });
+
+      card.addEventListener("pointermove", function (event) {
+        if (!state.isDragging || state.pointerId !== event.pointerId) return;
+        state.dragX = event.clientX - state.startX;
+        updateDeck({ dragX: state.dragX });
+      });
+
+      card.addEventListener("pointerup", releaseDeckDrag);
+      card.addEventListener("pointercancel", releaseDeckDrag);
+      card.addEventListener("lostpointercapture", releaseDeckDrag);
+    }
+
+    deals.forEach(bindDeckDrag);
+
+    if (next) next.addEventListener("click", goNextDeck);
+    if (prev) prev.addEventListener("click", goPrevDeck);
+
+    dots.forEach(function (dot) {
+      dot.addEventListener("click", function () {
+        goToDeck(Number(dot.getAttribute("data-deck-dot")));
+      });
+    });
+
+    deck.addEventListener("keydown", function (event) {
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        goPrevDeck();
+      } else if (event.key === "ArrowRight") {
+        event.preventDefault();
+        goNextDeck();
+      }
+    });
+
+    window.addEventListener("resize", function () {
+      updateDeck();
+    });
+
+    updateDeck();
   }
+
+  setupChannelsDeck();
 
   /* ---- 7. GSAP scrub 演出 ---- */
   window.addEventListener("load", function () {
@@ -617,14 +711,17 @@
       );
 
       if (img) {
-        gsap.fromTo(img,
-          { scale: 1.18 },
-          {
-            scale: 1,
-            ease: "none",
-            scrollTrigger: { trigger: win, start: "top bottom", end: "bottom 35%", scrub: 1 }
-          }
-        );
+        var isAbout = win.classList.contains("moon-window--about");
+        if (!isAbout) {
+          gsap.fromTo(img,
+            { scale: 1.18 },
+            {
+              scale: 1,
+              ease: "none",
+              scrollTrigger: { trigger: win, start: "top bottom", end: "bottom 35%", scrub: 1 }
+            }
+          );
+        }
       }
     });
 

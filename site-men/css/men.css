@@ -43,3 +43,175 @@
     min-height: 100%;
   }
 }
+
+/* ===== 受講者レビュー（46歳男性・体験ストーリー） ===== */
+.review-story {
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.review-story__kicker {
+  margin-bottom: var(--space-4);
+}
+
+.review-story__title-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-5);
+  align-items: start;
+}
+
+.moon-window--review-thumb {
+  width: clamp(72px, 20vw, 104px);
+  aspect-ratio: 4 / 5;
+  flex-shrink: 0;
+}
+
+.moon-window--review-thumb img {
+  object-position: center 35%;
+}
+
+.review-story__title {
+  margin: 0;
+  font-size: clamp(20px, 4.8vw, 26px);
+  line-height: 1.55;
+}
+
+.review-story__meta {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  margin: var(--space-3) 0 0;
+}
+
+.review-story__body {
+  margin-top: var(--space-5);
+}
+
+.review-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+  margin: 0 0 var(--space-5);
+  padding: 0;
+}
+
+.review-stat {
+  padding: var(--space-4) var(--space-5);
+  border: var(--border-hairline);
+  border-radius: 16px;
+  background: var(--color-surface);
+}
+
+.review-stat dt {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-2);
+}
+
+.review-stat dd {
+  margin: 0;
+  font: 600 15px/1.5 var(--font-heading);
+  letter-spacing: 0.04em;
+}
+
+.review-stat__before {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+.review-stat__arrow {
+  margin: 0 0.35em;
+  color: var(--color-forest-green);
+}
+
+.review-stat__after {
+  color: var(--color-forest-green);
+}
+
+.review-story__catch {
+  margin: 0 0 var(--space-5);
+  line-height: 1.9;
+  font-weight: 500;
+}
+
+.review-story__details {
+  margin: 0;
+}
+
+.review-story__toggle {
+  width: 100%;
+  max-width: 280px;
+  justify-content: center;
+  cursor: pointer;
+  list-style: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.review-story__toggle::-webkit-details-marker {
+  display: none;
+}
+
+.review-story__toggle-close {
+  display: none;
+}
+
+.review-story__details[open] .review-story__toggle-open {
+  display: none;
+}
+
+.review-story__details[open] .review-story__toggle-close {
+  display: inline;
+}
+
+.review-story__detail {
+  margin-top: var(--space-5);
+  padding-top: var(--space-5);
+  border-top: var(--border-hairline);
+}
+
+.review-story__detail p {
+  margin: 0 0 var(--space-5);
+  line-height: 1.95;
+}
+
+.review-story__quote {
+  margin-top: var(--space-5);
+}
+
+.review-story__note {
+  font-size: 11.5px;
+  line-height: 1.75;
+  color: var(--color-text-muted);
+  margin: var(--space-5) 0 0;
+}
+
+@media (min-width: 640px) {
+  .review-story__title-row {
+    gap: var(--space-6);
+  }
+
+  .moon-window--review-thumb {
+    width: 112px;
+  }
+}
+
+/* プレビューバナー（preview-review.html のみ） */
+.preview-banner {
+  position: sticky;
+  top: 0;
+  z-index: 10000;
+  padding: 10px 16px;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #4a3410;
+  background: #fbf3e6;
+  border-bottom: 1px solid #e4b25a;
+}
+
+.preview-banner b {
+  color: #8b4513;
+}

@@ -365,6 +365,14 @@
       el.setAttribute("target", "_blank");
       el.setAttribute("rel", "noopener");
     }
+    // GA4: LINE CTA クリックを位置別に計測（cta_position はGA4でカスタムディメンション登録）
+    el.addEventListener("click", function () {
+      if (typeof window.gtag === "function") {
+        window.gtag("event", "line_cta_click", {
+          cta_position: el.getAttribute("data-cta-position") || "unknown"
+        });
+      }
+    });
   });
 
   /* ---- 3. 追従CTAバー: HeroのCTA表示中とクロージングCTA到達時は隠す ---- */
@@ -617,14 +625,17 @@
       );
 
       if (img) {
-        gsap.fromTo(img,
-          { scale: 1.18 },
-          {
-            scale: 1,
-            ease: "none",
-            scrollTrigger: { trigger: win, start: "top bottom", end: "bottom 35%", scrub: 1 }
-          }
-        );
+        var isAbout = win.classList.contains("moon-window--about");
+        if (!isAbout) {
+          gsap.fromTo(img,
+            { scale: 1.18 },
+            {
+              scale: 1,
+              ease: "none",
+              scrollTrigger: { trigger: win, start: "top bottom", end: "bottom 35%", scrub: 1 }
+            }
+          );
+        }
       }
     });
 
