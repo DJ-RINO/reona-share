@@ -98,8 +98,49 @@
           }
         });
       });
+
+      /* ---- 3b. About ステージ: 層ごとの速度差パララックス ---- */
+      document.querySelectorAll("[data-stage] [data-depth]").forEach(function (layer) {
+        var depth = parseFloat(layer.getAttribute("data-depth")) || 1;
+        window.gsap.to(layer, {
+          yPercent: (1 - depth) * 26,
+          ease: "none",
+          scrollTrigger: {
+            trigger: layer.closest("[data-stage]"),
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1.2
+          }
+        });
+      });
     }
   });
+
+  /* ---- 3c. About ステージ: ポインタ追従チルト（fine pointer のみ） ---- */
+  if (finePointer && !reduceMotion) {
+    document.querySelectorAll("[data-stage]").forEach(function (stage) {
+      var layers = stage.querySelectorAll("[data-depth]");
+      stage.addEventListener("pointermove", function (event) {
+        var rect = stage.getBoundingClientRect();
+        var px = (event.clientX - rect.left) / rect.width - 0.5;
+        var py = (event.clientY - rect.top) / rect.height - 0.5;
+        layers.forEach(function (layer) {
+          var depth = parseFloat(layer.getAttribute("data-depth")) || 1;
+          var dx = px * (depth - 1) * 34;
+          var dy = py * (depth - 1) * 22;
+          layer.style.setProperty("--tilt-x", dx.toFixed(1) + "px");
+          layer.style.setProperty("--tilt-y", dy.toFixed(1) + "px");
+        });
+        stage.classList.add("is-tilting");
+      });
+      stage.addEventListener("pointerleave", function () {
+        layers.forEach(function (layer) {
+          layer.style.setProperty("--tilt-x", "0px");
+          layer.style.setProperty("--tilt-y", "0px");
+        });
+      });
+    });
+  }
 
   /* ---- 5. マグネティックCTA ---- */
   if (finePointer && !reduceMotion) {
