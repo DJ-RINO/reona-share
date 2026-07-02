@@ -73,15 +73,6 @@ img { display: block; max-width: 100%; height: auto; }
   overflow: visible;
   z-index: var(--z-spine);
   pointer-events: none;
-  /* ビューポート中部で自然に消え、下部CTA帯まで線が伸びすぎない */
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 40vh, rgba(0, 0, 0, 0.45) 50vh, transparent 56vh);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 40vh, rgba(0, 0, 0, 0.45) 50vh, transparent 56vh);
-  -webkit-mask-size: 100% 100%;
-  mask-size: 100% 100%;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-attachment: fixed;
-  mask-attachment: fixed;
 }
 
 .spine svg { display: block; width: 100%; height: 100%; }
