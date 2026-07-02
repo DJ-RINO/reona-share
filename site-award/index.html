@@ -32,6 +32,7 @@
     <a class="wordmark wordmark--ja" href="#hero" aria-label="語らい、整う｜REONA ホーム">語らい、整う</a>
     <nav class="site-nav" aria-label="ページ内ナビゲーション">
       <a href="#channels">レッスン</a>
+      <a href="#voices">受講者の声</a>
       <a href="#pricing">料金</a>
       <a href="#about">Reonaについて</a>
       <a href="#faq">よくある質問</a>
@@ -53,7 +54,7 @@
 
       <div class="hero__inner">
         <div class="hero__text">
-          <p class="kicker reveal-mist">wellness by Reona<br class="sp-only"> — breathe, and begin again</p>
+          <p class="kicker reveal-mist"><span class="kicker__place">熊本｜ヨガ × 腸活 × ボディメイク</span><br><span class="kicker__en">wellness by Reona — breathe, and begin again</span></p>
           <h1 data-split-chars>
             <span class="mist-line">心と体を整えると、</span><br>
             <span class="mist-line">人はやり直せる。</span>
@@ -63,10 +64,13 @@
             <a class="btn btn--primary btn--lg" href="#" data-line-cta data-cta-position="hero" data-hero-cta data-magnetic>LINEで体験について相談する</a>
             <a class="btn btn--ghost" href="#channels" data-magnetic>レッスンを見る</a>
           </div>
+          <p class="hero__cred reveal-mist">全米ヨガアライアンス RYT200 ／ ベストボディ・ジャパン 九州大会2連覇（2024・2025）・大阪大会優勝（2025）</p>
         </div>
-        <div class="moon-window moon-window--hero" data-window data-breathe-img>
-          <img src="https://dj-rino.github.io/reona-share/site/images/hero.webp" alt="海辺でヨガマットを持つReona" width="896" height="1196" loading="eager" data-window-img>
-        </div>
+        <figure class="about-stage about-stage--hero" data-stage>
+          <span class="about-stage__circle" aria-hidden="true" data-depth="0.72"></span>
+          <span class="about-stage__shadow" aria-hidden="true" data-depth="1.04"></span>
+          <img src="images/profile-cutout-mat-rounded.webp" alt="マットの上でピジョンポーズをとるReona" width="1040" height="1512" loading="eager" data-depth="1.04">
+        </figure>
       </div>
 
       <a class="scroll-cue" href="#worries" aria-label="下へスクロール">
@@ -199,6 +203,19 @@
       </div>
     </section>
 
+    <!-- 4.5 受講者の声（属性は年代・期間のみ公開） -->
+    <section id="voices" class="section review-story">
+      <p class="kicker review-story__kicker">voices</p>
+      <div class="review-story__header reveal">
+        <h2 class="loosen review-story__title">40代、体が硬くても<br class="sp-only">4ヶ月で変わりました</h2>
+        <p class="review-story__meta">40代 ／ 2026年1月オンライン開始 ／ 4ヶ月継続</p>
+      </div>
+      <div class="review-story__body reveal">
+        <p class="review-story__catch">体がとても硬くて、ヨガは私には無理だと思っていました。自宅から始められるオンラインで、腸活や筋トレも一緒に少しずつ。4ヶ月続けたら、朝の体の軽さも見た目も変わってきました。</p>
+        <p class="review-story__note">※体重・体脂肪率・体調の変化には個人差があります。医療的効果を保証するものではありません。</p>
+      </div>
+    </section>
+
     <!-- 5. 料金・体験案内 -->
     <section id="pricing" class="section">
       <div class="section-head">
@@ -212,8 +229,8 @@
           <h3>はじめての体験</h3>
           <p class="card__body">不安なことは事前に何でもご相談ください。動きやすい服装でどうぞ。</p>
           <dl class="def-list">
-            <div class="def-row def-row--first"><dt>対面体験</dt><dd>¥1,500</dd></div>
-            <div class="def-row def-row--online-trial"><dt>オンライン体験</dt><dd>無料<span class="dt-note">夜20分の枠で</span></dd></div>
+            <div class="def-row def-row--first"><dt>オンライン体験<span class="dt-note">まずは自宅から。夜20分の枠で</span></dt><dd>無料</dd></div>
+            <div class="def-row"><dt>対面体験<span class="dt-note">スタジオで直接、体を見ながら</span></dt><dd>¥1,500</dd></div>
           </dl>        </article>
 
         <article class="menu reveal">
@@ -310,12 +327,8 @@
     <!-- 8. プロフィール・想い -->
     <section id="about" class="section section--sunken">
       <div class="about-grid">
-        <figure class="about-stage" data-stage>
-          <span class="about-stage__word" aria-hidden="true" data-depth="0.45">Reona</span>
-          <span class="about-stage__circle" aria-hidden="true" data-depth="0.72"></span>
-          <span class="about-stage__shadow" aria-hidden="true" data-depth="1.04"></span>
-          <img src="https://dj-rino.github.io/reona-share/site/images/profile-cutout-mat.webp" alt="マットの上でピジョンポーズをとるReona" width="1040" height="1512" loading="lazy" data-depth="1.04">
-          <span class="about-stage__phrase" aria-hidden="true" data-depth="1.32">自分に、戻る。</span>
+        <figure class="moon-window moon-window--about" data-breathe-img>
+          <img src="https://dj-rino.github.io/reona-share/site/images/hero.webp" alt="海辺でヨガマットを持つReona" width="896" height="1196" loading="lazy">
         </figure>
         <div>
           <p class="kicker">about Reona</p>

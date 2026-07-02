@@ -578,3 +578,164 @@ body.is-loaded .scroll-cue { opacity: 1; }
 
   .award-cursor { display: none; }
 }
+
+/* ---------- 13. スマホFV改善（2026-07-02 UXレビュー反映） ---------- */
+
+/* kicker: 地域・業態を主、英字を従に */
+.kicker__place {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  color: var(--color-primary-deep);
+}
+.kicker__en {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 11px;
+  opacity: 0.75;
+}
+
+/* 実績1行バッジ */
+.hero__cred {
+  margin-top: var(--space-4);
+  font-size: 11px;
+  line-height: 1.7;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+}
+
+/* モバイル: kicker → H1 → 写真（顔が入る）→ CTA → 実績 → リード の順 */
+@media (max-width: 899px) {
+  .hero__inner { display: flex; flex-direction: column; gap: 0; }
+  .hero__text { display: contents; }
+  .hero__text .kicker { order: 1; }
+  .hero__text h1 { order: 2; }
+  .moon-window--hero {
+    order: 3;
+    width: min(62vw, 250px);
+    margin: var(--space-5) auto 0;
+  }
+  .hero__actions { order: 4; margin-top: var(--space-5); }
+  .hero__cred { order: 5; }
+  .hero__lead { order: 6; margin-top: var(--space-5); }
+  .moon-window--hero img { object-position: 50% 22%; }
+
+  /* ヘッダーCTAはモバイル非表示（追従下部CTAと重複するため） */
+  .site-header .btn { display: none; }
+}
+
+/* 悩みリスト: 非フォーカス項目も読める濃さに */
+.worries-armed .worry { opacity: 0.55; }
+.worries-armed .worry.is-focus { opacity: 1; }
+
+/* ---------- 14. 受講者の声（短文版・men.cssから移植） ---------- */
+
+.review-story {
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.review-story__kicker {
+  margin-bottom: var(--space-4);
+}
+
+.review-story__title {
+  margin: 0;
+  font-size: clamp(20px, 4.8vw, 26px);
+  line-height: 1.55;
+}
+
+.review-story__meta {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  margin: var(--space-3) 0 0;
+}
+
+.review-story__body {
+  margin-top: var(--space-5);
+}
+
+.review-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+  margin: 0 0 var(--space-5);
+  padding: 0;
+}
+
+.review-stat {
+  padding: var(--space-4) var(--space-5);
+  border: var(--border-hairline);
+  border-radius: 16px;
+  background: var(--color-surface);
+}
+
+.review-stat dt {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-2);
+}
+
+.review-stat dd {
+  margin: 0;
+  font: 600 15px/1.5 var(--font-heading);
+  letter-spacing: 0.04em;
+}
+
+.review-stat__before {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+.review-stat__arrow {
+  margin: 0 0.35em;
+  color: var(--color-forest-green);
+}
+
+.review-stat__after {
+  color: var(--color-forest-green);
+}
+
+.review-story__catch {
+  margin: 0 0 var(--space-5);
+  line-height: 1.9;
+  font-weight: 500;
+}
+
+.review-story__note {
+  font-size: 11.5px;
+  line-height: 1.75;
+  color: var(--color-text-muted);
+  margin: var(--space-5) 0 0;
+}
+
+/* 料金カード: 項目名の途中改行を防ぐ（説明noteはdt内で折り返し） */
+.menu .def-row { grid-template-columns: 1fr auto; }
+.menu .def-row dd { align-self: start; }
+
+/* ---------- 15. 画像入れ替え（hero=ピジョンポーズ舞台 / about=海辺の円窓） ---------- */
+
+.about-stage--hero {
+  width: min(70vw, 300px);
+  aspect-ratio: 10 / 12;
+  margin: 0;
+}
+
+@media (max-width: 899px) {
+  .about-stage--hero { order: 3; margin: var(--space-5) auto 0; }
+}
+
+@media (min-width: 900px) {
+  .about-stage--hero { width: 100%; max-width: 430px; margin-left: auto; }
+}
+
+/* 窓は写真と同じ3:4にして全身（元写真に写っている範囲）を見せる */
+.moon-window--about {
+  width: min(78vw, 380px);
+  aspect-ratio: 3 / 4;
+  margin: 0 auto;
+}
+
