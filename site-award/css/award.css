@@ -739,3 +739,63 @@ body.is-loaded .scroll-cue { opacity: 1; }
   margin: 0 auto;
 }
 
+
+/* ---------- 16. 受講者の声: 匿名アバター + 3行メタ ---------- */
+
+.review-reviewer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+/* 性別の分からない人型シルエット（実写ぼかしは不誠実に見えるため使わない） */
+.review-avatar {
+  position: relative;
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: radial-gradient(circle at 38% 30%,
+    var(--color-green-tint) 0%,
+    var(--color-green-tint-soft) 60%,
+    rgba(110, 133, 114, 0.16) 100%);
+  border: var(--border-hairline);
+}
+.review-avatar::before {
+  /* 頭 */
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 22%;
+  width: 34%;
+  height: 34%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: rgba(110, 133, 114, 0.55);
+  filter: blur(1.5px);
+}
+.review-avatar::after {
+  /* 肩 */
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 62%;
+  width: 68%;
+  height: 52%;
+  transform: translateX(-50%);
+  border-radius: 50% 50% 0 0;
+  background: rgba(110, 133, 114, 0.55);
+  filter: blur(1.5px);
+}
+
+.review-meta-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  line-height: 1.9;
+  color: var(--color-text-muted);
+}
