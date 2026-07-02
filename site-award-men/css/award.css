@@ -1,0 +1,472 @@
+/* ============================================================
+   REONA — Award Layer 「息で読むページ」
+   既存 tokens/site.css の上に載せる演出レイヤー。
+   色・フォント・コピーはブランド既定のまま、
+   「呼吸・余白・静けさ」を運動として設計する。
+   ============================================================ */
+
+/* ---------- 0. 下地 ---------- */
+
+html.award {
+  scroll-behavior: auto; /* 慣性は Lenis が担当 */
+}
+
+::selection {
+  background: rgba(110, 133, 114, 0.22);
+  color: var(--color-ink);
+}
+
+/* 夜（18時〜5時）はほんの少しだけトーンを沈める — 夜20分サブスクの世界観 */
+body.is-night {
+  background: #F1EBDF;
+}
+body.is-night .breath-orb { opacity: 0.8; }
+
+/* ---------- 1. ヘッダー: 呼吸に合わせて退く ---------- */
+
+.site-header {
+  transition:
+    transform 640ms var(--ease-release),
+    background 400ms var(--ease-calm),
+    box-shadow 400ms var(--ease-calm);
+}
+.site-header.is-hidden { transform: translateY(-102%); }
+.site-header.is-scrolled {
+  background: rgba(246, 241, 232, 0.92);
+  box-shadow: 0 1px 0 rgba(62, 68, 60, 0.10);
+}
+
+/* ---------- 2. Hero: 巨大透かし + 一字ずつの立ち上がり ---------- */
+
+.hero { overflow: clip; }
+
+.hero__watermark {
+  position: absolute;
+  top: clamp(8px, 4vh, 48px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 0;
+  font: 300 clamp(88px, 21vw, 300px)/0.9 var(--font-accent);
+  letter-spacing: 0.12em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(110, 133, 114, 0.18);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ヒーロー写真: 円窓の中で超スローに息をする */
+[data-breathe-img] img {
+  animation: award-img-breath 22s var(--ease-breath) infinite alternate;
+  transform-origin: 50% 42%;
+}
+@keyframes award-img-breath {
+  from { transform: scale(1); }
+  to   { transform: scale(1.055); }
+}
+
+/* 一字ずつの立ち上がり（data-split-chars が .is-split になったら発火） */
+h1.is-split .mist-line {
+  opacity: 1;
+  filter: none;
+  transform: none;
+  transition: none;
+}
+h1.is-split .char {
+  display: inline-block;
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateY(0.35em);
+  transition:
+    opacity 900ms var(--ease-release),
+    filter 900ms var(--ease-release),
+    transform 900ms var(--ease-release);
+  transition-delay: calc(360ms + var(--char-i, 0) * 64ms);
+}
+body.is-loaded h1.is-split .char {
+  opacity: 1;
+  filter: blur(0);
+  transform: none;
+}
+
+/* スクロールの合図: 息のリズムで伸び縮みする縦線 */
+.scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: max(84px, calc(64px + env(safe-area-inset-bottom)));
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 1200ms var(--ease-release) 2300ms;
+}
+body.is-loaded .scroll-cue { opacity: 1; }
+
+.scroll-cue__line {
+  display: block;
+  width: 1px;
+  height: 44px;
+  background: linear-gradient(to bottom, transparent, var(--color-forest-green));
+  transform-origin: top;
+  animation: cue-breath var(--breath-cycle) var(--ease-breath) infinite;
+}
+@keyframes cue-breath {
+  0%, 100% { transform: scaleY(0.55); opacity: 0.5; }
+  50%      { transform: scaleY(1);    opacity: 1; }
+}
+
+.scroll-cue__label {
+  font: italic 500 11px/1 var(--font-accent);
+  letter-spacing: 3px;
+  color: var(--color-primary-deep);
+}
+
+/* ---------- 3. 呼吸のマルキー ---------- */
+
+.breath-marquee {
+  overflow: hidden;
+  border-top: var(--border-hairline);
+  border-bottom: var(--border-hairline);
+  padding: 14px 0;
+  background: var(--color-green-tint-soft);
+}
+
+.breath-marquee__track {
+  display: flex;
+  align-items: baseline;
+  gap: 2.2em;
+  width: max-content;
+  animation: marquee-drift 46s linear infinite;
+  will-change: transform;
+}
+
+.breath-marquee__track span {
+  font: italic 400 clamp(17px, 2.6vw, 24px)/1 var(--font-accent);
+  letter-spacing: 4px;
+  color: var(--color-primary-deep);
+  opacity: 0.75;
+  white-space: nowrap;
+}
+
+.breath-marquee__track i {
+  font-style: normal;
+  color: var(--color-forest-green);
+  opacity: 0.35;
+}
+
+@keyframes marquee-drift {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ---------- 4. 悩み: 静かな番号 ---------- */
+
+.worry {
+  padding-left: calc(var(--space-6) + 34px);
+}
+
+.worry__num {
+  position: absolute;
+  left: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  font: italic 500 15px/1 var(--font-accent);
+  letter-spacing: 2px;
+  color: var(--color-forest-green);
+  opacity: 0.45;
+  transition: opacity 600ms var(--ease-calm);
+}
+.worries-armed .worry.is-focus .worry__num { opacity: 1; }
+
+/* ---------- 5. アプローチ: y g t の透かし ---------- */
+
+.approach { overflow: clip; }
+
+.approach__watermark {
+  position: absolute;
+  top: 4%;
+  right: -4%;
+  z-index: 0;
+  font: italic 300 clamp(110px, 24vw, 300px)/0.9 var(--font-accent);
+  letter-spacing: 0.14em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(110, 133, 114, 0.13);
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.approach .section-head,
+.approach .approach-stack,
+.approach .section-note {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- 6. デッキ v2: 縦長ポートレート + 1.5倍ステージ ---------- */
+
+/* セクション全体の縦の余白を広げる（約1.5倍化の一部） */
+#channels.section {
+  padding-top: var(--space-9);
+  padding-bottom: var(--space-8);
+}
+
+.deck-stage {
+  width: min(100%, 410px);
+}
+
+/* カード: 左40%を縦長写真、高さはテキスト側（en〜ボタン）に揃う。
+   bottom:0 で全カードをデッキと同じ高さに統一（写真がその全高を埋める） */
+.deal {
+  bottom: 0;
+  grid-template-columns: minmax(0, 40%) minmax(0, 1fr);
+  align-items: stretch;
+  gap: 16px;
+  padding: 14px;
+}
+
+/* 写真はテキストブロックと同じ高さまでストレッチし、縦長のまま埋める */
+.deal__fig {
+  position: relative;
+  height: auto;
+  border-radius: 16px;
+}
+
+.deal__fig img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  aspect-ratio: auto;
+  object-fit: cover;
+  transition: transform 1400ms var(--ease-release);
+}
+.deal:hover .deal__fig img {
+  transform: scale(1.06);
+}
+
+/* テキスト側: 行間と余白を開いてカード自体の背を伸ばす */
+.deal__body {
+  align-content: center;
+  gap: 10px;
+  padding: 6px 2px;
+}
+
+.deal__en { font-size: 11px; }
+
+.deal__body h3 {
+  font-size: clamp(18px, 4.6vw, 21px);
+}
+
+.deal__body p {
+  font-size: 12.5px;
+  line-height: 1.75;
+}
+
+.deal__body .btn {
+  min-height: 40px;
+  padding: 10px 18px;
+  margin-top: 4px;
+}
+
+.deck-nav {
+  margin-top: var(--space-5);
+}
+
+@media (min-width: 900px) {
+  .deck-stage {
+    width: min(100%, 540px);
+  }
+
+  .deal {
+    grid-template-columns: minmax(0, 38%) minmax(0, 1fr);
+    gap: 20px;
+    padding: 16px;
+  }
+
+  .deal__body p { font-size: 13.5px; }
+}
+
+/* ---------- 7. 料金: 触れると静かに浮く ---------- */
+
+.menu {
+  transition:
+    transform 480ms var(--ease-release),
+    background 480ms var(--ease-calm),
+    box-shadow 480ms var(--ease-calm);
+}
+@media (pointer: fine) {
+  .menu:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.85) !important;
+    box-shadow: 0 18px 40px rgba(62, 68, 60, 0.08);
+  }
+  .menu--flagship:hover { background: var(--color-primary) !important; }
+}
+
+/* 最上位カード: 表面をごく薄い光が呼吸の周期で往復 */
+.menu--flagship { position: relative; overflow: hidden; }
+.menu--flagship::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg,
+    transparent 30%,
+    rgba(246, 241, 232, 0.10) 48%,
+    rgba(246, 241, 232, 0.16) 52%,
+    rgba(246, 241, 232, 0.10) 56%,
+    transparent 74%);
+  background-size: 250% 100%;
+  animation: flagship-sheen 12s var(--ease-breath) infinite;
+  pointer-events: none;
+}
+@keyframes flagship-sheen {
+  0%   { background-position: 120% 0; }
+  55%  { background-position: -30% 0; }
+  100% { background-position: -30% 0; }
+}
+
+/* ---------- 8. About: 引用に呼吸の点と縦の柱 ---------- */
+
+.quote--award {
+  position: relative;
+  padding-left: var(--space-6);
+}
+.quote--award::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 1px;
+  background: linear-gradient(to bottom,
+    var(--color-forest-green),
+    rgba(110, 133, 114, 0.12));
+}
+.quote--award::after {
+  content: "";
+  position: absolute;
+  left: -3.5px;
+  top: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-forest-green);
+  animation: breath-dot 4s var(--ease-breath) infinite alternate;
+}
+
+/* ---------- 9. クロージング: 呼吸ガイド ---------- */
+
+.breath-guide {
+  position: relative;
+  width: 128px;
+  height: 128px;
+  margin: 0 auto var(--space-7);
+  display: grid;
+  place-items: center;
+}
+
+.breath-guide__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(110, 133, 114, 0.55);
+  animation: guide-breath var(--breath-cycle) var(--ease-breath) infinite alternate;
+}
+.breath-guide__ring::before {
+  content: "";
+  position: absolute;
+  inset: -14px;
+  border-radius: 50%;
+  border: 0.5px solid rgba(110, 133, 114, 0.20);
+  animation: guide-breath var(--breath-cycle-slow) var(--ease-breath) infinite alternate;
+}
+@keyframes guide-breath {
+  from { transform: scale(0.82); }
+  to   { transform: scale(1.08); }
+}
+
+.breath-guide__word {
+  font: 600 13px/1 var(--font-heading);
+  letter-spacing: 4px;
+  color: var(--color-primary-deep);
+  opacity: 0.9;
+  transition: opacity 700ms var(--ease-calm);
+}
+.breath-guide__word.is-swap { opacity: 0; }
+
+/* ---------- 10. カーソルの呼吸（デスクトップ・fineポインタのみ） ---------- */
+
+.award-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 80;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 400ms var(--ease-calm);
+}
+.award-cursor.is-on { opacity: 1; }
+
+.award-cursor__ring {
+  position: absolute;
+  top: -19px;
+  left: -19px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(110, 133, 114, 0.5);
+  animation: cursor-breath var(--breath-cycle) var(--ease-breath) infinite alternate;
+  transition: transform 340ms var(--ease-release), background 340ms var(--ease-calm);
+}
+.award-cursor.is-link .award-cursor__ring {
+  transform: scale(1.7);
+  background: rgba(110, 133, 114, 0.08);
+}
+@keyframes cursor-breath {
+  from { scale: 0.92; }
+  to   { scale: 1.06; }
+}
+
+@media (pointer: coarse) {
+  .award-cursor { display: none; }
+}
+
+/* ---------- 11. マグネティックCTA ---------- */
+
+[data-magnetic] {
+  will-change: transform;
+  transition: transform 420ms var(--ease-release);
+}
+
+/* ---------- 12. reduced-motion: すべての演出を静止画に ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__watermark,
+  .approach__watermark { -webkit-text-stroke-color: rgba(110, 133, 114, 0.10); }
+
+  [data-breathe-img] img,
+  .breath-marquee__track,
+  .scroll-cue__line,
+  .menu--flagship::after,
+  .breath-guide__ring,
+  .breath-guide__ring::before,
+  .award-cursor__ring,
+  .quote--award::after {
+    animation: none;
+  }
+
+  h1.is-split .char {
+    transition: none;
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+
+  .award-cursor { display: none; }
+}

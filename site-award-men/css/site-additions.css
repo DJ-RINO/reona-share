@@ -1,0 +1,152 @@
+@property --hole {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 40%;
+}
+
+@property --mx {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 50%;
+}
+
+@property --my {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 46%;
+}
+
+/* ===== オープニング・ヴェール（ノックアウトマスク + GSAP） ===== */
+.intro-veil {
+  position: fixed; inset: 0; z-index: 9999;
+  display: none;
+  opacity: 1;
+  pointer-events: none;
+  background: #000;
+  --hole: 38%;
+  --mx: 50%;
+  --my: 50%;
+  -webkit-mask: linear-gradient(#000 0 0), url("../images/intro-mask.svg") var(--mx) var(--my) / var(--hole) no-repeat;
+  mask: linear-gradient(#000 0 0), url("../images/intro-mask.svg") var(--mx) var(--my) / var(--hole) no-repeat;
+  -webkit-mask-composite: source-out;
+  mask-composite: subtract;
+  will-change: --hole, opacity;
+}
+
+.intro-tune-pane {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 10001;
+  width: min(300px, calc(100vw - 24px));
+}
+
+/* ===== ヨガ・カルーセル（縦3Dカード・1枚フォーカス／Reona配色） ===== */
+.ycar {
+  --card-w: clamp(158px, 48vw, 196px);
+  --card-h: calc(var(--card-w) * 1.4);
+  --near-y: calc(var(--card-h) * 0.40);
+  --far-y:  calc(var(--card-h) * 0.66);
+  margin-top: var(--space-6);
+  user-select: none;
+}
+.ycar__viewport {
+  position: relative;
+  height: calc(var(--card-h) + var(--near-y) * 0.9);
+  display: flex; align-items: center; justify-content: center;
+  perspective: 1200px;
+  -webkit-mask: linear-gradient(180deg, transparent 0, #000 10%, #000 90%, transparent 100%);
+  mask: linear-gradient(180deg, transparent 0, #000 10%, #000 90%, transparent 100%);
+}
+.ycar__track {
+  position: relative; width: var(--card-w); height: var(--card-h);
+  transform-style: preserve-3d;
+}
+.ycar__card {
+  position: absolute; inset: 0; width: var(--card-w); height: var(--card-h);
+  border-radius: 18px; overflow: hidden; background: var(--color-surface);
+  border: 0.5px solid var(--color-hairline); padding: 0;
+  box-shadow: var(--shadow-min); cursor: pointer; will-change: transform, opacity;
+  transition: transform .7s var(--ease-calm), opacity .7s var(--ease-calm),
+              filter .7s var(--ease-calm), box-shadow .7s var(--ease-calm);
+}
+.ycar__card img { width: 100%; height: 100%; object-fit: cover; display: block; filter: var(--img-filter); }
+.ycar__card:not(.is-center) img { filter: grayscale(1) saturate(.6) brightness(1.02); }
+.ycar__card.is-far-up   { transform: translateY(calc(var(--far-y) * -1)) scale(.66) translateZ(-320px); opacity: .4;  z-index: 1; }
+.ycar__card.is-near-up  { transform: translateY(calc(var(--near-y) * -1)) scale(.82) translateZ(-140px); opacity: .85; z-index: 5; }
+.ycar__card.is-center   { transform: translateY(0) scale(1) translateZ(0); opacity: 1; z-index: 10; box-shadow: 0 12px 28px rgba(62,68,60,.12); }
+.ycar__card.is-near-down{ transform: translateY(var(--near-y)) scale(.82) translateZ(-140px); opacity: .85; z-index: 5; }
+.ycar__card.is-far-down { transform: translateY(var(--far-y)) scale(.66) translateZ(-320px); opacity: .4;  z-index: 1; }
+.ycar__card.is-hidden   { transform: translateY(0) scale(.5) translateZ(-500px); opacity: 0; pointer-events: none; z-index: 0; }
+.ycar__card.is-center::after { content: ""; position: absolute; inset: 0; border-radius: 18px; border: 0.5px solid rgba(110,133,114,.4); pointer-events: none; }
+.ycar__controls { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 22px; }
+.ycar__arrow {
+  width: 46px; height: 46px; border-radius: 50%; border: 0.5px solid var(--color-hairline);
+  background: rgba(255,255,255,.5); color: var(--color-primary-deep);
+  display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0;
+  transition: transform .2s var(--ease-calm), background .2s, border-color .2s;
+}
+.ycar__arrow:hover { transform: scale(1.08); background: #fff; border-color: rgba(110,133,114,.5); }
+.ycar__arrow:active { transform: scale(.96); }
+.ycar__arrow svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 1.6; fill: none; }
+.ycar__counter { font: italic 500 13px/1 var(--font-accent); letter-spacing: 2px; color: var(--color-text-muted); min-width: 64px; text-align: center; }
+.ycar__counter b { font-style: normal; font-weight: 600; font-size: 15px; color: var(--color-primary-deep); }
+.ycar__counter-sep { opacity: .6; }
+.ycar__hint { text-align: center; color: var(--color-text-muted); font-size: 11px; letter-spacing: .08em; margin-top: 14px; opacity: .8; }
+@media (min-width: 760px) { .ycar { --card-w: clamp(240px, 30vw, 300px); } }
+@media (prefers-reduced-motion: reduce) { .ycar__card { transition: none; } }
+
+/* ===== 料金メニュー ===== */
+.menu-flow-note { text-align: center; color: var(--color-text-muted); font-size: 13px; margin: var(--space-3) 0 0; }
+.menu-list { display: grid; gap: var(--space-5); margin-top: var(--space-5); }
+.menu { display: flex; flex-direction: column; height: 100%; padding: var(--space-card) !important; border: var(--border-hairline) !important; border-radius: 24px !important; background: rgba(255,255,255,0.6) !important; box-shadow: var(--shadow-min); position: relative; }
+.menu h3 { margin-bottom: var(--space-2); }
+.menu .card__body { color: var(--color-text-muted); margin-bottom: var(--space-4); font-size: 14px; min-height: 3.4em; }
+.menu .def-list { margin-top: auto; }
+.menu .def-row dd { font: 600 17px/1.3 var(--font-heading); color: var(--color-text); text-align: right; }
+.menu .dt-note { display: block; font-weight: 400; font-size: 11px; color: var(--color-text-muted); letter-spacing: .04em; margin-top: 2px; }
+.menu .yen-note { font-size: .62em; color: var(--color-text-muted); margin-left: 2px; }
+.tag-row--center { justify-content: center; margin-top: var(--space-6); }
+.menu--trial .def-row--online-trial {
+  grid-template-columns: 7.8em 1fr;
+}
+.menu--trial .def-row--online-trial dt {
+  white-space: nowrap;
+  font-size: 0.94em;
+}
+
+.menu__badge {
+  display: inline-block; font: 600 11px/1 var(--font-heading); letter-spacing: 2px;
+  padding: 6px 13px; border-radius: var(--radius-pill); margin-bottom: var(--space-3);
+  background: var(--color-text-on-primary); color: var(--color-primary-deep);
+}
+.menu__badge--soft { background: var(--color-green-tint); color: var(--color-primary-deep); }
+/* トライアルの「はじめの一歩」は角ピルにしてフローから外す（見出し位置を他カードと揃える） */
+.menu--trial .menu__badge { position: absolute; top: 16px; right: 16px; margin: 0; z-index: 2; font-size: 10px; padding: 5px 11px; }
+
+.menu--flagship { background: var(--color-primary) !important; border-color: transparent !important; }
+.menu--flagship h3, .menu--flagship .def-row dt, .menu--flagship .def-row dd { color: var(--color-text-on-primary); }
+.menu--flagship .kicker, .menu--flagship .card__body, .menu--flagship .dt-note, .menu--flagship .yen-note { color: rgba(246,241,232,0.80); }
+.menu--flagship .def-row, .menu--flagship .def-row--first { border-color: rgba(246,241,232,0.22); }
+.menu--flagship .btn--primary {
+  background: var(--color-text-on-primary);
+  color: var(--color-primary-deep);
+}
+.menu--flagship .btn--primary:hover {
+  background: rgba(246, 241, 232, 0.9);
+}
+
+/* 男性向けLPへの導線（女性料金の下） */
+.men-cta { display: flex; align-items: center; justify-content: center; gap: .7em; max-width: 540px; margin: var(--space-7) auto 0; padding: 18px 26px; border: 0.5px solid var(--color-hairline); border-radius: var(--radius-pill); background: var(--color-surface-sunken); color: var(--color-primary-deep); font: 600 14px/1.5 var(--font-heading); letter-spacing: 2px; text-decoration: none; transition: background .25s var(--ease-calm), transform .25s var(--ease-calm); }
+.men-cta:hover { background: var(--color-secondary); transform: translateY(-1px); }
+.men-cta__en { font: italic 500 12px/1 var(--font-accent); letter-spacing: 2px; opacity: .65; }
+.men-cta__arrow { transition: transform .25s var(--ease-calm); }
+.men-cta:hover .men-cta__arrow { transform: translateX(4px); }
+
+/* ロゴ未完成までの仮ワードマーク（日本語タグライン） */
+.wordmark--ja { letter-spacing: 0.2em; font-size: 16px; }
+
+@media (min-width: 760px) {
+  .menu-list { grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; align-items: stretch; }
+  .menu--flagship { grid-column: 1 / -1; }
+}
