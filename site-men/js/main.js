@@ -667,8 +667,9 @@
       });
     }
 
+    var SPINE_ENABLED = false;
     var spineHost = document.getElementById("spine");
-    if (spineHost) {
+    if (spineHost && SPINE_ENABLED) {
       var spineTween = null;
 
       var buildSpine = function () {

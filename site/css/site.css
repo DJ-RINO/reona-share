@@ -64,6 +64,7 @@ img { display: block; max-width: 100%; height: auto; }
 /* ============ 呼吸の線（ページを縫う1本のSVG。JSが生成） ============ */
 
 .spine {
+  display: none;
   position: absolute;
   top: 0;
   left: 0;
