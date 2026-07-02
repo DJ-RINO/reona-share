@@ -207,13 +207,89 @@ body.is-loaded .scroll-cue { opacity: 1; }
   z-index: 1;
 }
 
-/* ---------- 6. デッキ: 写真がゆっくり寄る ---------- */
+/* ---------- 6. デッキ v2: 縦長ポートレート + 1.5倍ステージ ---------- */
+
+/* セクション全体の縦の余白を広げる（約1.5倍化の一部） */
+#channels.section {
+  padding-top: var(--space-9);
+  padding-bottom: var(--space-8);
+}
+
+.deck-stage {
+  width: min(100%, 410px);
+}
+
+/* カード: 左40%を縦長写真、高さはテキスト側（en〜ボタン）に揃う。
+   bottom:0 で全カードをデッキと同じ高さに統一（写真がその全高を埋める） */
+.deal {
+  bottom: 0;
+  grid-template-columns: minmax(0, 40%) minmax(0, 1fr);
+  align-items: stretch;
+  gap: 16px;
+  padding: 14px;
+}
+
+/* 写真はテキストブロックと同じ高さまでストレッチし、縦長のまま埋める */
+.deal__fig {
+  position: relative;
+  height: auto;
+  border-radius: 16px;
+}
 
 .deal__fig img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  aspect-ratio: auto;
+  object-fit: cover;
   transition: transform 1400ms var(--ease-release);
 }
 .deal:hover .deal__fig img {
   transform: scale(1.06);
+}
+
+/* テキスト側: 行間と余白を開いてカード自体の背を伸ばす */
+.deal__body {
+  align-content: center;
+  gap: 10px;
+  padding: 6px 2px;
+}
+
+.deal__en { font-size: 11px; }
+
+.deal__body h3 {
+  font-size: clamp(18px, 4.6vw, 21px);
+}
+
+.deal__body p {
+  font-size: 12.5px;
+  line-height: 1.75;
+}
+
+.deal__body .btn {
+  min-height: 40px;
+  padding: 10px 18px;
+  margin-top: 4px;
+}
+
+.deck-nav {
+  margin-top: var(--space-5);
+}
+
+@media (min-width: 900px) {
+  .deck-stage {
+    width: min(100%, 540px);
+  }
+
+  .deal {
+    grid-template-columns: minmax(0, 38%) minmax(0, 1fr);
+    gap: 20px;
+    padding: 16px;
+  }
+
+  .deal__body p { font-size: 13.5px; }
 }
 
 /* ---------- 7. 料金: 触れると静かに浮く ---------- */
