@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ja" class="award">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <title>【Award Mockup】REONA — 心と体を整えると、人はやり直せる</title>
+  <meta name="description" content="アワードクラス演出モックアップ（本番非公開・検証用）">
+  <meta name="robots" content="noindex, nofollow">
+
+  <link rel="icon" type="image/svg+xml" href="https://dj-rino.github.io/reona-share/site/images/favicon.svg">
+
+  <!-- Fonts: ブランド既定 + 極細ウェイト（透かし用） -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@600&family=Noto+Sans+JP:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,500;1,400;1,500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/site.css">
+  <link rel="stylesheet" href="css/site-additions.css">
+  <link rel="stylesheet" href="css/award.css">
+</head>
+<body>
+
+  <!-- 紙のグレイン（最前面・操作不可・GPU合成のみ） -->
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- 呼吸の線（アワード版では停止のまま） -->
+  <div class="spine" id="spine" aria-hidden="true"></div>
+
+  <header class="site-header" data-header>
+    <a class="wordmark wordmark--ja" href="#hero" aria-label="語らい、整う｜REONA ホーム">語らい、整う</a>
+    <nav class="site-nav" aria-label="ページ内ナビゲーション">
+      <a href="#channels">レッスン</a>
+      <a href="#pricing">料金</a>
+      <a href="#about">Reonaについて</a>
+      <a href="#faq">よくある質問</a>
+    </nav>
+    <a class="btn btn--primary btn--sm" href="#" data-line-cta data-cta-position="header">LINEで相談</a>
+  </header>
+
+  <main>
+
+    <!-- 1. Hero: 呼吸する背景 + 巨大透かし + 一字ずつ立ち上がる見出し -->
+    <section id="hero" class="hero">
+      <div class="hero__watermark" aria-hidden="true" data-parallax="0.22">REONA</div>
+
+      <div class="breath-field" aria-hidden="true">
+        <span class="breath-orb breath-orb--a"></span>
+        <span class="breath-orb breath-orb--b"></span>
+        <span class="breath-orb breath-orb--c"></span>
+      </div>
+
+      <div class="hero__inner">
+        <div class="hero__text">
+          <p class="kicker reveal-mist">wellness by Reona<br class="sp-only"> — breathe, and begin again</p>
+          <h1 data-split-chars>
+            <span class="mist-line">心と体を整えると、</span><br>
+            <span class="mist-line">人はやり直せる。</span>
+          </h1>
+          <p class="hero__lead reveal-mist">忙しさの中で自分を後回しにしている人へ。ヨガとボディメイクを通して、自分自身と向き合い、自分の人生を選べる状態へ。強くなるためじゃない、自分に戻るために。</p>
+          <div class="hero__actions reveal-mist">
+            <a class="btn btn--primary btn--lg" href="#" data-line-cta data-cta-position="hero" data-hero-cta data-magnetic>LINEで体験について相談する</a>
+            <a class="btn btn--ghost" href="#channels" data-magnetic>レッスンを見る</a>
+          </div>
+        </div>
+        <div class="moon-window moon-window--hero" data-window data-breathe-img>
+          <img src="https://dj-rino.github.io/reona-share/site/images/hero.webp" alt="海辺でヨガマットを持つReona" width="896" height="1196" loading="eager" data-window-img>
+        </div>
+      </div>
+
+      <a class="scroll-cue" href="#worries" aria-label="下へスクロール">
+        <span class="scroll-cue__line" aria-hidden="true"></span>
+        <span class="scroll-cue__label">scroll</span>
+      </a>
+    </section>
+
+    <!-- 呼吸のマルキー: セクションの継ぎ目を英字がゆっくり流れる -->
+    <div class="breath-marquee" aria-hidden="true">
+      <div class="breath-marquee__track">
+        <span>breathe</span><i>—</i><span>align</span><i>—</i><span>renew</span><i>—</i>
+        <span>breathe</span><i>—</i><span>align</span><i>—</i><span>renew</span><i>—</i>
+        <span>breathe</span><i>—</i><span>align</span><i>—</i><span>renew</span><i>—</i>
+        <span>breathe</span><i>—</i><span>align</span><i>—</i><span>renew</span><i>—</i>
+      </div>
+    </div>
+
+    <!-- 2. こんな悩みの方へ: フォーカス送り + 静かな番号 -->
+    <section id="worries" class="section">
+      <div class="section-head">
+        <h2 class="loosen">こんな思いに、<br class="sp-only">心当たりはありませんか</h2>
+      </div>
+      <ul class="worry-list" data-worries>
+        <li class="worry"><span class="worry__num" aria-hidden="true">01</span>産後から、自分の体に自信が持てなくなった</li>
+        <li class="worry"><span class="worry__num" aria-hidden="true">02</span>何を始めても、三日坊主で終わってしまう</li>
+        <li class="worry"><span class="worry__num" aria-hidden="true">03</span>家事や仕事に追われて、自分のことは後回し</li>
+        <li class="worry"><span class="worry__num" aria-hidden="true">04</span>年齢のせいだと、どこかで<br class="sp-only">あきらめかけている</li>
+      </ul>
+      <p class="section-note">それは、意思が弱いからではありません。自分に合う整え方に、まだ出会っていないだけ。ここから一緒に始めましょう。</p>
+    </section>
+
+    <!-- 3. Reonaが届ける変化: 巨大イニシャルの透かしがパララックス -->
+    <section id="approach" class="section approach">
+      <div class="approach__watermark" aria-hidden="true" data-parallax="0.14">y g t</div>
+      <div class="section-head">
+        <p class="kicker">yoga × gut health × training</p>
+        <h2 class="loosen">心を整えて、体を変える</h2>
+      </div>
+      <div class="approach-stack">
+        <div class="approach-item reveal">
+          <span class="approach-item__initial" aria-hidden="true">y</span>
+          <div>
+            <h3>ヨガ</h3>
+            <p>呼吸とともに、こわばった体と心をほどく。初心者の方も、体がかたい方も大丈夫です。</p>
+          </div>
+        </div>
+        <div class="approach-item reveal">
+          <span class="approach-item__initial" aria-hidden="true">g</span>
+          <div>
+            <h3>腸活</h3>
+            <p>内側から整える食事と習慣のアドバイス。がんばる食事制限ではなく、続けられる整え方を。</p>
+          </div>
+        </div>
+        <div class="approach-item reveal">
+          <span class="approach-item__initial" aria-hidden="true">t</span>
+          <div>
+            <h3>筋トレ</h3>
+            <p>体は、何歳からでも変えられる。一人ひとりの体力に合わせた無理のないボディメイク。</p>
+          </div>
+        </div>
+      </div>
+      <p class="section-note">3つを別々にやるのではなく、あなたの体と暮らしに合わせて組み合わせる。だから結果が出て、無理なく続きます。</p>
+    </section>
+
+    <!-- 4. 受け方: deck式カードカルーセル -->
+    <section id="channels" class="section section--bleed">
+      <div class="section-head section-head--deck">
+        <p class="sec-head__en">four ways</p>
+        <h2 class="loosen">あなたに合う、整え方を</h2>
+      </div>
+      <p class="deck-hint" data-deck-hint>カードを左右にスワイプ</p>
+      <div class="deck-stage">
+      <div class="deck" data-deck aria-label="レッスンの受け方カードカルーセル">
+        <article class="deal" data-deal data-label="night-subscription" aria-roledescription="slide" aria-label="1 / 4">
+          <figure class="deal__fig">
+            <img src="https://dj-rino.github.io/reona-share/site/images/channel-night.webp" alt="夜、ひと呼吸おいて整える20分のヨガ" width="896" height="1280" loading="lazy">
+          </figure>
+          <div class="deal__body">
+            <span class="deal__en">night subscription</span>
+            <h3>夜20分サブスク</h3>
+            <p data-tbd="night-subscription-price">火・木 22:00〜の双方向オンライン。1回20分の軽いリセット習慣を、月額 ¥3,980〜で。無料体験もこの夜20分枠で受けられます。</p>
+            <a class="btn btn--ghost btn--sm" href="#" data-line-cta data-cta-position="channels">LINEで相談する</a>
+          </div>
+        </article>
+        <article class="deal" data-deal data-label="online" aria-roledescription="slide" aria-label="2 / 4">
+          <figure class="deal__fig">
+            <img src="https://dj-rino.github.io/reona-share/site/images/channel-online.webp" alt="自宅のリビングで受けるオンラインヨガ" width="896" height="1280" loading="lazy">
+          </figure>
+          <div class="deal__body">
+            <span class="deal__en">online</span>
+            <h3>オンライン</h3>
+            <p>整える習慣を毎日に届ける。自宅で、自分のペースで。続けられる仕組みで日常に。</p>
+            <a class="btn btn--ghost btn--sm" href="#" data-line-cta data-cta-position="channels">LINEで相談する</a>
+          </div>
+        </article>
+        <article class="deal" data-deal data-label="studio" aria-roledescription="slide" aria-label="3 / 4">
+          <figure class="deal__fig">
+            <img src="https://dj-rino.github.io/reona-share/site/images/channel-studio.webp" alt="自然光の入る静かなヨガスタジオ" width="896" height="1280" loading="lazy">
+          </figure>
+          <div class="deal__body">
+            <span class="deal__en">studio</span>
+            <h3>スタジオ</h3>
+            <p>直接会い、安心できる居場所を作る。少人数で、一人ひとりの呼吸に合わせて整える時間。</p>
+            <a class="btn btn--ghost btn--sm" href="#" data-line-cta data-cta-position="channels">LINEで相談する</a>
+          </div>
+        </article>
+        <article class="deal" data-deal data-label="personal" aria-roledescription="slide" aria-label="4 / 4">
+          <figure class="deal__fig">
+            <img src="https://dj-rino.github.io/reona-share/site/images/channel-personal.webp" alt="一対一で姿勢をサポートするパーソナルレッスン" width="896" height="1280" loading="lazy">
+          </figure>
+          <div class="deal__body">
+            <span class="deal__en">personal</span>
+            <h3>パーソナル</h3>
+            <p>本気の人に深く伴走する。あなたの心と体に合わせた、一対一のプログラム。</p>
+            <a class="btn btn--ghost btn--sm" href="#" data-line-cta data-cta-position="channels">LINEで相談する</a>
+          </div>
+        </article>
+      </div>
+      <div class="deck-nav" data-deck-nav aria-label="カルーセル操作">
+        <button class="deck-nav__btn" type="button" data-deck-prev aria-label="前のカード">←</button>
+        <div class="deck-nav__dots" role="tablist" aria-label="カード位置">
+          <button class="deck-nav__dot is-on" type="button" data-deck-dot="0" aria-label="1枚目を表示" aria-selected="true"></button>
+          <button class="deck-nav__dot" type="button" data-deck-dot="1" aria-label="2枚目を表示" aria-selected="false"></button>
+          <button class="deck-nav__dot" type="button" data-deck-dot="2" aria-label="3枚目を表示" aria-selected="false"></button>
+          <button class="deck-nav__dot" type="button" data-deck-dot="3" aria-label="4枚目を表示" aria-selected="false"></button>
+        </div>
+        <button class="deck-nav__btn" type="button" data-deck-next aria-label="次のカード">→</button>
+      </div>
+      </div>
+    </section>
+
+    <!-- 5. 料金・体験案内 -->
+    <section id="pricing" class="section">
+      <div class="section-head">
+        <h2 class="loosen">料金とはじめ方</h2>
+      </div>      <p class="menu-flow-note">まずは体験から。続けやすいものから、深く伴走するコースまで。</p>
+      <div class="menu-list">
+
+        <article class="menu menu--trial reveal">
+          <div class="menu__badge menu__badge--soft">はじめの一歩</div>
+          <p class="kicker kicker--sm">trial</p>
+          <h3>はじめての体験</h3>
+          <p class="card__body">不安なことは事前に何でもご相談ください。動きやすい服装でどうぞ。</p>
+          <dl class="def-list">
+            <div class="def-row def-row--first"><dt>対面体験</dt><dd>¥1,500</dd></div>
+            <div class="def-row def-row--online-trial"><dt>オンライン体験</dt><dd>無料<span class="dt-note">夜20分の枠で</span></dd></div>
+          </dl>        </article>
+
+        <article class="menu reveal">
+          <p class="kicker kicker--sm">night subscription</p>
+          <h3>夜20分 オンラインサブスク</h3>
+          <p class="card__body">仕事終わりに、その日の自分を整えてから眠る。</p>
+          <dl class="def-list">
+            <div class="def-row def-row--first"><dt>月額</dt><dd>¥3,980<span class="yen-note">〜</span></dd></div>
+            <div class="def-row"><dt>開催</dt><dd>火・木 22:00〜</dd></div>
+          </dl>        </article>
+
+        <article class="menu reveal">
+          <p class="kicker kicker--sm">studio group</p>
+          <h3>スタジオ グループ</h3>
+          <p class="card__body">熊本市内・少人数。直接会って整える時間。</p>
+          <dl class="def-list">
+            <div class="def-row def-row--first"><dt>月4回</dt><dd>¥6,500<span class="yen-note">〜</span></dd></div>
+            <div class="def-row"><dt>単発</dt><dd>¥3,000</dd></div>
+          </dl>        </article>
+
+        <article class="menu reveal">
+          <p class="kicker kicker--sm">personal</p>
+          <h3>パーソナル</h3>
+          <p class="card__body">対面・オンライン対応。時間で選べます。</p>
+          <dl class="def-list">
+            <div class="def-row def-row--first"><dt>60分</dt><dd>¥8,000</dd></div>
+            <div class="def-row"><dt>40分</dt><dd>¥6,000</dd></div>
+            <div class="def-row"><dt>20分</dt><dd>¥4,000</dd></div>
+          </dl>        </article>
+
+        <article class="menu menu--flagship reveal">
+          <div class="menu__badge">本気で変えたい人へ・最上位</div>
+          <p class="kicker kicker--sm">program</p>
+          <h3>伴走型プログラム（2〜3ヶ月）</h3>
+          <p class="card__body">ヨガ×筋トレ×腸活を、あなた専用に設計してマンツーマンで伴走。いちばん深く、結果まで付き添うコースです。</p>
+          <dl class="def-list">
+            <div class="def-row def-row--first">
+              <dt>整える<span class="dt-note">忙しい毎日から少し離れて、呼吸を整える</span></dt>
+              <dd>¥68,000</dd>
+            </div>
+            <div class="def-row">
+              <dt>深める<span class="dt-note">変化に気づき、崩れる前に立て直せる自分へ</span></dt>
+              <dd>応相談</dd>
+            </div>
+            <div class="def-row">
+              <dt>極める<span class="dt-note">立ち止まる勇気まで ・ 腸内環境の検査＋アプリ込み</span></dt>
+              <dd>応相談</dd>
+            </div>
+          </dl>        </article>
+
+      </div>
+      <div class="tag-row tag-row--center">
+        <span class="tag tag--active">少人数制</span>
+        <span class="tag tag--active">初めて歓迎</span>
+        <span class="tag tag--active">オンライン可</span>
+      </div>
+      <a class="men-cta" href="https://reona-wellness.jp/lp-men/">
+        <span class="men-cta__en">for men</span>
+        男性向けメニュー・料金はこちら
+        <span class="men-cta__arrow" aria-hidden="true">→</span>
+      </a>
+    </section>
+
+    <!-- 6. 体験の流れ -->
+    <section id="flow" class="section">
+      <div class="section-head">
+        <h2 class="loosen">体験までの流れ</h2>
+      </div>
+      <ol class="flow-list">
+        <li class="flow-step reveal">
+          <span class="flow-step__num" aria-hidden="true">01</span>
+          <div>
+            <h3>LINEで友だち追加</h3>
+            <p>下のボタンから友だち追加。気になることは、そのまま聞いてください。</p>
+          </div>
+        </li>
+        <li class="flow-step reveal">
+          <span class="flow-step__num" aria-hidden="true">02</span>
+          <div>
+            <h3>日程を決める</h3>
+            <p>LINEのやり取りで、ご希望の日時と受け方（スタジオ／オンライン／パーソナル）を調整します。</p>
+          </div>
+        </li>
+        <li class="flow-step reveal">
+          <span class="flow-step__num" aria-hidden="true">03</span>
+          <div>
+            <h3>当日、一緒に整える</h3>
+            <p>スタジオ、またはオンライン（Google Meet）で。初めてでも、体がかたくても、大丈夫です。</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 8. プロフィール・想い -->
+    <section id="about" class="section section--sunken">
+      <div class="about-grid">
+        <div class="moon-window moon-window--about" data-window>
+          <div class="moon-window__zoom" data-window-zoom>
+            <img src="https://dj-rino.github.io/reona-share/site/images/profile-about.webp" alt="ビーチでヨガマットを持つReona" width="896" height="1524" loading="lazy" data-window-img>
+          </div>
+        </div>
+        <div>
+          <p class="kicker">about Reona</p>
+          <h2 class="loosen">強くなるためじゃない。<br>自分に戻るためのウェルネス。</h2>
+          <p class="about__story">私自身、体との向き合い方をこじらせて、心まで崩してしまった時期があります。そこから、食べること・動くこと・休むことを少しずつ整え直して、いまがあります。だから「整えれば、人はやり直せる」と、本気で思っています。</p>
+          <blockquote class="quote quote--award">
+            <p class="quote__main">私は強い人じゃない。だから、整える。</p>
+            <p class="quote__sub">弱くなる日があることを知っているから、また自分に戻れる方法を伝えたい。一緒に整えていけたら。</p>
+          </blockquote>
+          <dl class="def-list def-list--about">
+            <div class="def-row def-row--first">
+              <dt>資格・実績</dt>
+              <dd>全米ヨガアライアンス RYT200 ／ 腸活アドバイザー ／ ベストボディ・ジャパン 九州大会2連覇（2024・2025）・大阪大会優勝（2025）</dd>
+            </div>
+          </dl>
+          <div class="tag-row">
+            <span class="tag">自然体</span>
+            <span class="tag">凛とした</span>
+            <span class="tag">あたたかい</span>
+            <span class="tag">深呼吸</span>
+            <span class="tag">自立</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. LINE登録特典枠 -->
+    <section id="gift" class="section">
+      <div class="gift-panel reveal">
+        <h2 class="loosen" data-tbd="lead-magnet">LINE登録特典を、準備しています</h2>
+        <p>友だち追加してくださった方に、おうちで「整える」を始められる小さな習慣のプレゼントを準備中です。お楽しみに。</p>
+        <a class="btn btn--primary" href="#" data-line-cta data-cta-position="gift" data-magnetic>LINEで友だち追加する</a>
+      </div>
+    </section>
+
+    <!-- 10. FAQ -->
+    <section id="faq" class="section">
+      <div class="section-head">
+        <h2 class="loosen">よくある質問</h2>
+      </div>
+      <div class="faq-list">
+        <details>
+          <summary>体がかたくても大丈夫ですか？</summary>
+          <p data-tbd="faq-1">大丈夫です。ヨガは「かたい体をほどく」ためのものなので、かたい方ほど変化を感じやすいです。</p>
+        </details>
+        <details>
+          <summary>運動が苦手・まったくの初心者でも参加できますか？</summary>
+          <p data-tbd="faq-2">できます。一人ひとりの体力に合わせて内容を調整するので、初めての方も安心してご参加ください。</p>
+        </details>
+        <details>
+          <summary>持ち物は何が必要ですか？</summary>
+          <p data-tbd="faq-3">動きやすい服装・タオル・お水をお持ちください。詳しくはご予約時にご案内します。</p>
+        </details>
+        <details>
+          <summary>子連れでも参加できますか？</summary>
+          <p data-tbd="faq-4">レッスンの種類によってご案内できる場合があります。LINEでお気軽にご相談ください。</p>
+        </details>
+        <details>
+          <summary>オンラインレッスンには何が必要ですか？</summary>
+          <p data-tbd="faq-5">スマホ1台で受けられます（Google Meetを使用します）。ヨガマットがあるとより快適です。</p>
+        </details>
+        <details>
+          <summary>予約のキャンセルはいつまでにすればいいですか？</summary>
+          <p data-tbd="faq-6">ご予約時にご案内します。日程の変更もLINEでご相談いただけます。</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- 11. アクセス・開催場所 -->
+    <section id="access" class="section">
+      <div class="section-head">
+        <h2 class="loosen">開催場所とエリア</h2>
+      </div>
+      <dl class="def-list def-list--access">
+        <div class="def-row def-row--first">
+          <dt>スタジオレッスン</dt>
+          <dd data-tbd="access">熊本市内（詳しい場所はご予約時にご案内します）</dd>
+        </div>
+        <div class="def-row">
+          <dt>対面エリア</dt>
+          <dd data-tbd="access-area">熊本市・近郊</dd>
+        </div>
+        <div class="def-row">
+          <dt>オンライン</dt>
+          <dd>全国どこからでも（Google Meet）</dd>
+        </div>
+      </dl>
+      <p class="section-note">熊本でヨガやパーソナルトレーニングをお探しの方も、遠方からオンラインで整えたい方も。あなたの暮らしに合う受け方を、一緒に見つけましょう。</p>
+    </section>
+
+    <!-- 12. クロージングCTA: 呼吸ガイド + 転調 -->
+    <section id="cta" class="section section--closing" data-closing>
+      <div class="breath-field breath-field--closing" aria-hidden="true">
+        <span class="breath-orb breath-orb--a"></span>
+      </div>
+      <div class="breath-guide" aria-hidden="true">
+        <span class="breath-guide__ring"></span>
+        <span class="breath-guide__word" data-breath-word>吸って</span>
+      </div>
+      <p class="closing-sign">何度でも整え直せる。<br>人生はそこからまた始まる。</p>
+      <p class="closing-sign__en">— wellness by Reona —</p>
+      <a class="btn btn--primary btn--lg" href="#" data-line-cta data-cta-position="closing" data-closing-cta data-magnetic>LINEで体験について相談する</a>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <span class="wordmark wordmark--footer">R E O N A</span>
+      <div class="footer-col">
+        <p class="footer-col__head">レッスン</p>
+        <a href="#channels">スタジオ</a>
+        <a href="#channels">オンライン</a>
+        <a href="#channels">パーソナル</a>
+        <a href="#pricing">料金</a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col__head">Reona</p>
+        <a href="#about">Reonaの想い</a>
+        <a href="#faq">よくある質問</a>
+        <a href="#access">アクセス</a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col__head">つながる</p>
+        <a href="https://www.instagram.com/reona_yoga13/" rel="noopener" target="_blank">Instagram</a>
+      </div>
+    </div>
+    <p class="footer-copy">© 2026 Reona — wellness by Reona ／ award mockup（非公開検証用）</p>
+  </footer>
+
+  <!-- 追従LINE CTAバー -->
+  <div class="cta-bar" id="cta-bar" aria-label="LINEで相談する">
+    <a class="btn btn--primary" href="#" data-line-cta data-cta-position="sticky">LINEで体験について相談する</a>
+  </div>
+
+  <!-- GSAP + Lenis（読めない場合もサイトは完全に機能する） -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js" defer></script>
+  <script src="js/main.js" defer></script>
+  <script src="js/award.js" defer></script>
+
+</body>
+</html>
