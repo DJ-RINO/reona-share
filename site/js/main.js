@@ -820,6 +820,8 @@
     var spineHost = document.getElementById("spine");
     if (spineHost) {
       var spineTween = null;
+      var SPINE_MAX_DRAW = 0.58;
+      var SPINE_SCROLL_RANGE_MULT = 1.55;
 
       var buildSpine = function () {
         var W = document.documentElement.clientWidth;
@@ -836,7 +838,7 @@
           var x = (i % 2 === 0) ? W * (1 - margin) : W * margin;
           points.push([x, y]);
         });
-        points.push([W * 0.5, H]);
+        points.push([W * 0.5, H * 0.88]);
 
         var d = "M " + points[0][0] + " " + points[0][1];
         for (var i = 1; i < points.length; i++) {
@@ -865,12 +867,23 @@
           spineTween.scrollTrigger.kill();
           spineTween.kill();
         }
+
+        var scrollRange = Math.max(
+          document.documentElement.scrollHeight - window.innerHeight,
+          window.innerHeight * 0.5
+        );
+
         spineTween = gsap.fromTo(path,
           { strokeDashoffset: len },
           {
-            strokeDashoffset: 0,
+            strokeDashoffset: len * (1 - SPINE_MAX_DRAW),
             ease: "none",
-            scrollTrigger: { trigger: document.body, start: "top top", end: "bottom bottom", scrub: 1 }
+            scrollTrigger: {
+              trigger: document.body,
+              start: "top top",
+              end: "+=" + Math.round(scrollRange * SPINE_SCROLL_RANGE_MULT),
+              scrub: 1.35
+            }
           }
         );
       };
