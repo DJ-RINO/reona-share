@@ -631,3 +631,26 @@ body.is-loaded .scroll-cue { opacity: 1; }
 /* 料金カード: 項目名の途中改行を防ぐ（説明noteはdt内で折り返し） */
 .menu .def-row { grid-template-columns: 1fr auto; }
 .menu .def-row dd { align-self: start; }
+
+/* ---------- 15. 画像入れ替え（hero=ピジョンポーズ舞台 / about=ハートポーズの窓） ---------- */
+
+.about-stage--hero {
+  width: min(70vw, 300px);
+  aspect-ratio: 10 / 12;
+  margin: 0;
+}
+
+@media (max-width: 899px) {
+  .about-stage--hero { order: 3; margin: var(--space-5) auto 0; }
+}
+
+@media (min-width: 900px) {
+  .about-stage--hero { width: 100%; max-width: 430px; margin-left: auto; }
+}
+
+/* 窓は写真と同じ比率にして全身を見せる */
+.moon-window--about {
+  width: min(78vw, 380px);
+  aspect-ratio: 724 / 1024;
+  margin: 0 auto;
+}
