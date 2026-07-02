@@ -554,7 +554,10 @@
     function measureDeckHeight() {
       var maxH = 252;
       deals.forEach(function (card) {
+        var prevBottom = card.style.bottom;
+        card.style.bottom = "auto"; /* bottom:0で伸びた高さを測らない（ラチェット防止） */
         maxH = Math.max(maxH, card.offsetHeight || 0, card.scrollHeight || 0);
+        card.style.bottom = prevBottom;
       });
       deck.style.height = maxH + "px";
     }
