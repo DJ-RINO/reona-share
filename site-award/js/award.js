@@ -184,19 +184,18 @@
     window.requestAnimationFrame(lerpCursor);
   }
 
-  /* ---- 7. 呼吸ガイド: 吸って／吐いて（2拍子） ---- */
+  /* ---- 7. 呼吸ガイド: 吸って／吐いて（2拍子・緩やか） ---- */
   var breathWord = document.querySelector("[data-breath-word]");
   if (breathWord && !reduceMotion) {
     var words = ["吸って", "吐いて"];
     var wi = 0;
-    var breathMs = 4000;
     window.setInterval(function () {
       breathWord.classList.add("is-swap");
       window.setTimeout(function () {
         wi = (wi + 1) % words.length;
         breathWord.textContent = words[wi];
         breathWord.classList.remove("is-swap");
-      }, 500);
-    }, breathMs);
+      }, 700);
+    }, 4200);
   }
 })();

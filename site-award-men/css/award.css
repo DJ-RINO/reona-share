@@ -9,6 +9,45 @@
 
 html.award {
   scroll-behavior: smooth; /* アンカーリンク用。ホイールはブラウザ標準 */
+  overflow-x: clip;
+}
+
+/* ---------- 0b. 日本語組版（禁則・見出しの改行バランス） ---------- */
+html.award[lang="ja"] body,
+html.award body {
+  line-break: strict;
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
+
+html.award h1,
+html.award h2,
+html.award h3,
+html.award .loosen,
+html.award .hero__lead,
+html.award .section-note,
+html.award .worry,
+html.award .card__body,
+html.award .about__story {
+  line-break: strict;
+  text-wrap: pretty;
+}
+
+html.award h2.loosen,
+html.award .hero__text h1 {
+  text-wrap: balance;
+}
+
+@media (max-width: 899px) {
+  h1.is-split .mist-line {
+    display: block;
+  }
+  h1.is-split .char {
+    display: inline;
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
 }
 
 ::selection {
@@ -484,7 +523,7 @@ body.is-loaded .scroll-cue { opacity: 1; }
   inset: 0;
   border-radius: 50%;
   border: 1px solid rgba(110, 133, 114, 0.55);
-  animation: guide-inhale 4s var(--ease-breath) infinite;
+  animation: guide-breath var(--breath-cycle) var(--ease-breath) infinite alternate;
 }
 .breath-guide__ring::before {
   content: "";
@@ -492,15 +531,11 @@ body.is-loaded .scroll-cue { opacity: 1; }
   inset: -14px;
   border-radius: 50%;
   border: 0.5px solid rgba(110, 133, 114, 0.20);
-  animation: guide-exhale 4s var(--ease-breath) infinite;
+  animation: guide-breath var(--breath-cycle-slow) var(--ease-breath) infinite alternate;
 }
-@keyframes guide-inhale {
-  0%, 45%   { transform: scale(0.82); opacity: 0.55; }
-  50%, 100% { transform: scale(1.08); opacity: 1; }
-}
-@keyframes guide-exhale {
-  0%, 45%   { transform: scale(1.08); opacity: 0.35; }
-  50%, 100% { transform: scale(0.82); opacity: 0.7; }
+@keyframes guide-breath {
+  from { transform: scale(0.82); }
+  to   { transform: scale(1.08); }
 }
 
 .breath-guide__word {
@@ -621,17 +656,36 @@ body.is-loaded .scroll-cue { opacity: 1; }
   }
   .hero__actions { order: 4; margin-top: var(--space-5); }
   .hero__cred { order: 5; }
-  .hero__lead { order: 6; margin-top: var(--space-5); }
+  .hero__lead { order: 6; margin-top: var(--space-5); margin-bottom: var(--space-4); }
+  .about-stage--hero {
+    order: 3;
+    width: min(70vw, 300px);
+    margin: var(--space-5) auto 0;
+    flex: 0 0 auto;
+  }
   .moon-window--hero img { object-position: 50% 22%; }
 
-  /* scroll-cue: リード文と重ならないようフロー末尾へ */
-  .hero { padding-bottom: var(--space-4); }
-  .scroll-cue {
+  .hero__inner .kicker,
+  .hero__inner h1,
+  .hero__inner .hero__lead,
+  .hero__inner .hero__actions,
+  .hero__inner .hero__cred,
+  .hero__inner .about-stage--hero {
+    width: 100%;
+    max-width: 100%;
+    flex: 0 0 auto;
+  }
+
+  .hero {
     position: relative;
-    left: auto;
-    bottom: auto;
-    transform: none;
-    margin: var(--space-6) auto var(--space-3);
+    padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+  }
+  .scroll-cue {
+    position: absolute;
+    left: 50%;
+    bottom: max(20px, env(safe-area-inset-bottom, 0px));
+    transform: translateX(-50%);
+    margin: 0;
   }
 
   /* ヘッダーCTAはモバイル非表示（追従下部CTAと重複するため） */
