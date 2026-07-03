@@ -95,8 +95,8 @@ body.is-night .breath-orb { opacity: 0.8; }
   user-select: none;
 }
 
-/* ヒーロー写真: 円窓の中で超スローに息をする */
-[data-breathe-img] img {
+/* ヒーロー写真: 円窓の中で超スローに息をする（About は対象外） */
+[data-breathe-img]:not(.moon-window--about) img {
   animation: award-img-breath 22s var(--ease-breath) infinite alternate;
   transform-origin: 50% 42%;
 }
@@ -803,7 +803,7 @@ body.is-loaded .scroll-cue { opacity: 1; }
   .about-stage--hero { width: 100%; max-width: 430px; margin-left: auto; }
 }
 
-/* 窓は site.css の比率を継承（ビーチ＋マット写真を正しく見せる） */
+/* About: site.css の moon-window__zoom + object-position をそのまま使う */
 /* ---------- 16. 受講者の声: 匿名アバター + 3行メタ ---------- */
 
 .review-reviewer {
