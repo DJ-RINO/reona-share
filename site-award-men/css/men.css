@@ -32,6 +32,16 @@
   filter: var(--img-filter);
 }
 
+@media (max-width: 759px) {
+  .menu--flagship .menu__media img {
+    object-fit: contain;
+    object-position: center top;
+    aspect-ratio: auto;
+    max-height: 480px;
+    background: var(--color-green-tint-soft);
+  }
+}
+
 @media (min-width: 760px) {
   .menu--flagship {
     grid-template-columns: 1.2fr 0.9fr;

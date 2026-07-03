@@ -8,7 +8,7 @@
 /* ---------- 0. 下地 ---------- */
 
 html.award {
-  scroll-behavior: auto; /* 慣性は Lenis が担当 */
+  scroll-behavior: smooth; /* アンカーリンク用。ホイールはブラウザ標準 */
 }
 
 ::selection {
@@ -484,7 +484,7 @@ body.is-loaded .scroll-cue { opacity: 1; }
   inset: 0;
   border-radius: 50%;
   border: 1px solid rgba(110, 133, 114, 0.55);
-  animation: guide-breath var(--breath-cycle) var(--ease-breath) infinite alternate;
+  animation: guide-inhale 4s var(--ease-breath) infinite;
 }
 .breath-guide__ring::before {
   content: "";
@@ -492,11 +492,15 @@ body.is-loaded .scroll-cue { opacity: 1; }
   inset: -14px;
   border-radius: 50%;
   border: 0.5px solid rgba(110, 133, 114, 0.20);
-  animation: guide-breath var(--breath-cycle-slow) var(--ease-breath) infinite alternate;
+  animation: guide-exhale 4s var(--ease-breath) infinite;
 }
-@keyframes guide-breath {
-  from { transform: scale(0.82); }
-  to   { transform: scale(1.08); }
+@keyframes guide-inhale {
+  0%, 45%   { transform: scale(0.82); opacity: 0.55; }
+  50%, 100% { transform: scale(1.08); opacity: 1; }
+}
+@keyframes guide-exhale {
+  0%, 45%   { transform: scale(1.08); opacity: 0.35; }
+  50%, 100% { transform: scale(0.82); opacity: 0.7; }
 }
 
 .breath-guide__word {
@@ -619,6 +623,16 @@ body.is-loaded .scroll-cue { opacity: 1; }
   .hero__cred { order: 5; }
   .hero__lead { order: 6; margin-top: var(--space-5); }
   .moon-window--hero img { object-position: 50% 22%; }
+
+  /* scroll-cue: リード文と重ならないようフロー末尾へ */
+  .hero { padding-bottom: var(--space-4); }
+  .scroll-cue {
+    position: relative;
+    left: auto;
+    bottom: auto;
+    transform: none;
+    margin: var(--space-6) auto var(--space-3);
+  }
 
   /* ヘッダーCTAはモバイル非表示（追従下部CTAと重複するため） */
   .site-header .btn { display: none; }

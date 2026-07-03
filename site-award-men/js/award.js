@@ -2,7 +2,7 @@
    REONA — Award Layer JS
    main.js（既存演出）の上に載せる。壊れても既存機能は無傷。
    1. 見出しの一字分解
-   2. Lenis 慣性スクロール + ScrollTrigger 同期
+   2. アンカーリンクのスムーススクロール（Lenis 慣性は不使用）
    3. 透かしのパララックス
    4. ヘッダーの退避（下スクロールで隠れ、上で戻る）
    5. マグネティックCTA
@@ -58,30 +58,20 @@
 
   window.addEventListener("load", function () {
 
-    /* ---- 2. Lenis 慣性スクロール ---- */
-    var lenis = null;
-    if (!reduceMotion && window.Lenis) {
-      lenis = new window.Lenis({ lerp: 0.085, smoothWheel: true });
-      var raf = function (time) {
-        lenis.raf(time);
-        window.requestAnimationFrame(raf);
-      };
-      window.requestAnimationFrame(raf);
-
-      if (window.ScrollTrigger) {
-        lenis.on("scroll", window.ScrollTrigger.update);
-      }
-
-      document.querySelectorAll('a[href^="#"]').forEach(function (a) {
-        a.addEventListener("click", function (event) {
-          var id = a.getAttribute("href");
-          if (id.length > 1 && document.querySelector(id)) {
-            event.preventDefault();
-            lenis.scrollTo(id, { offset: -64, duration: 1.4 });
-          }
-        });
+    /* ---- 2. アンカーリンク: ブラウザ標準のスムーススクロール ---- */
+    document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+      a.addEventListener("click", function (event) {
+        var id = a.getAttribute("href");
+        var target = id.length > 1 ? document.querySelector(id) : null;
+        if (target) {
+          event.preventDefault();
+          target.scrollIntoView({
+            behavior: reduceMotion ? "auto" : "smooth",
+            block: "start"
+          });
+        }
       });
-    }
+    });
 
     /* ---- 3. 透かしのパララックス ---- */
     if (!reduceMotion && window.gsap && window.ScrollTrigger) {
@@ -194,18 +184,19 @@
     window.requestAnimationFrame(lerpCursor);
   }
 
-  /* ---- 7. 呼吸ガイド: 吸って／吐いて ---- */
+  /* ---- 7. 呼吸ガイド: 吸って／吐いて（2拍子） ---- */
   var breathWord = document.querySelector("[data-breath-word]");
   if (breathWord && !reduceMotion) {
-    var words = ["吸って", "止めて", "吐いて"];
+    var words = ["吸って", "吐いて"];
     var wi = 0;
+    var breathMs = 4000;
     window.setInterval(function () {
       breathWord.classList.add("is-swap");
       window.setTimeout(function () {
         wi = (wi + 1) % words.length;
         breathWord.textContent = words[wi];
         breathWord.classList.remove("is-swap");
-      }, 700);
-    }, 4200);
+      }, 500);
+    }, breathMs);
   }
 })();
