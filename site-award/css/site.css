@@ -373,7 +373,7 @@ body.is-loaded .moon-window--hero { opacity: 1; }
 
 .moon-window--about {
   width: min(86vw, 440px);
-  aspect-ratio: 896 / 1196;
+  aspect-ratio: 896 / 1524;
   margin: 0 auto var(--space-7);
 }
 
@@ -384,7 +384,7 @@ body.is-loaded .moon-window--hero { opacity: 1; }
 }
 
 .moon-window--about .moon-window__zoom img {
-  object-position: center 42%;
+  object-position: center 48%;
 }
 
 /* ============ 2. 悩み: フォーカス送り ============ */

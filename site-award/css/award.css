@@ -12,72 +12,37 @@ html.award {
   overflow-x: clip;
 }
 
-/* ---------- 0b. 日本語組版（モバイルファースト・禁則） ---------- */
+/* ---------- 0b. 日本語組版（禁則・見出しの改行バランス） ---------- */
 html.award[lang="ja"] body,
 html.award body {
   line-break: strict;
   word-break: normal;
-  overflow-wrap: normal;
+  overflow-wrap: anywhere;
 }
 
 html.award h1,
 html.award h2,
 html.award h3,
-html.award p,
-html.award li,
-html.award dd,
-html.award dt,
-html.award summary,
 html.award .loosen,
 html.award .hero__lead,
-html.award .hero__cred,
 html.award .section-note,
-html.award .menu-flow-note,
 html.award .worry,
 html.award .card__body,
-html.award .deal__body p,
-html.award .about__story,
-html.award .quote__main,
-html.award .quote__sub,
-html.award .closing-sign,
-html.award .men-cta,
-html.award .menu__badge,
-html.award .dt-note,
-html.award .btn,
-html.award .flow-step p,
-html.award details p {
+html.award .about__story {
   line-break: strict;
-  word-break: normal;
-  overflow-wrap: normal;
   text-wrap: pretty;
 }
 
-html.award h2.loosen {
-  text-wrap: pretty;
-}
-
-@media (min-width: 900px) {
-  html.award h2.loosen {
-    text-wrap: balance;
-  }
-}
-
+html.award h2.loosen,
 html.award .hero__text h1 {
-  text-wrap: pretty;
-}
-
-html.award .hero__text h1 .mist-line {
-  display: inline;
-}
-
-@media (max-width: 899px) {
-  html.award .hero__text h1 {
-    line-height: 1.6;
-  }
+  text-wrap: balance;
 }
 
 @media (max-width: 899px) {
   /* 一字アニメの char を行単位にまとめ、不自然な1〜3文字改行を防ぐ */
+  h1.is-split .mist-line {
+    display: block;
+  }
   h1.is-split .char {
     display: inline;
     opacity: 1;
