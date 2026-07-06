@@ -1,192 +1,60 @@
 <!DOCTYPE html>
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Reona 事業立ち上げ 共有資料</title>
+<meta name="robots" content="noindex">
+<title>REONA 共有ページ</title>
 <style>
-  :root { --ink:#2b2b2b; --sub:#6b6b6b; --line:#e6e2da; --accent:#8a7a5c; --bg:#faf8f3; --navy:#2b3a55; --red:#c0392b; }
+  :root { --ink:#2b2b2b; --sub:#6b6b6b; --line:#e6e2da; --accent:#8a7a5c; --bg:#faf8f3; --hi:#fff6ec; }
   * { box-sizing:border-box; }
-  body { margin:0; font-family:-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif; color:var(--ink); background:var(--bg); line-height:1.7; }
-  .hero { padding:48px 20px 28px; text-align:center; background:#fff; border-bottom:1px solid var(--line); }
-  .hero h1 { margin:0 0 8px; font-size:24px; letter-spacing:.04em; }
-  .hero p { margin:0; color:var(--sub); font-size:13px; }
-  .wrap { max-width:760px; margin:0 auto; padding:30px 20px 50px; }
-  .cards { display:grid; gap:18px; }
-  a.card { display:block; text-decoration:none; color:inherit; background:#fff; border:1px solid var(--line); border-radius:14px; padding:22px 24px; transition:box-shadow .15s, transform .15s; }
-  a.card:hover { box-shadow:0 6px 20px rgba(138,122,92,.15); transform:translateY(-2px); }
-  .card .badge { display:inline-block; font-size:11px; background:#efe9df; color:var(--accent); padding:2px 10px; border-radius:20px; margin-bottom:8px; }
-  .card h2 { margin:0 0 6px; font-size:18px; border:none; padding:0; }
-  .card p { margin:0; color:var(--sub); font-size:13.5px; }
-  .card .go { margin-top:12px; color:var(--accent); font-size:13px; font-weight:700; }
-  /* 進行ワークフロー */
-  .flow { margin-bottom:36px; }
-  .flow > h2 { font-size:18px; margin:0 0 4px; border:none; padding:0; letter-spacing:.02em; }
-  .flow .flow-lead { color:var(--sub); font-size:13px; margin:0 0 18px; }
-  .flow-track { background:#fff; border:1px solid var(--line); border-radius:14px; padding:20px 18px; margin-bottom:16px; }
-  .flow-track .track-ttl { font-size:14.5px; font-weight:700; margin:0 0 14px; color:var(--navy); }
-  .step { display:flex; gap:13px; align-items:flex-start; }
-  .step .num { flex:0 0 auto; width:30px; height:30px; border-radius:50%; background:var(--accent); color:#fff; font-weight:700; display:flex; align-items:center; justify-content:center; font-size:14px; }
-  .step .s-body { flex:1; min-width:0; }
-  .step .who { display:inline-block; font-size:11px; padding:1px 9px; border-radius:20px; margin:0 4px 5px 0; }
-  .who.leona { background:var(--accent); color:#fff; }
-  .who.rino { background:var(--navy); color:#fff; }
-  .who.crit { background:#f6d4cf; color:var(--red); }
-  .who.done { background:#cfe8d0; color:#2e6b3a; }
-  .s-ttl s, .todo-list s { text-decoration-color:#7fae86; color:#8a8a8a; }
-  .step.is-done .num { background:#9bbf9f; }
-  .done-step { border:1.5px solid #cfe3cf; border-radius:11px; padding:13px 14px; background:#f6faf6; }
-  .step .s-ttl { font-weight:700; font-size:14.5px; }
-  .step .s-desc { color:var(--sub); font-size:12.5px; margin-top:3px; }
-  .step .s-link { display:inline-block; margin-top:7px; color:var(--accent); font-size:12.5px; font-weight:700; text-decoration:none; }
-  .arrow { padding:7px 0 7px 15px; color:var(--sub); font-size:11.5px; display:flex; align-items:center; gap:7px; }
-  .arrow::before { content:"↓"; color:var(--accent); font-weight:700; font-size:14px; }
-  .start-step { border:2px solid var(--red); border-radius:11px; padding:13px 14px; }
-  .todo-list { list-style:none; padding:0; margin:0 0 12px; }
-  .todo-list li { font-size:13px; padding:10px 0; border-bottom:1px solid var(--line); }
-  .todo-list li:last-child { border-bottom:none; }
-  .todo-list li b { color:var(--ink); }
-  .done-note { margin-top:6px; background:#f1f7f1; border:1px solid #cfe3cf; color:#2e6b3a; font-size:12px; border-radius:8px; padding:10px 12px; line-height:1.6; }
-  footer { text-align:center; color:var(--sub); font-size:12px; padding:20px; }
-</style></head>
+  body { margin:0; font-family:-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif; color:var(--ink); background:var(--bg); line-height:1.8; font-size:14px; }
+  .wrap { max-width:640px; margin:0 auto; padding:0 18px 48px; }
+  header { padding:34px 0 20px; }
+  header .kicker { font-size:11px; letter-spacing:.18em; color:var(--accent); font-weight:700; }
+  header h1 { margin:6px 0 8px; font-size:22px; line-height:1.45; }
+  header p { margin:2px 0; color:var(--sub); font-size:13px; }
+  a.card { display:block; background:#fff; border:1px solid var(--line); border-radius:14px; padding:18px 18px 16px; margin:14px 0; text-decoration:none; color:var(--ink); box-shadow:0 2px 10px rgba(138,122,92,.08); }
+  a.card:active { background:var(--hi); }
+  .card .no { font-size:11px; color:var(--accent); font-weight:700; letter-spacing:.14em; }
+  .card h2 { margin:4px 0 6px; font-size:17px; color:var(--accent); }
+  .card p { margin:0; font-size:13px; color:var(--sub); }
+  .card .badge { display:inline-block; background:#2b2b2b; color:#ffd9a8; font-size:10.5px; padding:2px 9px; border-radius:99px; margin-bottom:8px; font-weight:700; }
+  footer { margin-top:36px; padding-top:14px; border-top:1px solid var(--line); color:var(--sub); font-size:11px; line-height:1.7; }
+</style>
+</head>
 <body>
-<div class="hero">
-  <h1>REONA</h1>
-  <p>ヨガ事業 立ち上げ ／ 共有資料 ／ 2026-06</p>
-</div>
 <div class="wrap">
 
-  <section class="flow">
-    <h2>進行ワークフロー — 何から動くと一番スムーズか</h2>
-    <p class="flow-lead"><b>✅ ドメイン取得・サーバー契約が完了しました（本日）。</b>出発点がクリアになったので、次は本番サイトの構築に進みます。各ステップの「→」から、くわしい説明ページに飛べます。</p>
+<header>
+  <div class="kicker">REONA WELLNESS</div>
+  <h1>共有ページ</h1>
+  <p>今見てほしいものだけ、3つに絞りました。（2026年7月6日 整理）</p>
+</header>
 
-    <div class="flow-track">
-      <p class="track-ttl">① 本番サイトが立ち上がるまでの順番</p>
+<a class="card" href="seo-report-2026-07.html">
+  <div class="badge">NEW・今月のメイン</div>
+  <div class="no">01</div>
+  <h2>SEOキーワード調査レポート</h2>
+  <p>サイトが今Googleでどう見えてるか、検索ワード107個をぜんぶ調べた結果。「腸活」が空き地だと分かったのが最大の収穫。次にやること3つ付き。</p>
+</a>
 
-      <div class="done-step">
-        <div class="step is-done">
-          <div class="num">1</div>
-          <div class="s-body">
-            <span class="who leona">レオナさん</span><span class="who done">✅ 完了（本日）</span>
-            <div class="s-ttl"><s>ドメインを決めて取得する</s></div>
-            <div class="s-desc">サイトの「住所」です。<b>取得完了しました。</b>接続作業はRinoが対応します。</div>
-          </div>
-        </div>
-      </div>
+<a class="card" href="site-award/index-news-preview.html">
+  <div class="badge">確認待ち</div>
+  <div class="no">02</div>
+  <h2>LP掲載イメージの確認(動画・お知らせ欄)</h2>
+  <p>ホームページに載せる16秒動画とお知らせ欄のプレビュー。OKをもらえたら本番に反映します。</p>
+</a>
 
-      <div class="arrow">取得済み ✓</div>
+<a class="card" href="tasks.html">
+  <div class="no">03</div>
+  <h2>いま動いていること</h2>
+  <p>確認をお願いしたいこと・こちらで進めていることの一覧。</p>
+</a>
 
-      <div class="step is-done">
-        <div class="num">2</div>
-        <div class="s-body">
-          <span class="who rino">Rino</span><span class="who done">✅ 完了（本日）</span>
-          <div class="s-ttl"><s>エックスサーバーを契約する</s></div>
-          <div class="s-desc"><b>契約完了しました。</b>メモ通り「エックスサーバー スタンダード」24ヶ月契約（月<b>783円</b>・初回一括 約18,800円）。独自ドメイン2個無料・SSL・独自メール込み。<a class="s-link" href="guide.html#server">サーバーのくわしい説明 →</a></div>
-        </div>
-      </div>
+<footer>
+  過去の資料（料金設計・LPコピー・サーバー手順・ステップメール案など）は archive/ に保管してあります。必要になったら言ってください。<br>
+  REONA WELLNESS 共有ハブ｜Can AI（松藤）
+</footer>
 
-      <div class="arrow">契約済み → 次はここ</div>
-
-      <div class="step">
-        <div class="num">3</div>
-        <div class="s-body">
-          <span class="who rino">Rino</span><span class="who crit">← 次はここ</span>
-          <div class="s-ttl">WordPressで本番サイトを構築する</div>
-          <div class="s-desc">実際に運用する本番サイトを組み立てます。<b>着手前にレオナさんの一度きりの準備が必要</b>：WordPress設置＋Rino専用FTP発行 →（会員ページ＝お金まわりは渡さず、FTPとWP管理画面だけ共有）。手順はガイドにまとめました。<a class="s-link" href="guide.html#wp-setup">本番サイトをはじめる準備（手順）→</a></div>
-        </div>
-      </div>
-
-      <div class="arrow">完成すると</div>
-
-      <div class="step">
-        <div class="num">✓</div>
-        <div class="s-body">
-          <span class="who done">本番環境</span>
-          <div class="s-ttl">いつでも実物を確認できる状態に</div>
-          <div class="s-desc">本番サイトができあがり、修正や追加をしながら、いつでも実物を見て確認できるようになります。</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="flow-track">
-      <p class="track-ttl">② 早く動くほど「得」すること</p>
-      <div class="step">
-        <div class="num" style="background:#e8dcc4;color:#6b5a36">早</div>
-        <div class="s-body">
-          <div class="s-ttl">ドメイン取得・サイト公開は、早いほどGoogleに有利</div>
-          <div class="s-desc">サイトはGoogleに見つけてもらい、信頼を「育てて」もらうまでに時間がかかります。早く公開するほど、その育つ時間が増え、検索で上に出やすくなります（SEO）。だから登録系は後回しにせず、できるだけ早く動くほど得をします。</div>
-          <a class="s-link" href="guide.html#domain">なぜ早い方がいいか（理由③）→</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="flow-track">
-      <p class="track-ttl">③ 価格確定とサイト公開を進めるための宿題</p>
-      <p class="s-desc" style="margin:0 0 12px">この3つが揃うと、料金とLINEの仕組みが一気に固まります。</p>
-      <ul class="todo-list">
-        <li><span class="who leona">レオナさん</span><span class="who done">✅ 確定</span> <s>月に動ける時間（パーソナル何件／グループ何本）</s>（対面4／グループ4／オンライン10・6/17確定）</li>
-        <li><span class="who leona">レオナさん</span><span class="who crit">🔴 残り</span> LINE公式の<b>ログイン情報</b>（自動返信を組むため。※サイトのボタン用URLとは別物）</li>
-        <li><span class="who leona">レオナさん</span><span class="who done">✅ 確定</span> <s>男性向けパーソナルの料金イメージ＋男女で分けたい理由</s>（6/17確定）</li>
-      </ul>
-      <a class="s-link" href="tasks.html">宿題リストをくわしく見る →</a>
-      <div class="done-note">✅ 完了：ドメイン取得・サーバー契約（本日）／ 稼働時間・男性料金（6/17確定）／ サイト用FAQ・LINE友だち追加URL受領。<b>残るはLINE公式ログイン情報のみ。</b></div>
-    </div>
-  </section>
-
-  <div class="cards">
-    <a class="card" href="tasks-2026-06-21.html">
-      <span class="badge">残タスク＆意思決定マップ（最新）</span>
-      <h2>レオナさん 残タスク＆意思決定マップ（2026-06-21）</h2>
-      <p>集客の設計が固まったので、<b>いま残っているお願いだけ</b>を整理。ゴール（体験申込を増やす）→3本の柱→各タスクの「なぜ」までを階層で。終わった決定は「決定済み」に圧縮。Instagram権限付与のやり方も付録に。</p>
-      <div class="go">開く →</div>
-    </a>
-    <a class="card" href="lp-copy-guide.html">
-      <span class="badge">サイト文章ガイド（最新）</span>
-      <h2>LP 文章の書き込みガイド（2026-06-18）</h2>
-      <p>いまのLPを上から下まで表示し、<b>レオナさんの言葉が必要な場所を赤い番号①②③…で囲んで</b>指示。冒頭の表に「どこに・何を・何文字くらい」をまとめました。写真の指示も兼ねています。書ける所から、話し言葉のままでOK。</p>
-      <div class="go">開く →</div>
-    </a>
-    <a class="card" href="mens-fitness-pricing.html">
-      <span class="badge">価格調査</span>
-      <h2>男性向けフィットネス価格調査｜パーソナル・ピラティス・フィットネス（全国／熊本）</h2>
-      <p>男性向けパーソナル・ピラティス・フィットネスを全国／熊本の6セルで比較。各事業者の料金表記、統計の中央値・平均、全国総括、熊本相場、男性向け市場の空白と REONA 向けの値付け示唆を整理した確認用資料。</p>
-      <div class="go">開く →</div>
-    </a>
-    <a class="card" href="tasks.html">
-      <span class="badge">会議後タスク（最新）</span>
-      <h2>レオナさん 会議後タスク＆決定メモ（2026-06-13）</h2>
-      <p>6/13の打ち合わせで決まったこと（オンライン先行・松竹梅プラン・夜20分サブスク・ブランド方針）の確認と、レオナさんへの宿題リスト。<b>稼働時間・男性パーソナル料金が確定（6/17）</b>。残るはLINE公式ログイン情報で、揃えば価格確定とサイト公開が一気に進みます。</p>
-      <div class="go">開く →</div>
-    </a>
-    <a class="card" href="step-mail-drafts.html">
-      <span class="badge">LINEステップメール</span>
-      <h2>LINEステップメール下書き 6本（テーマ×性別）</h2>
-      <p>腸活・ヨガ・トレーニングの男女別6本を、各4通のLINEトーク風カードで確認できる下書きページ。<strong>〚Q-…〛</strong> の本人回答が必要な箇所もスマホで見落としにくく整理。</p>
-      <div class="go">開く →</div>
-    </a>
-    <a class="card" href="step-mail-interview.html">
-      <span class="badge">LINEステップメール</span>
-      <h2>ステップメール完成用 インタビュー質問シート</h2>
-      <p>下書き内の <strong>〚Q-…〛</strong> を埋めるための本人向け質問シート。共通8問とテーマ別A〜Fを、回答を書き込みやすい余白付きで一覧化。</p>
-      <div class="go">開く →</div>
-    </a>
-    <a class="card" href="guide.html">
-      <span class="badge">やさしいガイド</span>
-      <h2>決済・ドメイン・サーバーの やさしいガイド</h2>
-      <p>お金を受け取る仕組み（Square / Stripe どちらにするか）、サイトの住所「ドメイン」、サイトを置く「サーバー」のどのプランにするかを、専門用語をなるべく使わずに解説。<b>エックスサーバーの推奨プラン・最新料金</b>も掲載。</p>
-      <div class="go">開く →</div>
-    </a>
-    <a class="card" href="pricing.html">
-      <span class="badge">価格・戦略</span>
-      <h2>熊本ヨガ・ウェルネス価格 競合調査＆価格戦略</h2>
-      <p>全国→九州→熊本の3層・68事業者を調査。料金の中央値・平均、3層早見表、各社の実スクショ＋公式リンク、付加価値の価格差と勝ち筋まで1枚に。※掲載価格はたたき台。最終価格は稼働量から逆算して確定します。</p>
-      <div class="go">開く →</div>
-    </a>
-    <a class="card" href="mtg.html">
-      <span class="badge">ミーティング</span>
-      <h2>ミーティング確認シート（2026-06-13）</h2>
-      <p>これまでの提案への返答をまとめて回収するための確認シート。今日の最重要5、確認事項、Reonaさんの持ち帰りタスクを一覧に。</p>
-      <div class="go">開く →</div>
-    </a>
-  </div>
 </div>
-<footer>Reona 事業立ち上げ ／ 制作: Rino</footer>
-</body></html>
+</body>
+</html>
