@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>うごくインナーケア30案｜REONA</title>
+<style>*{box-sizing:border-box}img,video{max-width:100%;height:auto}</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&family=Noto+Sans+JP:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap">
+
+<style>
+  :root{
+    --ground:#F6F1E8;
+    --surface:#FFFFFF;
+    --surface-2:#EFE4D2;
+    --ink:#3E443C;
+    --ink-soft:#84887E;
+    --ink-faint:#8F9491;
+    --accent:#6E8572;
+    --accent-ink:#56695A;
+    --accent-soft:rgba(110,133,114,.10);
+    --warn:#A65D3E;
+    --warn-soft:rgba(166,93,62,.12);
+    --hairline:rgba(62,68,60,.22);
+
+    --f-display:"Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+    --f-body:"Noto Sans JP", "Hiragino Sans", system-ui, sans-serif;
+    --f-mono:"Cormorant Garamond", Didot, serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#1C1F1A;
+      --surface:#242820;
+      --surface-2:#2C3126;
+      --ink:#F6F1E8;
+      --ink-soft:#B9BDB2;
+      --ink-faint:#8B9086;
+      --accent:#8FA894;
+      --accent-ink:#A9C2AE;
+      --accent-soft:rgba(143,168,148,.16);
+      --warn:#C98467;
+      --warn-soft:rgba(201,132,103,.16);
+      --hairline:rgba(246,241,232,.16);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#1C1F1A;
+    --surface:#242820;
+    --surface-2:#2C3126;
+    --ink:#F6F1E8;
+    --ink-soft:#B9BDB2;
+    --ink-faint:#8B9086;
+    --accent:#8FA894;
+    --accent-ink:#A9C2AE;
+    --accent-soft:rgba(143,168,148,.16);
+    --warn:#C98467;
+    --warn-soft:rgba(201,132,103,.16);
+    --hairline:rgba(246,241,232,.16);
+  }
+
+  body{
+    margin:0;
+    background:var(--ground);
+    color:var(--ink);
+    font-family:var(--f-body);
+    font-size:16px;
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{
+    width:min(100% - 32px, 680px);
+    margin-inline:auto;
+    padding-block:48px 96px;
+    display:flex;
+    flex-direction:column;
+    gap:56px;
+  }
+
+  /* ---- masthead ---- */
+  .masthead{display:flex;flex-direction:column;gap:18px;}
+  .kicker{
+    font-family:var(--f-mono);
+    font-style:italic;
+    font-size:11px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:500;
+  }
+  h1{
+    font-family:var(--f-display);
+    font-weight:600;
+    font-size:clamp(30px, 8vw, 44px);
+    line-height:1.3;
+    letter-spacing:.01em;
+    margin:0;
+    text-wrap:balance;
+  }
+  .standfirst{
+    margin:0;
+    color:var(--ink-soft);
+    font-size:15px;
+  }
+  .standfirst strong{color:var(--ink);font-weight:600;}
+
+  /* ---- generic blocks ---- */
+  .panel{
+    background:var(--surface);
+    border:0.5px solid var(--hairline);
+    border-radius:4px;
+    padding:24px 22px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+  .panel p{margin:0;}
+  .panel h2{
+    font-family:var(--f-display);
+    font-size:19px;
+    font-weight:600;
+    margin:0;
+    line-height:1.5;
+  }
+  .quiet{color:var(--ink-soft);font-size:14.5px;}
+
+  /* ---- evidence table ---- */
+  .tablewrap{overflow-x:auto;}
+  table{border-collapse:collapse;width:100%;font-size:14px;min-width:340px;}
+  th,td{text-align:left;padding:9px 10px;border-bottom:0.5px solid var(--hairline);vertical-align:top;}
+  th{
+    font-family:var(--f-body);
+    font-size:10.5px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    font-weight:600;
+    border-bottom:0.5px solid var(--ink-faint);
+  }
+  td.num{font-family:var(--f-body);font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap;}
+  tr:last-child td{border-bottom:none;}
+  .hot{color:var(--accent-ink);}
+  .cold{color:var(--ink-faint);}
+
+  /* ---- section head ---- */
+  .sect{display:flex;flex-direction:column;gap:20px;}
+  .sect-head{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    padding-bottom:14px;
+    border-bottom:0.5px solid var(--hairline);
+  }
+  .sect-head .tag{
+    font-family:var(--f-mono);
+    font-style:italic;
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:500;
+  }
+  .sect-head h2{
+    font-family:var(--f-display);
+    font-size:23px;
+    font-weight:600;
+    margin:0;
+    line-height:1.45;
+  }
+  .sect-head .why{
+    margin:0;
+    font-size:14px;
+    color:var(--ink-soft);
+  }
+  .sect-head .why b{color:var(--ink);font-family:var(--f-body);font-variant-numeric:tabular-nums;}
+
+  /* ---- idea cards ---- */
+  .ideas{display:flex;flex-direction:column;gap:14px;}
+  .idea{
+    background:var(--surface);
+    border:0.5px solid var(--hairline);
+    border-radius:4px;
+    padding:20px 20px 20px 18px;
+    display:grid;
+    grid-template-columns:auto 1fr;
+    column-gap:16px;
+    row-gap:12px;
+  }
+  .no{
+    font-family:var(--f-mono);
+    font-weight:500;
+    font-size:13px;
+    font-variant-numeric:tabular-nums;
+    color:var(--accent);
+    background:var(--accent-soft);
+    border-radius:99px;
+    padding:3px 8px;
+    height:fit-content;
+    letter-spacing:.02em;
+  }
+  .idea .title{
+    font-family:var(--f-display);
+    font-weight:600;
+    font-size:18.5px;
+    line-height:1.55;
+    margin:0;
+    text-wrap:balance;
+    align-self:center;
+  }
+  .idea dl{
+    grid-column:1 / -1;
+    margin:0;
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+    padding-top:2px;
+    border-top:0.5px solid var(--hairline);
+  }
+  .idea dl > div{display:flex;gap:10px;flex-wrap:wrap;}
+  .idea dt{
+    font-family:var(--f-body);
+    font-size:10px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    font-weight:600;
+    padding-top:6px;
+    flex:0 0 58px;
+  }
+  .idea dd{margin:0;flex:1 1 200px;font-size:14.5px;line-height:1.75;color:var(--ink-soft);}
+  .idea dd b{color:var(--ink);font-weight:500;}
+  .idea dd .n{font-family:var(--f-body);font-weight:600;color:var(--accent-ink);font-variant-numeric:tabular-nums;}
+  .flag{
+    grid-column:1 / -1;
+    background:var(--warn-soft);
+    color:var(--warn);
+    font-size:13.5px;
+    line-height:1.7;
+    padding:10px 13px;
+    border-radius:3px;
+  }
+  .flag b{font-weight:600;}
+  .pick{
+    grid-column:1 / -1;
+    font-family:var(--f-body);
+    font-size:10.5px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    font-weight:600;
+    color:var(--accent);
+  }
+
+  /* ---- ng list ---- */
+  .ng{
+    background:var(--surface);
+    border:1px solid var(--warn);
+    border-radius:4px;
+    padding:24px 22px;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+  .ng h2{font-family:var(--f-display);font-weight:600;font-size:20px;margin:0;color:var(--warn);}
+  .ng ol{margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:11px;}
+  .ng li{font-size:14.5px;line-height:1.8;}
+  .ng li b{color:var(--warn);}
+  .ng .src{font-size:13px;color:var(--ink-faint);}
+
+  /* ---- closing ---- */
+  .closing{
+    background:var(--accent-soft);
+    border-radius:4px;
+    padding:26px 22px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .closing h2{font-family:var(--f-display);font-weight:600;font-size:20px;margin:0;}
+  .closing p{margin:0;font-size:15px;}
+
+  footer{
+    border-top:0.5px solid var(--hairline);
+    padding-top:20px;
+    font-size:13px;
+    color:var(--ink-faint);
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  footer a{color:var(--ink-soft);}
+  a{color:var(--accent-ink);}
+
+  @media (max-width:520px){
+    .idea{padding:17px 16px;column-gap:12px;}
+    .idea .title{font-size:17px;}
+    .idea dt{flex-basis:100%;padding-top:0;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="kicker">Reona ／ 動画ネタ出し</div>
+    <h1>うごくインナーケア<br>30案</h1>
+    <p class="standfirst">撮る動画のネタを30個出してみました。<strong>気になった番号を送ってくれるだけでOK</strong>です。いくつでも、順番もバラバラで大丈夫。<br>全部「実際に伸びてる動画の型」に合わせて作ってあります。何がどれだけ再生されたかも書いてあるから、そこも見てもらえると選びやすいと思う。</p>
+  </header>
+
+  <section class="panel">
+    <h2>なんでこの30個なのか</h2>
+    <p class="quiet">先に、SNSで実際に伸びてる動画を47本調べてみました。型ごとの差がはっきり出たので、<b>伸びてる型だけ</b>に絞って30案を作ってます。</p>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>動画の型</th><th>いちばん伸びた数字</th><th>使う</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>しゃべらず動きだけ（15〜20秒）</td><td class="num hot">1100万回</td><td>◎ 主力</td></tr>
+          <tr><td>「◯◯な人はこれ」と呼びかけ</td><td class="num hot">61.6万回</td><td>◎ 主力</td></tr>
+          <tr><td>10秒チェック・診断</td><td class="num">13万回</td><td>○</td></tr>
+          <tr><td>1日のルーティン</td><td class="num">7.4万回</td><td>○</td></tr>
+          <tr><td>顔出しで話す</td><td class="num">51.4万回</td><td>△ 当たり外れ大</td></tr>
+          <tr><td class="cold">ビフォーアフター写真</td><td class="num cold">77.5万回</td><td class="cold">× 法律で不可</td></tr>
+          <tr><td class="cold">「◯◯はやめて」の逆張り</td><td class="num cold">1.2万回</td><td class="cold">× 伸びない</td></tr>
+          <tr><td class="cold">レシピ・食べ物</td><td class="num cold">380万回</td><td class="cold">× 激戦区</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="quiet">レシピ系は数字は出るんだけど、10万人・20万人・45万人のアカウントがひしめいてて、今から入ると埋もれちゃう。しかも腸活アドバイザーの資格を持ってる人、ほぼ全員がレシピをやってた。</p>
+    <p class="quiet"><b>逆に「体を動かして内側を整える」ほうは、ぽっかり空いてました。</b>需要はあります（お腹まわりの動画で840万回とか出てる）。なのに発信してる側は、フォロワー1万人未満の人が数人いるだけ。しかもレオナみたいに大会の実績まで持ってる人は、調べた範囲で1人もいませんでした。だから全部そっちに寄せています。</p>
+  </section>
+
+  <section class="panel">
+    <h2>言葉をひとつ変えます</h2>
+    <p class="quiet">「腸活」って言葉、実は消費者庁が「気をつけるべき表現」の例として名前を挙げてるんだよね。食べ物とセットで使うと引っかかる可能性がある。</p>
+    <p class="quiet">代わりに使いたいのが<b>「インナーケア」</b>。20代の子たちが調査の中で自分から使ってた言葉です（「食生活に気をつけてインナーケアをしている」）。法律的にも安全で、届けたい相手が実際に使ってる言葉。<b>両方いっぺんに片付きます。</b></p>
+  </section>
+
+  <!-- ============ A ============ -->
+  <section class="sect">
+    <div class="sect-head">
+      <div class="tag">A ／ 10案</div>
+      <h2>しゃべらず、動きだけ。15〜20秒</h2>
+      <p class="why">いちばん天井が高い型。同じ形の動画で <b>1100万回</b>・<b>840万回</b> が出ています。声もいらない、顔も出さなくていい、テロップだけ。撮るのがいちばんラクなのに、いちばん伸びます。</p>
+    </div>
+    <div class="ideas">
+
+      <article class="idea">
+        <div class="no">01</div>
+        <p class="title">寝たまま20秒。お腹の奥だけ動かす</p>
+        <dl>
+          <div><dt>撮り方</dt><dd>仰向けで、呼吸に合わせてお腹の奥をゆっくりねじるだけ。真上から固定で撮る。しゃべらない</dd></div>
+          <div><dt>根拠</dt><dd>ツキヨガの同型「肋骨締めてくびれる3ステップ」が <span class="n">1100万回</span></dd></div>
+          <div><dt>強み</dt><dd>寝たままは「今すぐできる」のハードルが最低。保存されやすい</dd></div>
+        </dl>
+      </article>
+
+      <article class="idea">
+        <div class="no">02</div>
+        <p class="title">立ったまま、内側だけ動かす3ステップ</p>
+        <dl>
+          <div><dt>撮り方</dt><dd>全身が入る引きで固定。3つの動きを順番に。テロップで①②③だけ出す</dd></div>
+          <div><dt>根拠</dt><dd>「3ステップ」という区切りが付いた動画が <span class="n">1100万回</span>。数を先に言うと最後まで見られる</dd></div>
+          <div><dt>強み</dt><dd>着替えなしで撮れる。レッスン前後のスキマで量産できる</dd></div>
+        </dl>
+      </article>
+
+      <article class="idea">
+        <div class="no">03</div>
+        <p class="title">朝いちばんの20秒でやること</p>
+        <dl>
+          <div><dt>撮り方</dt><dd>起きた直後の格好のまま。生活感はそのままでいい</dd></div>
+          <div><dt>根拠</dt><dd>「寝起き3分」型が <span class="n">2万回</span>、朝ルーティン型が <span class="n">7.4万回</span></dd></div>
+          <div><dt>強み</dt><dd>朝ヨガをやってるレオナの生活とそのまま地続き</dd></div>
+        </dl>
+      </article>
+
+      <article class="idea">
+        <div class="no">04</div>
+        <p class="title">股関節、ここが動くとお腹まで動く</p>
+        <dl>
+          <div><dt>撮り方</dt><dd>股関節の動きを撮って、テロップは「内側が動く」に振る。動き自体はレッスンでいつもやっているもので大丈夫</dd></div>
+          <div><dt>根拠</dt><dd>股関節ストレッチ単体はもう激戦区。<b>同じ動きでも「内側を動かす」文脈に載せると、空いてる場所に移せます</b></dd></div>
+          <div><dt>強み</dt><dd>いちばん慣れている動きなので、最初の1本にしやすい</dd></div>
+        </dl>
+        <div class="pick">▲ 撮り慣れている動きで始められる</div>
+      </article>
+
+      <article class="idea">
+        <div class="no">05</div>
+        <p class="title">お腹まわりが重い日の、ねじり3つ</p>
+        <dl>
+          <div><dt>撮り方</dt><dd>座位で3つ。横から固定</dd></div>
+          <div><dt>根拠</dt><dd>「お腹の張り・ガス抜き」の動画が <span class="n">15.1万回</span>。お腹まわりは気になる部位で <span class="n">55.1%</span></dd></div>
+          <div><dt>強み</dt><dd>悩みが具体的なぶん、刺さる人にはまっすぐ届く</dd></div>
+        </dl>
+      </article>
+
+      <article class="idea">
+        <div class="no">06</div>
+        <p class="title">椅子に座ったまま、20秒</p>
+        <dl>
+          <div><dt>撮り方</dt><dd>普通の椅子で。仕事中の格好のままでいい</dd></div>
+          <div><dt>根拠</dt><dd>「座ったままストレッチ5選」が <span class="n">42.2万回</span></dd></div>
+          <div><dt>強み</dt><dd>デスクワークの子に届く。会社で見てそのまま真似できる</dd></div>
+        </dl>
+      </article>
+
+      <article class="idea">
+        <div class="no">07</div>
+        <p class="title">お風呂上がり、寝る前の20秒</p>
+        <dl>
+          <div><dt>撮り方</dt><dd>部屋の照明を落として。夜の空気感をそのまま</dd></div>
+          <div><dt>根拠</dt><dd>「寝る前の◯分」型が安定して数万回。夜の時間帯は競合が少ない</dd></div>
+          <div><dt>強み</dt><dd>夜のレッスンをやってるレオナの導線とそのままつながる</dd></div>
+        </dl>
+      </article>
+
+      <article class="idea">
+        <div class="no">08</div>
+        <p class="title">肋骨を締める3ステップ</p>
+        <dl>
+          <div><dt>撮り方</dt><dd>正面固定。手を肋骨に当てて、動きが見えるように</dd></div>
+          <div><dt>根拠</dt><dd><b>1100万回の動画とまったく同じテーマ</b>に正面からぶつける案。需要が証明済み</dd></div>
+          <div><dt>強み</dt><dd>解剖の知識があるレオナのほうが、動きの精度で上に行ける</dd></div>
+        </dl>
+        <div class="pick">▲ 需要が数字で証明済み</div>
+      </article>
+
+      <article class="idea">
+        <div class="no">09</div>
+        <p class="title">呼吸だけ。1分もいりません</p>
+        <dl>
+          <div><dt>撮り方</dt><dd>上半身のみ。手の位置と、お腹の動きが分かる角度で</dd></div>
+          <div><dt>根拠</dt><dd>呼吸法の動画（3分の腹式呼吸）を登録特典にしてるヨガ講師が実在。定番だが供給は薄い</dd></div>
+          <div><dt>強み</dt><dd>RYT200の本領。ここは資格が効く</dd></div>
+        </dl>
+      </article>
+
+      <article class="idea">
+        <div class="no">10</div>
+        <p class="title">脚を組むクセがある人の、リセット20秒</p>
+        <dl>
+          <div><dt>撮り方</dt><dd>脚を組んでる状態から始める。「あ、私だ」と思わせる入り</dd></div>
+          <div><dt>根拠</dt><dd>クセを名指しする入り方は「◯◯な人はこれ」型と同じ効き方。この型は <span class="n">40〜61万回</span> が複数</dd></div>
+          <div><dt>強み</dt><dd>冒頭1秒で自分ごとになる</dd></div>
+        </dl>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============ B ============ -->
+  <section class="sect">
+    <div class="sect-head">
+      <div class="tag">B ／ 9案</div>
+      <h2>「◯◯な人はこれ」と、先に呼びかける</h2>
+      <p class="why">数十万回に届いた動画が<b>いちばん多かった型</b>。<b>61.6万</b>・<b>42.2万</b>・<b>40.2万</b>・<b>15.1万</b>・<b>13.4万</b>と、当たりが並んでいます。冒頭で「誰に言ってるか」を名指しするのがコツ。</p>
+    </div>
+    <div class="ideas">
+
+      <article class="idea">
+        <div class="no">11</div>
+        <p class="title">朝、顔がむくんでる人へ</p>
+        <dl>
+          <div><dt>撮り方</dt><dd>朝の実際の顔から入る。作らない</dd></div>
+          <div><dt>根拠</dt><dd>20代の子が調査の中で自分から使ってる言葉（「むくみ防止のドリンクを飲んでいる」）。「とても感じる」が <span class="n">71.0%</span> という数字もあるが、20代の回答は21人分なので参考程度</dd></div>
+          <div><dt>強み</dt><dd>顔の悩みは体の悩みより行動が早い</dd></div>
+        </dl>
+      </article>
+
+      <article class="idea">
+        <div class="no">12</div>
+        <p class="title">運動が嫌いな人の、これだけ</p>
+        <dl>
+          <div><dt>撮り方</dt><dd>いちばん簡単な1つだけ見せる。増やさない</dd></div>
+          <div><dt>根拠</dt><dd>フォロワー28.1万の美筋ヨガの人が、プロフィールの一番前に「運動嫌いでも」を置いている</dd></div>
+          <div><dt>強み</dt><dd>ヨガに来ない層に届く入口になる</dd></div>
+        </dl>
+      </article>
+
+      <article class="idea">
+        <div class="no">13</div>
+        <p class="title">何回も戻ってきた人へ</p>
+        <dl>
+          <div><dt>撮り方</dt><dd>責めない入り方で。動きは1つ</dd></div>
+          <div><dt>根拠</dt><dd>リバウンド経験者が <span class="n">81%</span>（2026年8月調査）。ほぼ全員が該当する</dd></div>
+          <div><dt>強み</dt><dd>レオナの「立て直した」物語と真正面から重なる</dd></div>
+        </dl>
+        <div class="flag"><b>注意：</b>「もう戻りません」は書けません。効果の保証になります。「私はこう付き合ってる」までに留める</div>
+      </article>
+
+      <article class="idea">
+        <div class="no">14</div>
+        <p class="title">疲れやすい人は、まずここから</p>
+        <dl>
+          <div><dt>撮り方</dt><dd>疲れて帰ってきた設定で、そのまま床で</dd></div>
+          <div><dt>根拠</dt><dd>「疲れやすい」に該当する女性が <span class="n">78.6%</span></dd></div>
+          <div><dt>強み</dt><dd><b>「痩せる」以外の入口</b>。ダイエット文脈を避けられるので法律的にも安全</dd></div>
+        </dl>
+        <div class="pick">▲ 法律リスクがいちばん低い</div>
+      </article>
+
+      <article class="idea">
+        <div class="no">15</div>
+        <p class="title">お腹まわりだけ気になる人へ</p>
+        <dl>
+          <div><dt>撮り方</dt><dd>座位で。お腹まわりだけに絞って動かす</dd></div>
+          <div><dt>根拠</dt><dd>気になる部位でお腹まわりが <span class="n">55.1%</span>。「くびれ」より数字の裏がある言い方</dd></div>
+          <div><dt>強み</dt><dd>部位を絞ると誰向けか一瞬で伝わる</dd></div>
+        </dl>
+      </article>
+
+      <article class="idea">
+        <div class="no">16</div>
+        <p class="title">デスクワークでお腹が張る人へ</p>
+        <dl>
+          <div><dt>撮り方</dt><dd>椅子に座ったまま。仕事中にできる形で</dd></div>
+          <div><dt>根拠</dt><dd>「お腹の張り」を扱った動画が <span class="n">15.1万回</span>。座ったまま系は <span class="n">42.2万回</span></dd></div>
+          <div><dt>強み</dt><dd>働いてる20代にまっすぐ当たる</dd></div>
+        </dl>
+      </article>
+
+      <article class="idea">
+        <div class="no">17</div>
+        <p class="title">生理前、お腹が重くなる人へ</p>
+        <dl>
+          <div><dt>撮り方</dt><dd>夜、部屋で。トーンを落として</dd></div>
+          <div><dt>根拠</dt><dd>女性専用を打ち出すトレーナー（フォロワー79.5万）が伸びている。性別を絞ること自体が訴求になっている</dd></div>
+          <div><dt>強み</dt><dd>男性の発信者が絶対に踏み込めない領域</dd></div>
+        </dl>
+        <div class="flag"><b>注意：</b>「生理痛が治る」「軽くなる」は書けません。症状を治す話にすると医薬品の領域になります。「私はこうしてる」まで</div>
+      </article>
+
+      <article class="idea">
+        <div class="no">18</div>
+        <p class="title">反り腰の人が、お腹だけ出る理由</p>
+        <dl>
+          <div><dt>撮り方</dt><dd>横向きで姿勢を見せてから、動きへ</dd></div>
+          <div><dt>根拠</dt><dd>まったく同じテーマの動画が <span class="n">13.4万回</span>。「反り腰チェック」も別で伸びている</dd></div>
+          <div><dt>強み</dt><dd>「理由」を説明できるのは体を分かってる人だけ</dd></div>
+        </dl>
+      </article>
+
+      <article class="idea">
+        <div class="no">19</div>
+        <p class="title">猫背の人は、内側も動いてません</p>
+        <dl>
+          <div><dt>撮り方</dt><dd>猫背の状態から。姿勢を直すと呼吸が変わるのを見せる</dd></div>
+          <div><dt>根拠</dt><dd>猫背・巻き肩ネタは <span class="n">61.6万回</span> と <span class="n">40.2万回</span>。この型でいちばん数字が出ている</dd></div>
+          <div><dt>強み</dt><dd>激戦の猫背ネタを、<b>空いてる「内側」に接続する</b>のがこの案の肝</dd></div>
+        </dl>
+        <div class="pick">▲ 人が多い所から空いてる所へ流す</div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============ C ============ -->
+  <section class="sect">
+    <div class="sect-head">
+      <div class="tag">C ／ 4案</div>
+      <h2>10秒チェック・診断</h2>
+      <p class="why">最大 <b>13万回</b>。数字はAやBほど跳ねませんが、これは別の役割があります。<b>LINEに来てもらったあとの「あなた専用」の入口</b>になる型です。伸びてるLINEの事例は、ほぼ全部これを入口に置いています。</p>
+    </div>
+    <div class="ideas">
+
+      <article class="idea">
+        <div class="no">20</div>
+        <p class="title">壁に立つだけ。お腹が出る理由チェック</p>
+        <dl>
+          <div><dt>撮り方</dt><dd>壁に背中をつけて、腰の隙間を手で確認するだけ</dd></div>
+          <div><dt>根拠</dt><dd>「反り腰チェック」型が実在して伸びている。道具ゼロで真似できるのが強い</dd></div>
+          <div><dt>強み</dt><dd>見た人がその場で自分の体を触る＝記憶に残る</dd></div>
+        </dl>
+      </article>
+
+      <article class="idea">
+        <div class="no">21</div>
+        <p class="title">10秒でわかる、股関節が硬いかどうか</p>
+        <dl>
+          <div><dt>撮り方</dt><dd>床に座って1つの動きだけ。できる／できないがはっきり分かれる形に</dd></div>
+          <div><dt>根拠</dt><dd>「目を閉じて3回ジャンプ→着地でチェック」型が <span class="n">13万回</span></dd></div>
+          <div><dt>強み</dt><dd>04とセットで撮れる。チェック→動き、で2本つながる</dd></div>
+        </dl>
+      </article>
+
+      <article class="idea">
+        <div class="no">22</div>
+        <p class="title">3つの動きで、今どこで止まってるか分かります</p>
+        <dl>
+          <div><dt>撮り方</dt><dd>3つの動きを順番に。それぞれ「できた／できない」で分岐する形</dd></div>
+          <div><dt>根拠</dt><dd>診断→その人に合った動画を出し分け、という流れがLINEで結果を出している事例が複数</dd></div>
+          <div><dt>強み</dt><dd><b>これがLINE特典の本命。</b>答えてもらった内容で、渡す動画を変えられる</dd></div>
+        </dl>
+        <div class="pick">▲ LINE特典の入口にする案</div>
+      </article>
+
+      <article class="idea">
+        <div class="no">23</div>
+        <p class="title">呼吸が浅い人チェック。手をここに置くだけ</p>
+        <dl>
+          <div><dt>撮り方</dt><dd>手をお腹と胸に置いて、どっちが動くか見るだけ</dd></div>
+          <div><dt>根拠</dt><dd>チェック型は道具ゼロ・10秒で完結するものほど真似される</dd></div>
+          <div><dt>強み</dt><dd>ヨガの先生にしか説明できない。資格がそのまま説得力になる</dd></div>
+        </dl>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============ D ============ -->
+  <section class="sect">
+    <div class="sect-head">
+      <div class="tag">D ／ 4案</div>
+      <h2>1日のルーティン</h2>
+      <p class="why"><b>7.4万回</b>・<b>2万回</b>。爆発はしませんが、<b>人柄が伝わって、LINEに来てもらいやすくなる</b>型です。フォロワーを増やす動画ではなく、来た人に信頼してもらう動画。</p>
+    </div>
+    <div class="ideas">
+
+      <article class="idea">
+        <div class="no">24</div>
+        <p class="title">大会に出る日の朝、私がやってること</p>
+        <dl>
+          <div><dt>撮り方</dt><dd>当日の朝の準備。<b>動きと過ごし方だけ</b>を撮る</dd></div>
+          <div><dt>根拠</dt><dd>四冠という実績を持ってる人は、調べた範囲で他にいません。<b>唯一、誰にも真似できない</b></dd></div>
+          <div><dt>強み</dt><dd>実績を「すごさ」ではなく「日常」として見せられる</dd></div>
+        </dl>
+        <div class="flag"><b>重要：</b>食べたものは映さない・言わない。食べ物と体の変化をつなげた瞬間に法律の対象になります（罰則あり）。<b>動きと過ごし方だけ</b>なら問題なし</div>
+      </article>
+
+      <article class="idea">
+        <div class="no">25</div>
+        <p class="title">夜、寝る前の5分でやってること</p>
+        <dl>
+          <div><dt>撮り方</dt><dd>実際の部屋で、実際の時間に</dd></div>
+          <div><dt>根拠</dt><dd>ヨガ講師の朝ルーティンが <span class="n">1.6万回</span>、朝いちの運動が <span class="n">2万回</span></dd></div>
+          <div><dt>強み</dt><dd>夜のレッスンに来てほしい人と、生活時間が重なる</dd></div>
+        </dl>
+      </article>
+
+      <article class="idea">
+        <div class="no">26</div>
+        <p class="title">周期に合わせて、動きを変えてる話</p>
+        <dl>
+          <div><dt>撮り方</dt><dd>カレンダーを見せながら、時期ごとに動きを変える様子</dd></div>
+          <div><dt>根拠</dt><dd>女性専用を打ち出すアカウント（79.5万）が伸びている。ここは男性が入れない</dd></div>
+          <div><dt>強み</dt><dd>大会に出てる人が周期の話をすると、説得力が段違い</dd></div>
+        </dl>
+      </article>
+
+      <article class="idea">
+        <div class="no">27</div>
+        <p class="title">レッスンがない日の、私の1日</p>
+        <dl>
+          <div><dt>撮り方</dt><dd>飾らない。子どものこと、家のこと、そのまま</dd></div>
+          <div><dt>根拠</dt><dd>ルーティン型は数字より「この人に習いたい」を作る型</dd></div>
+          <div><dt>強み</dt><dd>体験に来る前の不安を、いちばん減らせる</dd></div>
+        </dl>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============ E ============ -->
+  <section class="sect">
+    <div class="sect-head">
+      <div class="tag">E ／ 3案</div>
+      <h2>顔を出して、話す</h2>
+      <p class="why"><b>51.4万回</b>・<b>31.7万回</b> と当たりはあります。ただ件数が少なくて、当たり外れが大きい型。<b>数を撮らず、本当に話したいことだけ</b>3本に絞りました。</p>
+    </div>
+    <div class="ideas">
+
+      <article class="idea">
+        <div class="no">28</div>
+        <p class="title">自分に厳しくしすぎて、続かなかった話</p>
+        <dl>
+          <div><dt>撮り方</dt><dd>カメラに向かって普通に話す。編集はほぼなしで</dd></div>
+          <div><dt>根拠</dt><dd>「自分に厳しくて痩せない時の対処法」が <span class="n">31.7万回</span></dd></div>
+          <div><dt>強み</dt><dd>レオナが本当に通ってきた話。作らなくていい</dd></div>
+        </dl>
+      </article>
+
+      <article class="idea">
+        <div class="no">29</div>
+        <p class="title">ヨガの先生なのに、大会に出てる理由</p>
+        <dl>
+          <div><dt>撮り方</dt><dd>正面から。言い訳せずに理由だけ話す</dd></div>
+          <div><dt>根拠</dt><dd>「ヨガ×大会」で発信してる人は約2万件。「ヨガ×内側のケア×大会」まで足すと約1.1万件。<b>調べたら、この掛け算の検索でレオナが既に1位と5位でした</b></dd></div>
+          <div><dt>強み</dt><dd>もう足がかりがある場所。ここを取りにいく</dd></div>
+        </dl>
+        <div class="pick">▲ 既に検索1位を取っている領域</div>
+      </article>
+
+      <article class="idea">
+        <div class="no">30</div>
+        <p class="title">体を変えたら、自分を好きになれた</p>
+        <dl>
+          <div><dt>撮り方</dt><dd>静かに。オチをつけない</dd></div>
+          <div><dt>根拠</dt><dd>Z世代の <span class="n">77.7%</span> が「自己肯定感を高めたい」（n=436）。28.1万フォロワーのアカウントもプロフィールの第一声が「自分を好きになろう」</dd></div>
+          <div><dt>強み</dt><dd>レオナの物語の核そのもの</dd></div>
+        </dl>
+        <div class="flag"><b>注意：</b>体重や体型の変化を数字で言わない。「◯kg痩せて」を入れた瞬間に別の話になります</div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============ LAW ============ -->
+  <section class="sect">
+    <div class="sect-head">
+      <div class="tag">書き方の線引き</div>
+      <h2>個人の発信で、どこまで書けるか</h2>
+      <p class="why">消費者庁の資料を直接読んで確認してきました。<b>怖がる必要はまったくないです。</b>ただ境目だけは知っておいたほうがいいので、OKの側から先に書きます。</p>
+    </div>
+
+    <div class="panel">
+      <h2>前提：処分されているのは誰か</h2>
+      <p class="quiet">今回調べた行政処分の事例、<b>全部「健康食品を売ってる会社」</b>でした。「飲むだけで−10kg」とか「99%が痩せています」とか、商品を売るために効果を約束した会社。<b>個人の指導者がSNS投稿で処分された例は、調べた範囲では出てきませんでした。</b></p>
+      <p class="quiet">ただ法律の条文は「何人も」って書かれてるので、個人だから対象外ってわけじゃない。なので<b>踏んじゃいけない線だけ覚えて、あとは普通に発信する</b>のが正解だと思う。実際、下のOK側だけで30案は全部撮れます。</p>
+    </div>
+
+    <div class="panel">
+      <h2>これは書いていい</h2>
+      <p class="quiet">動画のテロップやキャプションに、そのまま使える形で書いておきます。</p>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>書きたいこと</th><th>この形ならOK</th></tr></thead>
+          <tbody>
+            <tr><td>自分の習慣</td><td><b>「私は朝いちばんにこれをやっています」</b></td></tr>
+            <tr><td>いつやる動きか</td><td><b>「お腹まわりが重い日にやる動きです」</b></td></tr>
+            <tr><td>自分の体感</td><td><b>「続けてみて、私はラクになりました」</b></td></tr>
+            <tr><td>やっている量</td><td><b>「週◯回、練習しています」</b>（労力は隠さないほうが安全）</td></tr>
+            <tr><td>合う人・合わない人</td><td><b>「合う合わないは人によります」</b></td></tr>
+            <tr><td>食べているもの</td><td><b>「発酵食品を毎日の献立に入れています」</b>（結果とつなげなければOK）</td></tr>
+            <tr><td>大会の実績</td><td><b>「ベストボディ・ジャパン 東京大会グランプリ（2026）」</b>（事実なのでそのままOK。大会名と年をセットで）</td></tr>
+            <tr><td>大会の写真</td><td><b>当日の写真1枚だけならOK</b>（前後の比較・数字・期間を付けない）</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="quiet">※ このOK側の言い方は、国が公式に「これならOK」と出しているリストではありません。処分の判断基準（効果を断定していないか・「〜だけで」と言っていないか・数字と期間を出していないか）を外した形に組んだものです。</p>
+    </div>
+
+    <div class="panel" style="border-color:var(--accent);">
+      <h2>境目は、この1行</h2>
+      <p style="font-family:var(--f-display);font-size:19px;line-height:1.7;"><b>主語が「私」で、結果を約束していなければ安全。<br>主語が「あなた」になって、結果を約束したら危ない。</b></p>
+      <p class="quiet">「私はこうしてる」＝ 事実の話。<br>「あなたもこうなります」＝ 効果の約束。ここから先が規制の話になります。<br>迷ったら「私は」に書き換えてください。それだけでほぼ全部通ります。</p>
+    </div>
+
+    <div class="ng">
+      <h2>この5つだけは避けてください</h2>
+      <ol>
+        <li><b>お客様の声・体験談</b>。「個人の感想です」を付けてもダメだと、国が調査データ付きで結論を出しています。<span class="src">体験談を見た443人の53.0%が「同じ効果が出る人がいる」と受け取り、打消し表示に気づいた74人でも43.3%と、ほとんど変わらなかった</span></li>
+        <li><b>ビフォーアフター写真</b>と、<b>数字＋期間</b>（「3か月で−12kg」など）。この組み合わせで実際に行政処分が出ています</li>
+        <li><b>「〜だけで」「無理せず」「食事制限なしで」</b>。「痩せる」と書いていなくても、これだけで処分された例が2件あります</li>
+        <li><b>「便秘が治る」「腸内環境が改善する」「脂肪燃焼」</b>。これは本当のことでも書けません</li>
+        <li><b>「絶対」「誰でも」「日本一」</b>。（大会名を付けた「グランプリ」は事実なのでOKです）</li>
+      </ol>
+      <p class="quiet">この5つ、全部<b>「他人の結果を約束する言い方」</b>です。裏を返せば、それさえしなければ自由に書けます。</p>
+    </div>
+  </section>
+
+  <section class="panel" style="border-color:var(--accent);">
+    <h2>もし迷ったら、この4本から</h2>
+    <p class="quiet">30個も見せておいて何ですが、<b>全部撮る必要はまったくないです。</b>まずLINEで渡すもの（登録してくれた人へのプレゼント）を作りたいので、それに必要な最小セットを書いておきます。</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>番号</th><th>何に使うか</th></tr></thead>
+        <tbody>
+          <tr><td class="num">22</td><td>LINEの入口。「3つの動きで今どこで止まってるか」を聞く形にして、答えてくれた内容で下の3本を出し分けます</td></tr>
+          <tr><td class="num">04</td><td>股関節。いちばん撮り慣れているはずなので、1本目に</td></tr>
+          <tr><td class="num">01</td><td>寝たまま20秒。「今すぐできる」担当</td></tr>
+          <tr><td class="num">09</td><td>呼吸だけ。ヨガの先生にしか撮れない担当</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="quiet">この4本があれば、LINEの仕組みは動き出します。<b>残りはSNSに出す用なので、撮れるときに1本ずつで大丈夫です。</b></p>
+    <p class="quiet"><b>撮る順番に迷ったら、次のイベントでやるメニューから撮ってください。</b>その日やることをそのまま撮るだけなので、内容を考えなくて済みます。日付も決まっているので「そのうち撮ろう」になりません。<br>月2本のペースでも、<b>1年で24本のストックになります。</b>撮った動画は、LINEの特典にもInstagramにも、おうちで続ける人向けの中身にも、そのまま使えます。</p>
+  </section>
+
+  <section class="closing">
+    <h2>返し方と、この先の分担</h2>
+    <p><b>番号だけ送ってください。</b>「1、4、11、22、24」みたいに。いくつでも大丈夫です。</p>
+    <p>「これはちょっと違う」も同じくらい知りたいので、外したい番号があれば一緒に教えてください。理由はなくて大丈夫です。</p>
+    <p><b>テロップの文言はこちらで作ります。</b>上の線引きがちょうどテロップに集中するので、そこはこっちで持ちます。毎回レオナが判断しなくていいようにします。</p>
+    <p><b>撮る順番と撮る日はレオナが決めてください。</b>体調も予定も分かるのは本人なので。撮りやすいものから、1本ずつで大丈夫です。</p>
+  </section>
+
+  <footer>
+    <div>2026-08-29 作成／数字はTikTok・Instagramの表示値と、公開されている調査データから取得</div>
+    <div>法律の部分は消費者庁の公表資料を直接確認：健康増進法65条Q&amp;A（令和6年7月）／健康食品に関する景品表示法・健康増進法上の留意事項（令和4年12月改定）／打消し表示に関する実態調査報告書（平成29年7月）</div>
+    <div>Instagramのハッシュタグ件数だけは取得できませんでした（ログインが必要なため）。飽和の判定はGoogle検索の概算件数を根拠にしています</div>
+  </footer>
+
+</div>
+
+</body>
+</html>

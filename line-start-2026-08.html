@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>登録から体験まで｜REONA</title>
+<style>*{box-sizing:border-box}img,video{max-width:100%;height:auto}</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&family=Noto+Sans+JP:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap">
+
+<style>
+  :root{
+    --ground:#F6F1E8; --surface:#FFFFFF; --surface-2:#EFE4D2;
+    --ink:#3E443C; --ink-soft:#84887E; --ink-faint:#8F9491;
+    --accent:#6E8572; --accent-ink:#56695A; --accent-soft:rgba(110,133,114,.10);
+    --warn:#A65D3E; --warn-soft:rgba(166,93,62,.12);
+    --hairline:rgba(62,68,60,.22);
+    --f-display:"Noto Serif JP","Hiragino Mincho ProN","Yu Mincho",serif;
+    --f-body:"Noto Sans JP","Hiragino Sans",system-ui,sans-serif;
+    --f-mono:"Cormorant Garamond",Didot,serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#1C1F1A; --surface:#242820; --surface-2:#2C3126;
+      --ink:#F6F1E8; --ink-soft:#B9BDB2; --ink-faint:#8B9086;
+      --accent:#8FA894; --accent-ink:#A9C2AE; --accent-soft:rgba(143,168,148,.16);
+      --warn:#C98467; --warn-soft:rgba(201,132,103,.16); --hairline:rgba(246,241,232,.16);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#1C1F1A; --surface:#242820; --surface-2:#2C3126;
+    --ink:#F6F1E8; --ink-soft:#B9BDB2; --ink-faint:#8B9086;
+    --accent:#8FA894; --accent-ink:#A9C2AE; --accent-soft:rgba(143,168,148,.16);
+    --warn:#C98467; --warn-soft:rgba(201,132,103,.16); --hairline:rgba(246,241,232,.16);
+  }
+
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.85;-webkit-font-smoothing:antialiased;}
+  .wrap{width:min(100% - 32px, 660px);margin-inline:auto;padding-block:48px 96px;display:flex;flex-direction:column;gap:48px;}
+  .kicker{font-family:var(--f-mono);font-style:italic;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:500;}
+  h1{font-family:var(--f-display);font-weight:600;font-size:clamp(29px,7.5vw,42px);line-height:1.3;margin:0;text-wrap:balance;}
+  .masthead{display:flex;flex-direction:column;gap:16px;}
+  .standfirst{margin:0;color:var(--ink-soft);font-size:15px;}
+  .standfirst strong{color:var(--ink);font-weight:600;}
+
+  .panel{background:var(--surface);border:0.5px solid var(--hairline);border-radius:4px;padding:22px 20px;display:flex;flex-direction:column;gap:12px;}
+  .panel p{margin:0;}
+  .panel h2{font-family:var(--f-display);font-size:19px;font-weight:600;margin:0;line-height:1.5;}
+  .quiet{color:var(--ink-soft);font-size:14.5px;}
+  .quiet b{color:var(--ink);}
+
+  .sect{display:flex;flex-direction:column;gap:18px;}
+  .sect-head{display:flex;flex-direction:column;gap:8px;padding-bottom:12px;border-bottom:0.5px solid var(--hairline);}
+  .sect-head .tag{font-family:var(--f-mono);font-style:italic;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:500;}
+  .sect-head h2{font-family:var(--f-display);font-size:22px;font-weight:600;margin:0;line-height:1.45;}
+  .sect-head .why{margin:0;font-size:14px;color:var(--ink-soft);}
+
+  /* script block */
+  .script{background:var(--surface);border:0.5px solid var(--hairline);border-left:3px solid var(--accent);border-radius:4px;overflow:hidden;}
+  .script .head{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;justify-content:space-between;padding:14px 18px;background:var(--surface-2);}
+  .script .head h3{font-family:var(--f-display);font-weight:600;font-size:17px;margin:0;line-height:1.5;}
+  .script .head .meta{font-family:var(--f-body);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);font-weight:600;}
+  .script .head .meta.free{color:var(--accent-ink);}
+  .script .note{padding:12px 18px 0;font-size:13.5px;color:var(--ink-soft);}
+  .script pre{
+    margin:0;padding:18px;font-family:var(--f-body);font-size:15px;line-height:1.9;
+    white-space:pre-wrap;word-break:break-word;color:var(--ink);
+  }
+  .script .div{height:1px;background:var(--hairline);margin:0 18px;}
+  .bubblabel{font-family:var(--f-body);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);font-weight:600;padding:14px 18px 0;}
+  .btns{display:flex;flex-wrap:wrap;gap:6px;padding:4px 18px 18px;}
+  .btn{border:1px solid var(--accent);color:var(--accent-ink);border-radius:99px;padding:4px 14px;font-size:14px;background:var(--surface);}
+
+  .tablewrap{overflow-x:auto;}
+  table{border-collapse:collapse;width:100%;font-size:14px;min-width:320px;}
+  th,td{text-align:left;padding:9px 10px;border-bottom:0.5px solid var(--hairline);vertical-align:top;}
+  th{font-family:var(--f-body);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);font-weight:600;border-bottom:0.5px solid var(--ink-faint);}
+  tr:last-child td{border-bottom:none;}
+  .ok{color:var(--accent-ink);font-weight:600;}
+  .no{color:var(--warn);font-weight:600;}
+
+  .flag{background:var(--warn-soft);color:var(--warn);font-size:13.5px;line-height:1.7;padding:11px 13px;border-radius:3px;}
+  .flag b{font-weight:600;}
+  .hl{background:var(--accent-soft);border-radius:4px;padding:22px 20px;display:flex;flex-direction:column;gap:10px;}
+  .hl h2{font-family:var(--f-display);font-weight:600;font-size:19px;margin:0;}
+  .hl p{margin:0;font-size:15px;}
+
+  footer{border-top:0.5px solid var(--hairline);padding-top:18px;font-size:13px;color:var(--ink-faint);display:flex;flex-direction:column;gap:5px;}
+
+  /* ---- phone mockup ---- */
+  .phones{display:flex;flex-wrap:wrap;gap:18px;}
+  .phone{flex:1 1 240px;min-width:0;border:0.5px solid var(--hairline);border-radius:22px;overflow:hidden;background:var(--surface-2);display:flex;flex-direction:column;}
+  .phone .bar{background:var(--surface);border-bottom:0.5px solid var(--hairline);padding:11px 14px;font-size:12.5px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:7px;}
+  .phone .bar .ava{width:20px;height:20px;border-radius:50%;background:var(--accent);flex:0 0 auto;}
+  .phone .caption{padding:9px 14px;font-size:11px;letter-spacing:.06em;color:var(--ink-faint);font-weight:600;background:var(--surface);border-bottom:0.5px solid var(--hairline);}
+  .phone .screen{padding:14px 12px;display:flex;flex-direction:column;gap:8px;flex:1 1 auto;}
+  .msg{background:var(--surface);border:0.5px solid var(--hairline);border-radius:3px 13px 13px 13px;padding:9px 12px;font-size:13px;line-height:1.7;max-width:90%;color:var(--ink);}
+  .msg.mine{align-self:flex-end;background:var(--accent);color:var(--ground);border-radius:13px 3px 13px 13px;border-color:transparent;}
+  .msg .vid{display:block;margin-top:6px;background:var(--surface-2);border-radius:4px;padding:16px 10px;text-align:center;font-size:11.5px;color:var(--ink-soft);letter-spacing:.04em;}
+  .qr{display:flex;flex-wrap:wrap;gap:5px;padding:8px 12px 12px;border-top:0.5px solid var(--hairline);background:var(--surface);}
+  .qr span{border:0.5px solid var(--accent);color:var(--accent-ink);border-radius:99px;padding:4px 11px;font-size:11.5px;white-space:nowrap;}
+  .qr span.tapped{background:var(--accent);color:var(--ground);border-color:transparent;}
+  .arrowrow{display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--accent);padding:2px 0;}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="kicker">Reona ／ LINEの原稿</div>
+    <h1>登録から<br>体験まで</h1>
+    <p class="standfirst"><strong>イベントに来てくれた人に、続けてもらうため</strong>の仕組みです。その受け皿をLINEに作ります。<br>送る文章を、<strong>そのままコピーして貼れる形</strong>で全部書きました。中身はほとんど<strong>前回レオナが答えてくれた言葉そのまま</strong>です。</p>
+  </header>
+
+  <section class="panel">
+    <h2>ここまでやったこと</h2>
+    <p class="quiet"><b>・</b>前回のインタビューの答えをもとに、LINEの原稿を書いた（この資料）<br><b>・</b>撮る動画のネタを30個出した（別紙）<br><b>・</b>動画→Instagram→LINE→体験→継続、の流れを設計した（別紙）<br><b>・</b>イベントに来た人を継続につなげる手順を作った（別紙）<br><b>・</b>LINEがスマホだけでどこまでできるか、公式で全部調べた<br><b>・</b>広告のルールを、消費者庁の資料で確認した</p>
+  </section>
+
+  <section class="panel">
+    <h2>いま優先度が高いこと</h2>
+    <p class="quiet">いちばんの問題は、<b>イベントに来てくれた人が、そこで切れちゃうこと</b>。だからLINEを受け皿にします。やることは2つだけです。</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>順番</th><th>やること</th><th>かかる時間</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>動画を4本撮る（別紙の 22・04・01・09）</td><td>1本20秒</td></tr>
+          <tr><td>2</td><td>LINEの設定（あいさつ＋自動返信＋タグ）</td><td>1〜2時間</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="quiet">この2つが終われば動き出します。<b>それ以外は後回しで大丈夫です。</b></p>
+    <p class="quiet">手順書も、貼るだけの文章も全部こっちで用意します。<b>分からないところはいつでも聞いてください。</b>ただ、実際に手を動かすのはレオナのLINEの中なので、そこは一緒にやっていく形になります。</p>
+  </section>
+
+  <section class="panel">
+    <h2>調べて分かって、変えたこと</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>分かったこと</th><th>だから、こう変えた</th></tr></thead>
+        <tbody>
+          <tr><td>お客様の声は広告のルール上つかえない</td><td>前回の宿題を取り下げ（下に詳しく）</td></tr>
+          <tr><td>「腸活」は気をつける表現に入ってる</td><td><b>「インナーケア」</b>に言い換え</td></tr>
+          <tr><td>股関節ストレッチの動画は飽和してる</td><td>「体を動かして内側を整える」に振った</td></tr>
+          <tr><td>ステップ配信は無料の配信数を使ってしまう</td><td>あいさつ＋自動返信に組み替え。<b>0円のまま回ります</b></td></tr>
+          <tr><td>LINEはスマホだけでほぼ全部できる</td><td>アカウントを渡さなくてよくなった</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="hl">
+    <h2>ひとつ、いい知らせ</h2>
+    <p><b>追加で答えてもらうことは、もうありません。</b></p>
+    <p>前回、答えられずに残ってた質問があったよね。「変わったお客様の声」とか「その方のBefore・After」とか。ずっと宿題みたいになってたと思う。</p>
+    <p><b>あれ、聞かないほうがよかった質問でした。</b>お客様の体験談やビフォーアフターは、広告のルール上そもそも使えない。「個人の感想です」って書き添えてもダメだと、国が結論を出してる。</p>
+    <p>なので<b>あの質問は取り下げます。</b>答えが出なかったのは、レオナのせいじゃないです。</p>
+    <p>逆に、<b>答えてくれた13個で足りました。</b>全部「レオナ自身の話」だったので。実はこれが、ルール上いちばん安全で、いちばん人に届く形なんだよね。</p>
+    <p>下の原稿は、その言葉をほぼそのまま使ってます。<b>言い回しを変えたくなったら、遠慮なく変えてください。</b>レオナの言葉なので。</p>
+  </section>
+
+  <!-- mockup -->
+  <section class="sect">
+    <div class="sect-head">
+      <div class="tag">できあがり</div>
+      <h2>相手の画面は、こう見えます</h2>
+      <p class="why">文章だけだとイメージしにくいので、<b>実際にどう表示されるか</b>を先に。左が登録した瞬間、右がボタンを押したあとです。</p>
+    </div>
+
+    <div class="phones">
+      <div class="phone">
+        <div class="bar"><span class="ava"></span>Reona</div>
+        <div class="caption">登録した瞬間（自動）</div>
+        <div class="screen">
+          <div class="msg">登録ありがとうございます。<br>レオナです ☺️<br><br>熊本で、ヨガと体を整えることを伝えています。</div>
+          <div class="msg">🌿 イベントに来てくださった方へ<br><br>会場でお伝えした4ケタの数字を、そのまま送ってください。</div>
+          <div class="msg">はじめての方は、まず動画をひとつ受け取ってください 🌿
+            <span class="vid">▶︎ 寝たまま20秒</span>
+          </div>
+          <div class="msg">よかったら教えてください。<br>今いちばん、つらいのはどこですか？</div>
+        </div>
+        <div class="qr"><span>お腹まわり</span><span>肩・首・腰</span><span>眠り・疲れ</span></div>
+      </div>
+
+      <div class="phone">
+        <div class="bar"><span class="ava"></span>Reona</div>
+        <div class="caption">「お腹まわり」を押したあと（自動）</div>
+        <div class="screen">
+          <div class="msg mine">お腹まわり</div>
+          <div class="msg">お腹まわりですね。<br><br>私も、お腹がパンパンか空っぽかの繰り返しだった時期があります。とにかく体がだるくて。<br><br>そのとき最初にやったのは、朝イチの白湯。それだけです。
+            <span class="vid">▶︎ お腹まわりが重い日の、ねじり3つ</span>
+          </div>
+          <div class="msg">やってみて、どうでしたか？<br>ひとことでも大丈夫です ☺️</div>
+          <div class="msg mine">お腹が軽くなった気がします</div>
+        </div>
+        <div class="qr"><span class="tapped">ここからレオナが手で返信</span></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <p class="quiet">この<b>ボタンが出るところまでが全部自動</b>です。レオナが動くのは、右の画面のいちばん下、<b>返事が来てから</b>だけ。</p>
+      <p class="quiet">ボタンは押した内容によって、届く動画が変わります。「肩・首・腰」なら背中の話、「眠り・疲れ」なら呼吸の話。<b>文章は下に全部あります。</b></p>
+    </div>
+  </section>
+
+  <!-- 1 -->
+  <section class="sect">
+    <div class="sect-head">
+      <div class="tag">01 ／ 自動</div>
+      <h2>登録した瞬間に届くもの</h2>
+      <p class="why">LINEの「あいさつメッセージ」に貼ります。<b>一度設定すれば、あとは自動</b>です。配信数も消費しません。</p>
+    </div>
+
+    <div class="script">
+      <div class="head"><h3>あいさつメッセージ</h3><span class="meta free">配信数を消費しない</span></div>
+      <div class="bubblabel">1つめ</div>
+      <pre>登録ありがとうございます。
+レオナです ☺️
+
+熊本で、ヨガと
+体を整えることを伝えています。
+
+私自身、自分を後回しにして
+心も体も崩れた時期がありました。
+
+そこから戻ってきたとき
+最初に感じたのは「身体の軽さ」でした。</pre>
+      <div class="div"></div>
+      <div class="bubblabel">2つめ ／ イベントから来た人向け</div>
+      <pre>🌿 イベントに来てくださった方へ
+
+会場でお伝えした4ケタの数字を
+そのまま送ってください。
+
+その日にやった動きの動画が届きます。</pre>
+      <div class="div"></div>
+      <div class="bubblabel">3つめ</div>
+      <pre>はじめての方は、
+まず動画をひとつ受け取ってください 🌿
+
+▶︎ 寝たまま20秒。お腹の奥だけ動かす
+
+朝でも、寝る前でも。
+20秒だけで大丈夫です。</pre>
+      <div class="div"></div>
+      <div class="bubblabel">4つめ</div>
+      <pre>よかったら教えてください。
+今いちばん、つらいのはどこですか？</pre>
+      <div class="btns"><span class="btn">お腹まわり</span><span class="btn">肩・首・腰</span><span class="btn">眠り・疲れ</span></div>
+      <div class="note" style="padding:0 18px 18px;">あいさつメッセージは5つまで置けるので、4つでも問題ありません。イベントから来た人は2つめを見て数字を送る。SNSから来た人は2つめを読み飛ばして、3つめの動画を受け取る。<b>どちらから来ても成立します。</b></div>
+    </div>
+  </section>
+
+  <!-- event keyword -->
+  <section class="sect">
+    <div class="sect-head">
+      <div class="tag">01-b ／ 自動</div>
+      <h2>イベントの日ごとに、1つ足す</h2>
+      <p class="why">開催のたびに、応答メッセージを1件だけ足します。<b>キーワードは開催日の4ケタ</b>（9月13日なら 0913）。これで「誰が」「どの回に」来たかが分かるようになります。</p>
+    </div>
+
+    <div class="script">
+      <div class="head"><h3>イベント当日用（毎回コピーして日付を変える）</h3><span class="meta free">配信数を消費しない</span></div>
+      <div class="note">キーワード：<b>0913</b>（開催日の4ケタ。毎回変えます）</div>
+      <pre>今日はありがとうございました ☺️
+
+今日やった動きの動画です。
+おうちでもどうぞ 🌿
+
+▶︎ （その日にやった動きの動画）
+
+やってみて、どうでしたか？
+ひとことでも大丈夫です。</pre>
+    </div>
+
+    <div class="script">
+      <div class="head"><h3>数字を忘れた人向け（1回作れば使い回せます）</h3><span class="meta free">配信数を消費しない</span></div>
+      <div class="note">キーワード：<b>イベント</b></div>
+      <pre>イベントに来てくださって
+ありがとうございました ☺️
+
+会場でお伝えした4ケタの数字を
+送ってもらえると、
+その日の動画をお送りします。
+
+分からなくなったら、
+「◯月◯日に参加しました」と
+送ってもらえれば大丈夫です 🌿</pre>
+    </div>
+
+    <div class="panel">
+      <h2>なぜ数字なのか</h2>
+      <p class="quiet">3つのことが、いっぺんに片付くからです。</p>
+      <p class="quiet"><b>1.</b> 数字を送ってくれた人が、<b>イベントに来た人</b>だと分かります<br><b>2.</b> 数字が日付なので、<b>どの回に来た人か</b>も分かります<br><b>3.</b> その日にやった動きの動画を、<b>自動でお返しできます</b></p>
+      <p class="quiet">来てくれた人からすると「送ったらすぐ動画が届いた」だけなので、面倒な作業になりません。<b>登録してもらう理由にもなります。</b></p>
+      <p class="quiet">応答メッセージは1,000件まで作れるので、<b>開催のたびに1件ずつ足していけば足ります。</b>足りなくなることはありません。</p>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="sect">
+    <div class="sect-head">
+      <div class="tag">02 ／ 自動</div>
+      <h2>ボタンを押したら届くもの</h2>
+      <p class="why">LINEの「応答メッセージ」に3つ貼ります。<b>押されたボタンによって、届く内容が変わります。</b>ここも自動で、配信数を消費しません。</p>
+    </div>
+
+    <div class="script">
+      <div class="head"><h3>「お腹まわり」を押した人へ</h3><span class="meta free">配信数を消費しない</span></div>
+      <pre>お腹まわりですね。
+
+私も、お腹がパンパンか
+空っぽかの繰り返しだった時期があります。
+とにかく体がだるくて。
+
+そのとき最初にやったのは
+朝イチの白湯。それだけです。
+
+慣れてきたら、
+納豆・ヨーグルト・キムチ・味噌汁を
+1〜2品ずつ足していきました。
+
+白米を全部やめるのは
+気持ちがキツくなるので、
+もち麦を混ぜるところからで大丈夫です。
+
+▶︎ お腹まわりが重い日の、ねじり3つ
+
+やってみて、どうでしたか？
+ひとことでも大丈夫です ☺️</pre>
+    </div>
+
+    <div class="script">
+      <div class="head"><h3>「肩・首・腰」を押した人へ</h3><span class="meta free">配信数を消費しない</span></div>
+      <pre>肩や首、腰ですね。
+
+私も元々、体ガチガチでした。
+骨盤が歪んで、
+股関節もほとんど動いてなくて。
+
+そういう時、私がまずやるのは
+背中のストレッチです。
+
+背中がほぐれると胸が開いて、
+肩も首も、背中全体も
+一緒に伸びていきます。
+
+▶︎ 股関節、ここが動くとお腹まで動く
+
+やってみて、どうでしたか？
+ひとことでも大丈夫です ☺️</pre>
+    </div>
+
+    <div class="script">
+      <div class="head"><h3>「眠り・疲れ」を押した人へ</h3><span class="meta free">配信数を消費しない</span></div>
+      <pre>眠りと、疲れですね。
+
+子どもを寝かしつけたあと、
+ベッドで理由もなく
+涙が出てくる時期が、私にもありました。
+
+今も、疲れた日は
+ベッドの上でできる呼吸法だけやっています。
+
+体力がある日は、
+キャット＆カウやチャイルドポーズを少し。
+それだけで、次の日が違います。
+
+▶︎ 呼吸だけ。1分もいりません
+
+やってみて、どうでしたか？
+ひとことでも大丈夫です ☺️</pre>
+    </div>
+  </section>
+
+  <!-- tag -->
+  <section class="sect">
+    <div class="sect-head">
+      <div class="tag">02-b ／ 手でやる</div>
+      <h2>ボタンを押した人に、タグを1個つける</h2>
+      <p class="why">これだけ手作業です。<b>1人につき10秒くらい</b>。ただし、<b>あとで一番効いてくるのがここ</b>なので入れておきたい。</p>
+    </div>
+
+    <div class="panel">
+      <h2>やり方</h2>
+      <p class="quiet">LINEのチャット画面で、その人のプロフィールを開いて、<b>えんぴつマークをタップしてタグを付けるだけ</b>です。スマホの管理アプリからできます。</p>
+      <p class="quiet">押してもらったボタンと同じタグを付けます。「お腹まわり」を押した人には「お腹まわり」。それだけ。</p>
+    </div>
+
+    <div class="panel">
+      <h2>タグは5種類まで、1人に1個だけ</h2>
+      <p class="quiet">無料のプランだと、<b>使えるタグは5種類まで、1人につけられるのは1個まで</b>です。なので何に使うかを先に決めておきます。</p>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>タグ</th><th>いつ付けるか</th></tr></thead>
+          <tbody>
+            <tr><td>お腹まわり</td><td>ボタンを押してもらったとき</td></tr>
+            <tr><td>肩・首・腰</td><td>同上</td></tr>
+            <tr><td>眠り・疲れ</td><td>同上</td></tr>
+            <tr><td>体験ずみ</td><td>体験に来てくれたら、こっちに付け替え</td></tr>
+            <tr><td>続けてる</td><td>おうちのクラスに入ってくれたら付け替え</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="quiet">イベントに来てくれた人はタグを使いません。<b>4ケタの数字がトークに残ってるので、それで分かります。</b>その分、タグの枠を悩み別に使えます。</p>
+    </div>
+
+    <div class="hl">
+      <h2>これが一番あとで効きます</h2>
+      <p>タグを付けておくと、<b>その人たちにだけメッセージを送れる</b>ようになります。「今月はお腹まわりをやります」を、お腹まわりの人にだけ。全員に送らないので、<b>配信の数も節約できます。</b></p>
+      <p>そして<b>この先ぜんぶ自動にするときも、このタグがそのまま使えます。</b>「このタグの人にはこれを送る」という形で。今つけておけば、そのときゼロからやり直しになりません。</p>
+      <p>手でやってる今の期間が、そのまま準備になるってことです。</p>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="sect">
+    <div class="sect-head">
+      <div class="tag">03 ／ 手で送る</div>
+      <h2>返事が来た人へ</h2>
+      <p class="why">ここからは手で送ります。<b>返事が来た人にだけ</b>で大丈夫です。1対1のやり取りなので、こちらも配信数を消費しません。</p>
+    </div>
+
+    <div class="script">
+      <div class="head"><h3>体験のご案内</h3><span class="meta free">配信数を消費しない</span></div>
+      <div class="note">返事をくれた人に、2〜3往復したあとで送ります。急がなくて大丈夫です。</div>
+      <pre>おうちで続けたい方向けに、
+夜20分だけのクラスをやっています。
+
+呼吸を整えるリラックスヨガです。
+自分の体の様子、呼吸の様子を
+観察しながら整えていきます。
+
+座ったままでもできて、
+息があがる動きはしません。
+
+「1日お疲れ様でした。
+今日、この時間だけは
+頭の中をよぎる思考は手放して、
+自分の体と呼吸だけに
+意識を向ける時間に、
+一緒にしませんか？」
+
+気になったら「体験」と
+送ってください 🌿</pre>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="sect">
+    <div class="sect-head">
+      <div class="tag">04 ／ 設定前でも使える</div>
+      <h2>汎用の1本</h2>
+      <p class="why">ボタンの設定をする前でも、<b>これ1本を手で送れば導線は動きます。</b>まず今日から使えるものとして。</p>
+    </div>
+
+    <div class="script">
+      <div class="head"><h3>分岐なし・手で送る版</h3><span class="meta free">配信数を消費しない</span></div>
+      <pre>登録ありがとうございます。
+レオナです ☺️
+
+熊本で、ヨガと
+体を整えることを伝えています。
+
+私自身、自分を後回しにして
+心も体も崩れた時期がありました。
+そこから戻ってきたとき
+最初に感じたのは「身体の軽さ」でした。
+
+まずは動画をひとつ、
+受け取ってください 🌿
+
+▶︎ 寝たまま20秒。お腹の奥だけ動かす
+
+朝でも、寝る前でも。
+20秒だけで大丈夫です。
+
+よかったら教えてください。
+今いちばん、つらいのはどこですか？
+ひとことでも大丈夫です ☺️</pre>
+      <div class="note" style="padding:0 18px 18px;">返事が来たら、その内容に合わせて動画を送ります。ボタンの代わりに、手で選ぶだけです。</div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="sect">
+    <div class="sect-head">
+      <div class="tag">05 ／ 書き換えるとき</div>
+      <h2>言い回しを変えたくなったら</h2>
+      <p class="why">レオナの言葉なので、自由に変えて大丈夫です。<b>1つだけ守ってほしい線</b>があります。</p>
+    </div>
+    <div class="panel">
+      <p class="quiet" style="font-family:var(--f-display);font-size:18px;line-height:1.7;color:var(--ink);"><b>「私はこうだった」はOK。<br>「あなたもこうなります」はNG。</b></p>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>書き方</th><th>可否</th></tr></thead>
+          <tbody>
+            <tr><td>私も体がだるかった</td><td class="ok">OK</td></tr>
+            <tr><td>私は朝イチの白湯から始めた</td><td class="ok">OK</td></tr>
+            <tr><td>合う合わないは人によります</td><td class="ok">OK</td></tr>
+            <tr><td>ベストボディ・ジャパン 東京大会グランプリ（2026）</td><td class="ok">OK</td></tr>
+            <tr><td>便秘が治ります／腸内環境が改善します</td><td class="no">NG</td></tr>
+            <tr><td>これだけで／無理なく痩せます</td><td class="no">NG</td></tr>
+            <tr><td>3か月で◯kg／ビフォーアフター写真</td><td class="no">NG</td></tr>
+            <tr><td>お客様の声・体験談</td><td class="no">NG</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="flag">迷ったら<b>主語を「私」に書き換えてください。</b>それだけで、ほとんど通ります。</div>
+    </div>
+  </section>
+
+  <section class="hl">
+    <h2>やってほしいこと</h2>
+    <p><b>読んで、気になるところを教えてください。</b>「この言い方はしない」「ここは違う」があれば直します。</p>
+    <p>そのままでよければ、<b>04の汎用1本だけ先に使い始められます。</b>設定はまだ要りません。</p>
+  </section>
+
+  <footer>
+    <div>2026-08-29 作成</div>
+    <div>本文はレオナの回答（2026年6月）をもとにしています。「身体の軽さ」「体ガチガチ」「朝イチの白湯」「1日お疲れ様でした〜」などは原文のままです</div>
+    <div>金額と「夜20分」の名前は仮です。決まり次第そろえます</div>
+    <div>広告のルールは消費者庁の公表資料で確認しました</div>
+  </footer>
+
+</div>
+
+</body>
+</html>

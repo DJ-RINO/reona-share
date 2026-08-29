@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>イベントから継続まで｜REONA</title>
+<style>*{box-sizing:border-box}img,video{max-width:100%;height:auto}</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&family=Noto+Sans+JP:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap">
+
+<style>
+  :root{
+    --ground:#F6F1E8; --surface:#FFFFFF; --surface-2:#EFE4D2;
+    --ink:#3E443C; --ink-soft:#84887E; --ink-faint:#8F9491;
+    --accent:#6E8572; --accent-ink:#56695A; --accent-soft:rgba(110,133,114,.10);
+    --warn:#A65D3E; --warn-soft:rgba(166,93,62,.12);
+    --hairline:rgba(62,68,60,.22);
+    --f-display:"Noto Serif JP","Hiragino Mincho ProN","Yu Mincho",serif;
+    --f-body:"Noto Sans JP","Hiragino Sans",system-ui,sans-serif;
+    --f-mono:"Cormorant Garamond",Didot,serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#1C1F1A; --surface:#242820; --surface-2:#2C3126;
+      --ink:#F6F1E8; --ink-soft:#B9BDB2; --ink-faint:#8B9086;
+      --accent:#8FA894; --accent-ink:#A9C2AE; --accent-soft:rgba(143,168,148,.16);
+      --warn:#C98467; --warn-soft:rgba(201,132,103,.16); --hairline:rgba(246,241,232,.16);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#1C1F1A; --surface:#242820; --surface-2:#2C3126;
+    --ink:#F6F1E8; --ink-soft:#B9BDB2; --ink-faint:#8B9086;
+    --accent:#8FA894; --accent-ink:#A9C2AE; --accent-soft:rgba(143,168,148,.16);
+    --warn:#C98467; --warn-soft:rgba(201,132,103,.16); --hairline:rgba(246,241,232,.16);
+  }
+
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.85;-webkit-font-smoothing:antialiased;}
+  .wrap{width:min(100% - 32px, 640px);margin-inline:auto;padding-block:48px 96px;display:flex;flex-direction:column;gap:48px;}
+  .kicker{font-family:var(--f-mono);font-style:italic;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:500;}
+  h1{font-family:var(--f-display);font-weight:600;font-size:clamp(29px,7.5vw,42px);line-height:1.3;margin:0;text-wrap:balance;}
+  .masthead{display:flex;flex-direction:column;gap:16px;}
+  .standfirst{margin:0;color:var(--ink-soft);font-size:15px;}
+  .standfirst strong{color:var(--ink);font-weight:600;}
+
+  .panel{background:var(--surface);border:0.5px solid var(--hairline);border-radius:4px;padding:22px 20px;display:flex;flex-direction:column;gap:12px;}
+  .panel p{margin:0;}
+  .panel h2{font-family:var(--f-display);font-size:19px;font-weight:600;margin:0;line-height:1.5;}
+  .quiet{color:var(--ink-soft);font-size:14.5px;}
+  .quiet b{color:var(--ink);}
+
+  .sect-head{display:flex;flex-direction:column;gap:8px;padding-bottom:12px;border-bottom:0.5px solid var(--hairline);}
+  .sect{display:flex;flex-direction:column;gap:18px;}
+  .sect-head .tag{font-family:var(--f-mono);font-style:italic;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:500;}
+  .sect-head h2{font-family:var(--f-display);font-size:22px;font-weight:600;margin:0;line-height:1.45;}
+  .sect-head .why{margin:0;font-size:14px;color:var(--ink-soft);}
+
+  /* timeline */
+  .tl{display:flex;flex-direction:column;}
+  .ev{display:grid;grid-template-columns:76px 1fr;column-gap:14px;}
+  .when{font-family:var(--f-body);font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--accent-ink);background:var(--accent-soft);border-radius:99px;padding:4px 6px;text-align:center;height:fit-content;line-height:1.5;}
+  .when.soft{background:var(--surface-2);color:var(--ink-faint);}
+  .ev .body{padding-bottom:24px;display:flex;flex-direction:column;gap:7px;border-left:2px solid var(--hairline);padding-left:18px;margin-left:-10px;}
+  .ev:last-child .body{border-left-color:transparent;padding-bottom:0;}
+  .ev h3{font-family:var(--f-display);font-weight:600;font-size:17.5px;margin:0;line-height:1.5;}
+  .ev p{margin:0;font-size:14.5px;color:var(--ink-soft);}
+  .say{background:var(--surface-2);border-radius:3px;padding:11px 13px;font-size:14.5px;line-height:1.75;color:var(--ink);}
+  .say .lab{font-family:var(--f-body);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);font-weight:600;display:block;margin-bottom:4px;}
+
+  .tablewrap{overflow-x:auto;}
+  table{border-collapse:collapse;width:100%;font-size:14px;min-width:320px;}
+  th,td{text-align:left;padding:9px 10px;border-bottom:0.5px solid var(--hairline);vertical-align:top;}
+  th{font-family:var(--f-body);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);font-weight:600;border-bottom:0.5px solid var(--ink-faint);}
+  tr:last-child td{border-bottom:none;}
+  .ok{color:var(--accent-ink);font-weight:600;}
+
+  .flag{background:var(--warn-soft);color:var(--warn);font-size:13.5px;line-height:1.7;padding:11px 13px;border-radius:3px;}
+  .flag b{font-weight:600;}
+  .hl{background:var(--accent-soft);border-radius:4px;padding:22px 20px;display:flex;flex-direction:column;gap:10px;}
+  .hl h2{font-family:var(--f-display);font-weight:600;font-size:19px;margin:0;}
+  .hl p{margin:0;font-size:15px;}
+
+  footer{border-top:0.5px solid var(--hairline);padding-top:18px;font-size:13px;color:var(--ink-faint);display:flex;flex-direction:column;gap:5px;}
+  @media (max-width:520px){
+    .ev{grid-template-columns:62px 1fr;column-gap:10px;}
+    .ev .body{padding-left:14px;}
+    .when{font-size:10px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="kicker">Reona ／ オフラインの活かし方</div>
+    <h1>イベントから<br>継続まで</h1>
+    <p class="standfirst">この前レオナが言ってた、<strong>来てくれた人が続かないっていう話。</strong>あれについて考えたことをまとめました。<br>月1〜2回のイベントに来てくれる人って、<strong>いちばん続けてくれる可能性が高い人</strong>だと思う。実際に会って、話して、一緒に体を動かしてるから。</p>
+  </header>
+
+  <section class="hl">
+    <h2>この前の話から</h2>
+    <p>レオナが言ってた「来てくれた人が続かない」っていうの、<b>ほんとにそのとおりだと思う。</b></p>
+    <p>イベント自体はちゃんと回せてるし、来てくれる人もいる。<b>そこはもうできてるから、変えなくていい。</b></p>
+    <p>引っかかってるのはその先だよね。1回やって、その日が終わると、次の月はまたゼロから集めることになる。10回やっても、11回目はまたゼロから。</p>
+    <p>レオナが感じてたのって、たぶんここだと思う。<b>「楽しかったね」で終わっちゃう感じ。</b></p>
+    <p>だから、そこを埋める形を考えました。<b>イベントのやり方を変える話じゃなくて、終わったあとに何を残すかっていう話です。</b></p>
+  </section>
+
+  <section class="panel">
+    <h2>なんで切れちゃうのか</h2>
+    <p class="quiet">たぶん<b>次に会うまでが空きすぎてる</b>だけだと思う。月1回だと次まで4週間あるから、日常に戻ると忘れちゃうんだよね。</p>
+    <p class="quiet">来てくれた人のやる気の問題じゃなくて、<b>間隔の問題</b>ってことだと思う。</p>
+  </section>
+
+  <!-- 3案 -->
+  <section class="sect">
+    <div class="sect-head">
+      <div class="tag">考えた3つの案</div>
+      <h2>やり方は、3つある</h2>
+      <p class="why">どれもアリだと思う。ただ<b>伸び方がぜんぜん違う</b>ので、先に3つ並べて比べてみました。</p>
+    </div>
+
+    <div class="panel">
+      <h2>案1｜イベントを回数券にする</h2>
+      <p class="quiet">単発ではなく「3回分」でまとめて申し込んでもらう形。最初に決めてもらうので、<b>次に来ることが申込の時点で確定します。</b></p>
+      <p class="quiet"><b>良いところ：</b>いちばん確実に続きます。先に払っているので、来る理由ができます。<br><b>弱いところ：</b>月1〜2回だと、3回終わるのに<b>2〜3か月かかります。</b>その間ずっと売上が動きません。あと、ふらっと来ていた人が申し込みにくくなります。</p>
+    </div>
+
+    <div class="panel">
+      <h2>案2｜次のイベントに、確実に戻ってきてもらう</h2>
+      <p class="quiet">帰る前に次回の日程を伝えて、LINEでリマインドする。<b>イベントのリピート率だけを上げる</b>やり方です。</p>
+      <p class="quiet"><b>良いところ：</b>今すぐできて、お金もかかりません。<br><b>弱いところ：</b>これだけだと<b>売上の天井が低いままです。</b>月2回 × 来られる人数、が上限になります。しかもその上限は、レオナの体力と会場で決まってしまいます。</p>
+    </div>
+
+    <div class="panel" style="border-color:var(--accent);border-left:3px solid var(--accent);">
+      <h2>案3｜イベントの間を、おうちで埋めてもらう ← おすすめ</h2>
+      <p class="quiet">次のイベントまでの3〜4週間を、おうちで続けられるようにする。<b>そこがオンラインのクラスになります。</b></p>
+      <p class="quiet"><b>良いところ：</b>イベントの間隔の問題が解けます。そして<b>ここだけは、人数が増えてもレオナの時間が増えません。</b><br><b>弱いところ：</b>オンラインに移ってもらう一手間が要ります。</p>
+    </div>
+
+    <div class="panel">
+      <h2>3つを並べると、こうなります</h2>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th></th><th>案1 回数券</th><th>案2 リピート</th><th>案3 間を埋める</th></tr></thead>
+          <tbody>
+            <tr><td>今すぐできる</td><td>△</td><td class="ok">◎</td><td class="ok">○</td></tr>
+            <tr><td>続く率</td><td class="ok">◎</td><td>○</td><td class="ok">◎</td></tr>
+            <tr><td>売上が積み上がるか</td><td>△</td><td>×</td><td class="ok">◎</td></tr>
+            <tr><td>レオナの時間</td><td>増える</td><td>増える</td><td class="ok">増えない</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="quiet"><b>大きく違うのは、いちばん下の行。</b></p>
+      <p class="quiet">イベントって、人数と回数でしか増やせないんだよね。10人の会を月2回やってて、そこから増やそうと思ったら<b>人を増やすか、回数を増やすしかない。</b>どっちもレオナの体力を使う。<b>頑張るほど自分が疲れる形になっちゃう。</b></p>
+      <p class="quiet">おうちで続けてもらう形だけ、<b>人が増えても時間が増えない。</b>積み上がるのはここだけです。</p>
+      <div class="flag"><b>なので案3を第一候補にしました。</b>案2（次のイベントに戻ってきてもらう）は捨てないで、案3の中に入れてあります。案1は、予約が埋まるようになってからで十分だと思う。</div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>案3を、どうやるか</h2>
+    <p class="quiet">「また来てくださいね」ってお願いするより、<b>間を埋めるものを渡すほうが効くと思う。</b>次まで空くのは事実だから、売り込みにもならないし。</p>
+    <p class="quiet">手順は下の4つだけです。</p>
+  </section>
+
+  <section class="sect">
+    <div class="sect-head">
+      <div class="tag">当日から次回まで</div>
+      <h2>やることは、4つだけ</h2>
+      <p class="why">全部スマホでできます。特別な設定も要りません。</p>
+    </div>
+
+    <div class="panel">
+      <div class="tl">
+
+        <div class="ev">
+          <div class="when">当日<br>会場で</div>
+          <div class="body">
+            <h3>QRコードと、4ケタの数字を伝える</h3>
+            <p>QRは紙に印刷して置いておくだけ。数字は<b>その日の日付</b>です（9月13日なら 0913）。声をかけるのは終わったあと、片付けの時間で大丈夫です。</p>
+            <div class="say"><span class="lab">言い方の例</span>今日やった動きの動画を送るので、よかったらここから登録してください 🌿<br>登録できたら「0913」って送ってもらえれば、すぐ届きます</div>
+            <p><b>「登録してください」ではなく「動画を送るので」</b>にするのがコツです。理由があると入りやすくなります。</p>
+            <p><b>数字を送ってもらうのが大事です。</b>これで「今日来てくれた人」が分かるようになります。数字は日付なので、あとから見ても<b>どの回に来た人かが分かります。</b>紙に大きく書いて貼っておくと確実です。</p>
+          </div>
+        </div>
+
+        <div class="ev">
+          <div class="when">当日<br>の夜</div>
+          <div class="body">
+            <h3>その日のうちに動画が届く</h3>
+            <p>いちばん効くのがここです。体の感覚も、話した内容も、まだ残っているうちに届きます。</p>
+            <p><b>数字を送ってくれた人には、自動で届きます。</b>やることは、イベント前に応答メッセージを1件だけ用意しておくことだけ（原稿は別紙にあります）。</p>
+            <div class="say"><span class="lab">届く内容</span>今日はありがとうございました ☺️<br>今日やった動きの動画です。おうちでもどうぞ 🌿<br>▶︎ 動画<br><br>やってみて、どうでしたか？</div>
+            <p>数字を送り忘れた人がいたら、その人にだけ手で送れば大丈夫です。</p>
+            <p>このとき、<b>返事をくれた人にタグを1個つけておく</b>と、あとで「その人たちにだけ送る」ができるようになります。10秒で終わるし、自動化するときもそのまま使えるので、やっておくと後がラクです（つけ方は原稿の別紙に）。</p>
+          </div>
+        </div>
+
+        <div class="ev">
+          <div class="when">3日後<br>くらい</div>
+          <div class="body">
+            <h3>ひとこと聞く</h3>
+            <p>ここで返事をくれた人が、<b>続けてくれる人</b>です。返事がない人を追いかける必要はありません。</p>
+            <div class="say"><span class="lab">送る内容</span>あれから、やってみましたか？<br>ひとことでも大丈夫です ☺️</div>
+          </div>
+        </div>
+
+        <div class="ev">
+          <div class="when">1週間後</div>
+          <div class="body">
+            <h3>間を埋める提案をする</h3>
+            <p>ここが<b>いちばん大事なところ</b>です。売り込みではなく、<b>間が空くことへの提案</b>として出します。</p>
+            <div class="say"><span class="lab">送る内容</span>次のイベントまで、あと3週間くらい空いてしまうので。<br>その間もおうちで続けられるように、夜20分だけのクラスをやっています。<br>気になったら「体験」と送ってください 🌿</div>
+            <p><b>「次まで空くから」が理由になっている</b>ので、押し売りになりません。実際そのとおりですし。</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="hl">
+    <h2>この形のいちばん良いところ</h2>
+    <p>イベントに来てくれた人には、<b>「体験してみませんか」って言わなくていい。</b>もう体験してくれてるから。</p>
+    <p>だから<b>いきなり「続けませんか」から入れます。</b>SNSから来た人より、手前がまるごと省ける。ここがオフラインに来てくれた人の強みだと思う。</p>
+    <p>そして4番まで進んだ人は、<b>イベントが終わってもゼロに戻らない。</b>翌月がゼロからのスタートじゃなくなります。</p>
+  </section>
+
+  <section class="sect">
+    <div class="sect-head">
+      <div class="tag">手間の話</div>
+      <h2>どのくらい大変か</h2>
+      <p class="why">正直に書いておきます。</p>
+    </div>
+    <div class="panel">
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>やること</th><th>回数</th><th>かかる時間</th></tr></thead>
+          <tbody>
+            <tr><td>その日の応答メッセージを1件つくる</td><td>イベント前</td><td>3分ほど</td></tr>
+            <tr><td>QRを置く・数字を伝える</td><td>イベントごと</td><td>1〜2分</td></tr>
+            <tr><td>当日の夜に届く</td><td>—</td><td class="ok">自動</td></tr>
+            <tr><td>3日後にひとこと</td><td>イベントごと</td><td>5分ほど</td></tr>
+            <tr><td>1週間後の提案</td><td>イベントごと</td><td>5分ほど</td></tr>
+            <tr><td>返事が来た人と話す</td><td>来たときだけ</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="quiet">月1〜2回のイベントなので、<b>ひと月あたり15〜30分くらい</b>です。当日の動画は自動で届くので、イベントの日の夜は何もしなくて大丈夫です。</p>
+      <div class="flag"><b>お金はかかりません。</b>1人ずつ手で送るぶんには、LINEの配信数を消費しません。全員に一斉送信すると数を消費するので、<b>人数が少ないうちは1人ずつ送るほうが、安くて丁寧です。</b></div>
+    </div>
+  </section>
+
+  <section class="sect">
+    <div class="sect-head">
+      <div class="tag">おまけ、と言うには大きい話</div>
+      <h2>もうひとつ、積み上がるもの</h2>
+      <p class="why">この形にすると、<b>動画が勝手に溜まっていきます。</b></p>
+    </div>
+
+    <div class="panel">
+      <h2>撮るのは、月に2本だけ</h2>
+      <p class="quiet">用意するのは<b>その日のイベントでやるメニューの動画1本</b>だけです。前日でも、メニューを決めたタイミングでも大丈夫です。</p>
+      <p class="quiet"><b>いちばんラクなのは、内容を考えなくていいことです。</b>その日にやることを、そのまま撮ればいい。企画も要らないし、何を撮るか迷う時間もありません。</p>
+      <p class="quiet">しかも<b>日付が決まっているので、必ず撮ることになります。</b>「そのうち撮ろう」がなくなります。</p>
+    </div>
+
+    <div class="panel">
+      <h2>1年で24本</h2>
+      <p class="quiet">月2本を1年続けると、<b>24本のストックになります。</b>2年で48本。</p>
+      <p class="quiet">そしてこの24本は、<b>イベントが終わっても消えません。</b>使い道はいくらでもあります。</p>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>溜まった動画の使い道</th><th>いつ</th></tr></thead>
+          <tbody>
+            <tr><td>LINE登録した人へのプレゼント</td><td>ずっと</td></tr>
+            <tr><td>Instagramの投稿</td><td>撮り直しなしで出せる</td></tr>
+            <tr><td>おうちで続ける人向けの中身</td><td>サブスクの本体になる</td></tr>
+            <tr><td>お悩み別の出し分け</td><td>数が増えるほど精度が上がる</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>メニューを考える手間も、減ります</h2>
+      <p class="quiet">おうち向けのクラスを週1回やると、月に4〜5回。<b>毎回ゼロからメニューを考えるのは、正直しんどいと思います。</b></p>
+      <p class="quiet">なので<b>月ごとにテーマを1つ決めて、その中で回します。</b>イベントも、おうちのクラスも、撮る動画も、全部その月のテーマにそろえます。</p>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>9月のテーマ「お腹まわり」</th><th>やること</th></tr></thead>
+          <tbody>
+            <tr><td>1週目（おうち）</td><td>呼吸から</td></tr>
+            <tr><td>2週目（おうち）</td><td>ねじりを足す</td></tr>
+            <tr><td>イベント</td><td>その月の集大成をみんなで</td></tr>
+            <tr><td>3週目（おうち）</td><td>股関節まで</td></tr>
+            <tr><td>4週目（おうち）</td><td>全部つなげる</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="quiet"><b>考えるのは月に1回、テーマを決めるときだけ</b>です。あとはその中で少しずつ進めるだけ。ヨガのクラスは元々そういう組み立てなので、無理がありません。</p>
+    </div>
+
+    <div class="panel">
+      <h2>テーマは、LINEのボタンと同じ3つに</h2>
+      <p class="quiet">登録してくれた人に押してもらうボタンと、同じ3つにします。</p>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>月</th><th>テーマ</th></tr></thead>
+          <tbody>
+            <tr><td>9月</td><td>お腹まわり</td></tr>
+            <tr><td>10月</td><td>肩・首・腰</td></tr>
+            <tr><td>11月</td><td>眠り・疲れ</td></tr>
+            <tr><td>12月</td><td>またお腹まわりへ</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="quiet"><b>3か月で1周します。</b>そろえておくと、こうなります。</p>
+      <p class="quiet"><b>・</b>「今月はお腹まわりをやってます」と言える<br><b>・</b>「来月は肩と首です」<b>＝ 次も来る理由になります</b><br><b>・</b>ボタンで「お腹まわり」を選んだ人に、その月をそのまま案内できる<br><b>・</b>動画がテーマごとに整理されて溜まっていく</p>
+      <p class="quiet">1年経つと、<b>3つのテーマそれぞれに4回分</b>たまります。そこまで来ると、お悩み別に出し分けるだけで、新しく撮らなくても回るようになります。</p>
+    </div>
+
+    <div class="hl">
+      <h2>最初の話に戻るけど</h2>
+      <p>「終わるとゼロに戻る」って話をしたよね。</p>
+      <p><b>この形にすると、残るものが2つできます。</b></p>
+      <p><b>ひとつは、続けてくれる人。</b>おうちでも続けてる人は、翌月ゼロに戻らない。<br><b>もうひとつが、動画。</b>1回のイベントが、その日で終わらずに手元に残る。</p>
+      <p>イベント自体は今までどおりでいいです。<b>変わるのは、終わったあとに何が残るかだけ。</b></p>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>それと、案2をここに入れておきます</h2>
+    <p class="quiet">イベントが終わる前に、<b>次回の日程を口に出して伝えてください。</b>「次は◯月◯日です」だけで大丈夫です。これが案2（次のイベントに戻ってきてもらう）の中身で、<b>お金も手間もかからないのに効きます。</b></p>
+    <p class="quiet">日程が決まっていなくても「来月の第2土曜あたりでやります」で構いません。<b>次があると分かっているかどうかで、続く人の数が変わります。</b></p>
+  </section>
+
+  <section class="hl">
+    <h2>パソコンがあれば、ここが自動になります</h2>
+    <p>いま手で送っている「当日の夜」「3日後」「1週間後」の3通は、<b>登録した日を起点に自動で届く形にできます。</b>レオナは会場でQRを出すだけになります。</p>
+    <p>ただし<b>急ぐ必要はありません。</b>手で送っているほうが、文章もその日の様子に合わせられるので、正直まだそっちのほうが効きます。人数が増えて手が回らなくなってからで十分です。</p>
+  </section>
+
+  <footer>
+    <div>2026-08-29 作成</div>
+    <div>1:1のトークで送るぶんには配信数を消費しないことは、LINE公式の資料で確認済みです</div>
+    <div>金額と「夜20分」の名前は仮のものです。決まり次第そろえます</div>
+  </footer>
+
+</div>
+
+</body>
+</html>
